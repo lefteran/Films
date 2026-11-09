@@ -1,0 +1,23 @@
+# Python virtual environment (project-local)
+.films/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*.egg-info/
+
+# Local secrets / environment files
+.env
+.env.*
+
+# Personal source data — keep the Excel workbook out of version control
+# NOTE: data/movies.json IS committed because it is the deployed database.
+data/movies.xlsx
+~$*.xlsx
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
