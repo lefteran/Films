@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My films | Προσωπική Βιβλιοθήκη</title>
+    <!-- Σύνδεση με το αρχείο CSS -->
+    <link rel="stylesheet" href="src/css/styles.css">
+    <!-- Γραμματοσειρά Inter για καθαρό, μοντέρνο look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Κεφαλίδα / Πεδίο Αναζήτησης -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo">CineVault <span>.</span></h1>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Αναζήτηση με τίτλο, σκηνοθέτη, ηθοποιό ή έτος..." autocomplete="off">
+            </div>
+            <div class="stats" id="statsDisplay">Φόρτωση...</div>
+        </div>
+        
+        <!-- Περιοχή για τα Φίλτρα (Tags) -->
+        <div class="filters-container" id="tagsContainer">
+            <!-- Τα tags θα φορτωθούν εδώ δυναμικά μέσω JS -->
+        </div>
+    </header>
+
+    <!-- Κυρίως Περιεχόμενο: Το Grid με τις ταινίες -->
+    <main class="main-content">
+        <div id="moviesGrid" class="movies-grid">
+            <!-- Οι κάρτες των ταινιών θα εμφανιστούν εδώ -->
+        </div>
+        <div id="emptyState" class="empty-state hidden">
+            <h2>Δεν βρέθηκαν ταινίες</h2>
+            <p>Δοκίμασε να αλλάξεις τους όρους αναζήτησης ή να αφαιρέσεις φίλτρα.</p>
+        </div>
+    </main>
+
+    <!-- Το παράθυρο (Modal) για τις λεπτομέρειες -->
+    <div id="movieModal" class="modal hidden">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <div class="modal-body" id="modalBody">
+                <!-- Τα στοιχεία θα μπουν εδώ δυναμικά -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Σύνδεση με το αρχείο JS -->
+    <script src="src/js/app.js"></script>
+</body>
+</html>

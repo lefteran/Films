@@ -14,8 +14,10 @@ __pycache__/
 
 # Personal source data — keep the Excel workbook out of version control
 # NOTE: data/movies.json IS committed because it is the deployed database.
-data/movies.xlsx
+data/all_movies.xlsx
+data/movies sample.xlsx
 ~$*.xlsx
+data/*.xlsx
 
 # OS / editor noise
 .DS_Store
