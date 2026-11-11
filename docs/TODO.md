@@ -11,7 +11,8 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [x] Write [`architecture.md`](architecture.md) covering the 3-phase design
 - [x] Write this `TODO.md` checklist
 - [x] Create `scripts/`, `src/`, and `data/` directories
-- [x] Add `.gitignore` for `.films/`, `__pycache__/`, and `data/movies.xlsx`
+- [x] Add `.gitignore` for `.films/`, `__pycache__/`, and private Excel workbooks (`data/*.xlsx`)
+- [x] Confirm `.gitignore` covers the current migration input (`data/all_movies.xlsx`)
 - [ ] Create/verify the `.films/` virtual environment
 - [ ] Add `scripts/requirements.txt` (`openpyxl`, `requests`, `python-dotenv`)
 - [ ] Add `.env.example` with `TMDB_API_KEY=`
@@ -24,14 +25,14 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 ## Phase 1 — Data Migration (Python)
 
 ### Script setup
-- [x] Prototype ingestion script exists at [`excel_to_tmdb.py`](../excel_to_tmdb.py)
-- [ ] Move/refactor the prototype into `scripts/excel_to_tmdb.py`
+- [x] Migration script exists at [`scripts/excel_to_tmdb.py`](../scripts/excel_to_tmdb.py)
+- [x] Move/refactor the prototype into `scripts/excel_to_tmdb.py`
 - [ ] Load `TMDB_API_KEY` from the environment instead of hardcoding it
 - [ ] Make paths configurable via CLI arguments (`--input`, `--output`)
 - [ ] Keep module import side-effect free; expose a `main()` entry point
 
 ### Workbook parsing
-- [ ] Inspect the real `data/movies.xlsx` and confirm columns, header row, and sheet name
+- [ ] Inspect the real `data/all_movies.xlsx` and confirm columns, header row, and `Alphanumeric` sheet
 - [ ] Read `shelf_id` (column A) without dropping leading zeros
 - [ ] Read title (column C), director (D), actors (E), year (F)
 - [ ] Skip empty/header rows reliably
@@ -43,7 +44,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 ### TMDB enrichment
 - [ ] Implement IMDb lookup via `/3/find/{imdb_id}` (`external_source=imdb_id`, `language=el-GR`)
 - [ ] Implement fallback search via `/3/search/movie` with title + `primary_release_year`
-- [ ] Request and store `greek_title`, `synopsis`, and `poster_path`
+- [ ] Request and store `greek_title`, `duration_minutes`, and `overview` (exported to `synopses.json`)
 - [ ] Build `poster_url` at `w500`
 - [ ] Add retry with backoff for `429`/`5xx` and honour `Retry-After`
 - [ ] Add a request timeout and clear error handling
@@ -55,11 +56,20 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Deduplicate by `tmdb_id`, then `imdb_id`, then normalised title + year
 - [ ] Handle films not found on TMDB without aborting the run
 - [ ] Log a summary: processed, matched, unmatched, skipped, duplicates
-- [ ] Write `data/movies.json` as UTF-8 with predictable formatting
+- [ ] Write `data/movies_lite.json` and `data/synopses.json` as UTF-8, minified output
 - [ ] Add a small test workbook fixture and unit tests for colour mapping and IMDb parsing
 - [ ] Run a full migration against the real workbook
 - [ ] Manually spot-check 10–20 entries (posters, titles, tags, shelf IDs)
-- [ ] Commit the generated `data/movies.json`
+- [ ] Investigate duplicate `shelf_id` values in the workbook (24 collisions in the current export) so the synopsis map is lossless
+- [ ] Commit the generated `data/movies_lite.json` and `data/synopses.json`
+
+### Payload optimization
+- [x] Split the export into `data/movies_lite.json` (catalogue, no synopsis) and `data/synopses.json` (`shelf_id` → synopsis)
+- [x] Minify both files with `json.dump(..., separators=(',', ':'))`
+- [x] Generate the initial split from the existing `data/movies.json` (3.45 MB → 1.13 MB catalogue + 1.75 MB deferred synopses)
+- [x] Switch the initial frontend fetch to `data/movies_lite.json`
+- [x] Lazy-load `data/synopses.json` on first modal open, showing “Φόρτωση σύνοψης...” while it loads
+- [x] Document the split data model and lazy-loading strategy in [`architecture.md`](architecture.md)
 
 ---
 
@@ -72,7 +82,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Create `src/js/data.js` (fetch + validation)
 - [ ] Create `src/js/filters.js` (search + tag predicates)
 - [ ] Create `src/js/render.js` (card rendering)
-- [ ] Fetch `data/movies.json` relative to the page
+- [ ] Fetch `data/movies_lite.json` relative to the page and lazy-load `data/synopses.json` in the modal
 - [ ] Show loading, error, and retry states
 - [ ] Validate that the payload is a JSON array
 
@@ -92,7 +102,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 
 ### Hosting and verification
 - [ ] Configure GitHub Pages to serve from `main` / root
-- [ ] Verify `/`, `/add/`, and `/data/movies.json` resolve correctly
+- [ ] Verify `/`, `/add/`, `/data/movies_lite.json`, and `/data/synopses.json` resolve correctly
 - [ ] Cache-busting strategy for updated JSON (e.g. `?v=`)
 - [ ] Test on mobile viewport and a narrow desktop window
 - [ ] Test with missing posters and an empty filter result
@@ -105,7 +115,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 ### Hidden add page
 - [ ] Create `add/index.html` (not linked from the public UI)
 - [ ] Reuse `src/` styles and modules where practical
-- [ ] Resolve data paths relative to the page (`../data/movies.json`)
+- [ ] Resolve data paths relative to the page (`../data/movies_lite.json`, `../data/synopses.json`)
 - [ ] Add `src/js/config.js` with repo owner, name, and branch
 
 ### Authentication
@@ -124,11 +134,11 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Build an entry matching the Phase 1 schema exactly
 
 ### GitHub Contents API write
-- [ ] GET `data/movies.json` with `Accept: application/vnd.github+json` and bearer token
-- [ ] Decode base64 content safely as UTF-8
-- [ ] Parse JSON and check for duplicates (`tmdb_id`, `imdb_id`)
-- [ ] Append the new entry and re-encode as base64
-- [ ] PUT the file with `message`, `content`, `sha`, and `branch`
+- [ ] GET `data/movies_lite.json` and `data/synopses.json` with `Accept: application/vnd.github+json` and bearer token
+- [ ] Decode both base64 payloads safely as UTF-8
+- [ ] Parse both JSON files and check for duplicates (`tmdb_id`, `imdb_id`)
+- [ ] Append the catalogue entry and set `synopses[shelf_id]`, then re-encode both as minified base64
+- [ ] PUT both files with their own `message`, `content`, `sha`, and `branch`
 - [ ] Handle `409`/`422` SHA conflicts with refetch + retry (max 3)
 - [ ] Handle `401`, `403`, `404`, and rate-limit responses with actionable messages
 - [ ] Show the resulting commit URL on success
@@ -149,5 +159,5 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 
 - [ ] Keep [`TODO.md`](TODO.md) and [`architecture.md`](architecture.md) in sync with every feature/refactor
 - [ ] Review the repo for accidental secrets (TMDB key, PAT) before each push
-- [ ] Confirm `data/movies.json` remains committed while `data/movies.xlsx` stays ignored
+- [ ] Confirm `data/movies_lite.json` and `data/synopses.json` remain committed while private workbooks stay ignored
 - [ ] Occasional dependency update review for Phase 1

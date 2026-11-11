@@ -6,8 +6,9 @@ import time
 
 # --- ΡΥΘΜΙΣΕΙΣ ---
 EXCEL_FILE = "data/all_movies.xlsx"
-JSON_OUTPUT = "data/movies.json"
-TMDB_API_KEY = "3161f4f13307a8cfd205d3c4bf87bb7e" 
+MOVIES_LITE_OUTPUT = "data/movies_lite.json"
+SYNOPSES_OUTPUT = "data/synopses.json"
+TMDB_API_KEY = "3161f4f13307a8cfd205d3c4bf87bb7e"
 
 COLOR_TO_TAGS = {
     "FFCCFFCC": ["Official GR Subs"],
@@ -68,6 +69,7 @@ def main():
         return
         
     movies_db = []
+    synopses_db = {}
     
     # max_col=10 για να διασφαλίσουμε ότι διαβάζονται αρκετές στήλες
     for row in sheet.iter_rows(min_row=1, max_row=sheet.max_row, max_col=10):
@@ -105,6 +107,8 @@ def main():
         tmdb_id = get_tmdb_id(imdb_id, original_title, year)
         tmdb_data = fetch_movie_details(tmdb_id)
         
+        synopsis = tmdb_data.get("overview") if tmdb_data else ""
+        
         movie_entry = {
             "shelf_id": shelf_id,
             "original_title": original_title,
@@ -115,18 +119,28 @@ def main():
             "imdb_id": imdb_id,
             "tmdb_id": tmdb_id,
             "greek_title": tmdb_data.get("title") if tmdb_data else None,
-            "synopsis": tmdb_data.get("overview") if tmdb_data else "",
             "duration_minutes": tmdb_data.get("runtime") if tmdb_data else None,
             "poster_url": f"https://image.tmdb.org/t/p/w500{tmdb_data.get('poster_path')}" if tmdb_data and tmdb_data.get("poster_path") else None
         }
         
         movies_db.append(movie_entry)
-        time.sleep(0.2) 
         
-    with open(JSON_OUTPUT, "w", encoding="utf-8") as f:
-        json.dump(movies_db, f, ensure_ascii=False, indent=4)
+        # Το shelf_id είναι το μοναδικό κλειδί για το αρχείο συνόψεων
+        if shelf_id is not None:
+            if shelf_id in synopses_db:
+                print(f"Προειδοποίηση: διπλό shelf_id '{shelf_id}', η σύνοψη θα αντικατασταθεί.")
+            synopses_db[shelf_id] = synopsis
+        time.sleep(0.2)
         
-    print(f"\nΟλοκληρώθηκε! Εξήχθησαν {len(movies_db)} ταινίες στο {JSON_OUTPUT}.")
+    # Minified έξοδοι: το catalogue χωρίς σύνοψη + ξεχωριστό dictionary συνόψεων
+    with open(MOVIES_LITE_OUTPUT, "w", encoding="utf-8") as f:
+        json.dump(movies_db, f, ensure_ascii=False, separators=(",", ":"))
+        
+    with open(SYNOPSES_OUTPUT, "w", encoding="utf-8") as f:
+        json.dump(synopses_db, f, ensure_ascii=False, separators=(",", ":"))
+        
+    print(f"\nΟλοκληρώθηκε! Εξήχθησαν {len(movies_db)} ταινίες στο {MOVIES_LITE_OUTPUT}.")
+    print(f"Εξήχθησαν {len(synopses_db)} σύνοψεις στο {SYNOPSES_OUTPUT}.")
 
 if __name__ == "__main__":
     main()

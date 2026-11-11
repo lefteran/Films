@@ -3,6 +3,8 @@ let moviesData = [];
 let filteredMovies = [];
 let activeTags = new Set();
 let allTags = new Set();
+let synopsesData = null;
+let synopsesPromise = null;
 
 // DOM Elements
 const moviesGrid = document.getElementById('moviesGrid');
@@ -18,7 +20,7 @@ const closeModalBtn = document.getElementById('closeModal');
 // 1. Φόρτωση των δεδομένων
 async function fetchMovies() {
     try {
-        const response = await fetch('data/movies.json');
+        const response = await fetch('data/movies_lite.json');
         moviesData = await response.json();
         filteredMovies = [...moviesData];
         
@@ -159,11 +161,48 @@ function openModal(movie) {
             <p><strong>Ηθοποιοί:</strong> ${movie.actors || '-'}</p>
             <p><strong>Έτος:</strong> ${movie.year || '-'} • <strong>Διάρκεια:</strong> ${duration}</p>
             <p><strong>Τοποθεσία:</strong> Ράφι ${movie.shelf_id}</p>
-            <div class="modal-synopsis">${movie.synopsis || 'Δεν υπάρχει διαθέσιμη σύνοψη.'}</div>
+            <div class="modal-synopsis">Φόρτωση σύνοψης...</div>
         </div>
     `;
     movieModal.classList.remove('hidden');
     document.body.style.overflow = 'hidden'; // Κλειδώνει το σκρολάρισμα της σελίδας
+
+    const synopsisEl = modalBody.querySelector('.modal-synopsis');
+
+    const displaySynopsis = (data) => {
+        synopsisEl.textContent = data[movie.shelf_id] || 'Δεν υπάρχει διαθέσιμη σύνοψη.';
+    };
+
+    if (synopsesData) {
+        displaySynopsis(synopsesData);
+        return;
+    }
+
+    // Lazy loading: το synopses.json φορτώνεται μόνο την πρώτη φορά που ανοίγει modal.
+    if (!synopsesPromise) {
+        synopsesPromise = fetch('data/synopses.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                synopsesData = data;
+                return data;
+            })
+            .catch(error => {
+                synopsesPromise = null; // Επιτρέπει νέα προσπάθεια στο επόμενο άνοιγμα
+                throw error;
+            });
+    }
+
+    synopsesPromise
+        .then(displaySynopsis)
+        .catch(error => {
+            console.error("Σφάλμα κατά τη φόρτωση των συνόψεων:", error);
+            synopsisEl.textContent = 'Αποτυχία φόρτωσης σύνοψης.';
+        });
 }
 
 closeModalBtn.addEventListener('click', () => {
@@ -180,7 +219,11 @@ movieModal.addEventListener('click', (e) => {
 });
 
 // 6. Listeners
-searchInput.addEventListener('input', applyFilters); // Κάθε φορά που πληκτρολογείς, φιλτράρει αμέσως
+let searchTimeout;
+searchInput.addEventListener('input', () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(applyFilters, 300); // 300ms καθυστέρηση
+});
 
 // Ξεκινάμε!
 fetchMovies();

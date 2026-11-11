@@ -12,8 +12,8 @@ __pycache__/
 .env
 .env.*
 
-# Personal source data — keep the Excel workbook out of version control
-# NOTE: data/movies.json IS committed because it is the deployed database.
+# Personal source data — keep Excel workbooks out of version control
+# NOTE: data/movies_lite.json and data/synopses.json ARE committed (deployed data).
 data/all_movies.xlsx
 data/movies sample.xlsx
 ~$*.xlsx
