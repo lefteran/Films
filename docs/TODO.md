@@ -14,7 +14,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [x] Add `.gitignore` for `.films/`, `__pycache__/`, and private Excel workbooks (`data/*.xlsx`)
 - [x] Confirm `.gitignore` covers the current migration input (`data/all_movies.xlsx`)
 - [ ] Create/verify the `.films/` virtual environment
-- [ ] Add `scripts/requirements.txt` (`openpyxl`, `requests`, `python-dotenv`)
+- [x] Add [`requirements.txt`](../requirements.txt) (`openpyxl`, `requests`, `python-dotenv`, `deep-translator`)
 - [ ] Add `.env.example` with `TMDB_API_KEY=`
 - [ ] Add a root `README.md` (project summary, setup, run commands)
 - [ ] Initialize the Git repository (`git init`) and confirm the remote/default branch (`main`)
@@ -42,21 +42,23 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Support multiple tags per colour if the workbook requires it
 
 ### TMDB enrichment
-- [ ] Implement IMDb lookup via `/3/find/{imdb_id}` (`external_source=imdb_id`, `language=el-GR`)
-- [ ] Implement fallback search via `/3/search/movie` with title + `primary_release_year`
-- [ ] Request and store `greek_title`, `duration_minutes`, and `overview` (exported to `synopses.json`)
-- [ ] Build `poster_url` at `w500`
+- [x] Implement IMDb lookup via `/3/find/{imdb_id}` (`external_source=imdb_id`, `language=el-GR`)
+- [x] Implement fallback search via `/3/search/movie` with title + `primary_release_year`
+- [x] Request and store `greek_title`, `duration_minutes`, and `overview` (exported to `synopses.json`)
+- [x] Build `poster_url` at `w500`
 - [ ] Add retry with backoff for `429`/`5xx` and honour `Retry-After`
 - [ ] Add a request timeout and clear error handling
-- [ ] Respect TMDB rate limits (keep the inter-request delay)
+- [x] Respect TMDB rate limits (keep the inter-request delay)
 - [ ] Cache TMDB responses locally during development to avoid re-fetching
+- [x] Fetch `append_to_response=credits` and use the first 4 TMDB cast full names, falling back to Excel only when cast is empty
+- [x] Translate missing Greek overviews from `en-US` with `GoogleTranslator` and sleep 0.5 s after each attempt
 
 ### Output quality
 - [ ] Define and validate the JSON schema from [`architecture.md`](architecture.md) §3.6
 - [ ] Deduplicate by `tmdb_id`, then `imdb_id`, then normalised title + year
 - [ ] Handle films not found on TMDB without aborting the run
 - [ ] Log a summary: processed, matched, unmatched, skipped, duplicates
-- [ ] Write `data/movies_lite.json` and `data/synopses.json` as UTF-8, minified output
+- [x] Write `data/movies_lite.json` and `data/synopses.json` as UTF-8, minified output
 - [ ] Add a small test workbook fixture and unit tests for colour mapping and IMDb parsing
 - [ ] Run a full migration against the real workbook
 - [ ] Manually spot-check 10–20 entries (posters, titles, tags, shelf IDs)
@@ -70,6 +72,16 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [x] Switch the initial frontend fetch to `data/movies_lite.json`
 - [x] Lazy-load `data/synopses.json` on first modal open, showing “Φόρτωση σύνοψης...” while it loads
 - [x] Document the split data model and lazy-loading strategy in [`architecture.md`](architecture.md)
+
+### Incremental patching
+- [x] Create [`scripts/patch_existing_json.py`](../scripts/patch_existing_json.py) for targeted updates without a full re-export
+- [x] Flag only movies with a missing/empty synopsis or an `actors` value containing a period
+- [x] Load `TMDB_API_KEY` from `.env` and fetch `credits` for flagged movies
+- [x] Translate missing Greek overviews with `GoogleTranslator` and sleep 0.5 s
+- [x] Preserve missing-synopsis and abbreviated-actor fixes while keeping non-empty synopses intact
+- [x] Rewrite both JSON files in minified UTF-8 format
+- [x] Document the patch workflow in [`architecture.md`](architecture.md) §3.8
+- [ ] Run the patcher against the real data and spot-check updated records
 
 ---
 
@@ -99,6 +111,10 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Keyboard accessibility, visible focus, `aria-pressed` toggles, `alt` text
 - [ ] Mirror query/tags to URL (`?q=`, `?tags=`) with `history.replaceState`
 - [ ] Lazy-load posters (`loading="lazy"`, `decoding="async"`)
+
+### UI enhancements
+- [x] Align the modal poster to the top and add an independently scrolling details/synopsis area (70vh desktop, 55vh mobile)
+- [x] Add the header “Μικρές / Μεγάλες Αφίσες” toggle, `.small-grid` styles, and `aria-pressed` state
 
 ### Hosting and verification
 - [ ] Configure GitHub Pages to serve from `main` / root

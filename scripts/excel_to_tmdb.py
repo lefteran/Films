@@ -3,6 +3,7 @@ import requests
 import json
 import re
 import time
+from deep_translator import GoogleTranslator
 
 # --- ΡΥΘΜΙΣΕΙΣ ---
 EXCEL_FILE = "data/all_movies.xlsx"
@@ -48,14 +49,50 @@ def get_tmdb_id(imdb_id, title, year):
             
     return None
 
-def fetch_movie_details(tmdb_id):
-    """Τραβάει τα πλήρη δεδομένα, συμπεριλαμβανομένης της διάρκειας"""
+def fetch_movie_details(tmdb_id, language="el-GR"):
+    """Τραβάει τα πλήρη δεδομένα, συμπεριλαμβανομένων συντελεστών και διάρκειας"""
     if not tmdb_id:
         return None
         
-    url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={TMDB_API_KEY}&language=el-GR"
+    url = f"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={TMDB_API_KEY}&language={language}&append_to_response=credits"
     headers = {"accept": "application/json"}
     return requests.get(url, headers=headers).json()
+
+def get_top_actors(tmdb_data, fallback):
+    """Επιστρέφει έως 4 ονόματα ηθοποιών από τα TMDB credits, αλλιώς το Excel."""
+    if not tmdb_data:
+        return fallback
+
+    cast = (tmdb_data.get("credits") or {}).get("cast") or []
+    names = [
+        actor.get("name", "").strip()
+        for actor in cast[:4]
+        if actor.get("name")
+    ]
+    return ", ".join(names) if names else fallback
+
+def get_synopsis(tmdb_data, tmdb_id):
+    """Επιστρέφει ελληνική σύνοψη, μεταφράζοντας την αγγλική αν λείπει."""
+    if not tmdb_data:
+        return ""
+
+    synopsis = (tmdb_data.get("overview") or "").strip()
+    if synopsis:
+        return synopsis
+
+    english_data = fetch_movie_details(tmdb_id, language="en-US")
+    english_overview = (english_data.get("overview") or "").strip() if english_data else ""
+    if not english_overview:
+        return ""
+
+    try:
+        translated = GoogleTranslator(source="en", target="el").translate(english_overview)
+        return (translated or "").strip() or english_overview
+    except Exception as exc:
+        print(f"Προειδοποίηση: αποτυχία μετάφρασης για TMDB ID {tmdb_id}: {exc}")
+        return english_overview
+    finally:
+        time.sleep(0.5)
 
 def main():
     print("Φόρτωση αρχείου Excel...")
@@ -107,13 +144,14 @@ def main():
         tmdb_id = get_tmdb_id(imdb_id, original_title, year)
         tmdb_data = fetch_movie_details(tmdb_id)
         
-        synopsis = tmdb_data.get("overview") if tmdb_data else ""
+        actors_value = get_top_actors(tmdb_data, actors)
+        synopsis = get_synopsis(tmdb_data, tmdb_id)
         
         movie_entry = {
             "shelf_id": shelf_id,
             "original_title": original_title,
             "director": director,
-            "actors": actors,
+            "actors": actors_value,
             "year": year,
             "tags": tags,
             "imdb_id": imdb_id,

@@ -16,6 +16,7 @@ const emptyState = document.getElementById('emptyState');
 const movieModal = document.getElementById('movieModal');
 const modalBody = document.getElementById('modalBody');
 const closeModalBtn = document.getElementById('closeModal');
+const gridSizeToggle = document.getElementById('gridSizeToggle');
 
 // 1. Φόρτωση των δεδομένων
 async function fetchMovies() {
@@ -223,6 +224,12 @@ let searchTimeout;
 searchInput.addEventListener('input', () => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(applyFilters, 300); // 300ms καθυστέρηση
+});
+
+gridSizeToggle.addEventListener('click', () => {
+    const isSmall = moviesGrid.classList.toggle('small-grid');
+    gridSizeToggle.setAttribute('aria-pressed', String(isSmall));
+    gridSizeToggle.setAttribute('aria-label', isSmall ? 'Εμφάνιση μεγάλων αφισών' : 'Εμφάνιση μικρών αφισών');
 });
 
 // Ξεκινάμε!
