@@ -223,6 +223,20 @@ body {
 .modal-details::-webkit-scrollbar-track { background: transparent; }
 .modal-details h2 { margin-bottom: 0.5rem; }
 .modal-details p { color: var(--text-muted); margin-bottom: 1rem; }
+.imdb-link {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    padding: 0.45rem 0.8rem;
+    background-color: var(--accent);
+    color: #fff;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+.imdb-link:hover { background-color: var(--accent-hover); }
+.imdb-link:focus-visible { outline: 2px solid var(--text-main); outline-offset: 2px; }
 .modal-synopsis { color: var(--text-main); margin-top: 1rem; line-height: 1.6; }
 
 .empty-state { text-align: center; margin-top: 5rem; color: var(--text-muted); }

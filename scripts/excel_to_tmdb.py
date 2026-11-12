@@ -3,7 +3,6 @@ import requests
 import json
 import re
 import time
-from deep_translator import GoogleTranslator
 
 # --- ΡΥΘΜΙΣΕΙΣ ---
 EXCEL_FILE = "data/all_movies.xlsx"
@@ -16,7 +15,6 @@ COLOR_TO_TAGS = {
     "FF9CC2E5": ["Greek Movie"],
     "FFFABF8F": ["Custom GR Subs"],
     "FFCC0069": ["HDD Only"],
-    "FFDA9694": ["VHS Rip"],
     "FF00B0F0": ["HD"],
     "FFFFFF00": ["EN Subs Only"]
 }
@@ -71,28 +69,11 @@ def get_top_actors(tmdb_data, fallback):
     ]
     return ", ".join(names) if names else fallback
 
-def get_synopsis(tmdb_data, tmdb_id):
-    """Επιστρέφει ελληνική σύνοψη, μεταφράζοντας την αγγλική αν λείπει."""
+def get_synopsis(tmdb_data):
+    """Επιστρέφει την ελληνική σύνοψη. Τα κενά συμπληρώνονται από τον AI synopsis patcher."""
     if not tmdb_data:
         return ""
-
-    synopsis = (tmdb_data.get("overview") or "").strip()
-    if synopsis:
-        return synopsis
-
-    english_data = fetch_movie_details(tmdb_id, language="en-US")
-    english_overview = (english_data.get("overview") or "").strip() if english_data else ""
-    if not english_overview:
-        return ""
-
-    try:
-        translated = GoogleTranslator(source="en", target="el").translate(english_overview)
-        return (translated or "").strip() or english_overview
-    except Exception as exc:
-        print(f"Προειδοποίηση: αποτυχία μετάφρασης για TMDB ID {tmdb_id}: {exc}")
-        return english_overview
-    finally:
-        time.sleep(0.5)
+    return (tmdb_data.get("overview") or "").strip()
 
 def main():
     print("Φόρτωση αρχείου Excel...")
@@ -145,7 +126,7 @@ def main():
         tmdb_data = fetch_movie_details(tmdb_id)
         
         actors_value = get_top_actors(tmdb_data, actors)
-        synopsis = get_synopsis(tmdb_data, tmdb_id)
+        synopsis = get_synopsis(tmdb_data)
         
         movie_entry = {
             "shelf_id": shelf_id,

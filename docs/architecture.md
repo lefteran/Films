@@ -85,12 +85,12 @@ currently:
 * resolves a TMDB ID by IMDb ID first, then by title + year as a fallback;
 * fetches full TMDB details with `append_to_response=credits` (localised title, overview, runtime,
   poster, cast);
-* replaces abbreviated Excel actor names with the first four full names from `credits.cast`, falling
-  back to the Excel string only when the cast list is empty;
-* translates a missing Greek overview from an `en-US` request via
-  `GoogleTranslator(source="en", target="el")`, with a 0.5 s pause;
+* uses the first four full names from `credits.cast` for `actors`, falling back to the Excel string
+  only when the cast list is empty;
+* stores the Greek overview when TMDB provides one and leaves missing overviews empty for the AI
+  synopsis patcher;
 * writes two minified UTF-8 files: `data/movies_lite.json` and `data/synopses.json`;
-* sleeps 200 ms between TMDB calls (plus 500 ms after each translation attempt).
+* sleeps 200 ms between TMDB calls.
 
 The exporter is being hardened incrementally as described below.
 
@@ -117,7 +117,6 @@ static dictionary:
 | `FF9CC2E5` | `Greek Movie` |
 | `FFFABF8F` | `Custom GR Subs` |
 | `FFCC0069` | `HDD Only` |
-| `FFDA9694` | `VHS Rip` |
 | `FF00B0F0` | `HD` |
 | `FFFFFF00` | `EN Subs Only` |
 
@@ -143,11 +142,10 @@ The movie-details request adds `append_to_response=credits`. Actor names are tak
 contain abbreviations such as "P. Richard". The Excel `actors` value is retained only when the
 credits cast list is missing or empty.
 
-When the Greek `overview` is empty, the script makes a second details request with
-`language=en-US`. If an English overview exists,
-`deep_translator.GoogleTranslator(source="en", target="el")` translates it and the result is stored
-in `synopses.json`; a 0.5 s sleep follows each translation attempt. If translation fails, the English
-text is kept as a fallback.
+Director values remain as provided by the Excel sheet in the full export; legacy
+"Lastname, Firstname" formats are repaired later by `scripts/patch_credits.py`. Missing Greek
+overviews are left empty by the exporter and filled by `scripts/patch_synopses_ai.py`, which fetches
+the English overview and translates it through a BYOK OpenAI-compatible endpoint (see §3.9).
 
 Poster URL construction:
 
@@ -189,7 +187,7 @@ Each movie object contains everything needed to render the grid and the modal he
 #### `data/synopses.json` — `shelf_id` → synopsis map
 
 A single JSON object whose keys are movie `shelf_id` values and whose values are the Greek TMDB
-`overview` text (or the machine-translated English fallback):
+`overview` text, or an AI-translated English overview added by the synopsis patcher:
 
 ```json
 {"A1":"Σύνοψη της ταινίας...","B4":"..."}
@@ -221,27 +219,40 @@ above.
 * Keep the script importable and side-effect free at module level for testability.
 * Never crash the whole run because one row has malformed data.
 
-### 3.8 Incremental patching (`scripts/patch_existing_json.py`)
+### 3.8 Credit patching (`scripts/patch_credits.py`)
 
-Re-running the full migration is unnecessary for targeted corrections. The incremental patcher loads
-the existing JSON files and updates only records that need attention:
+The credits patcher repairs legacy actor and director formatting without re-exporting the Excel:
+
+1. Load `data/movies_lite.json`.
+2. Flag a movie when `actors` contains a period (`.`), `director` contains a comma (`,`), or either
+   field contains Greek characters (for example after a previous Greek-localised credits run).
+3. For flagged movies with a valid `tmdb_id`, call
+   `GET /3/movie/{tmdb_id}?append_to_response=credits&language=en-US` using `TMDB_API_KEY` from
+   `.env`, guaranteeing Latin cast and crew names.
+4. Replace `actors` with the first four names from `credits.cast` when available.
+5. Replace `director` with the name of the first crew member whose `job` is `Director`.
+6. Save `movies_lite.json` progressively every 25 flagged records and once more at the end, using
+   UTF-8 and `json.dump(..., separators=(",", ":"))`.
+
+The script logs the total flagged count, each movie with its reasons, actor/director updates, and
+progressive save checkpoints. Movies without a `tmdb_id` or with missing credits are skipped safely.
+
+### 3.9 AI synopsis patching (`scripts/patch_synopses_ai.py`)
+
+Missing synopses are filled through a bring-your-own-key (BYOK) OpenAI-compatible client:
 
 1. Load `data/movies_lite.json` and `data/synopses.json`.
-2. Flag a movie when its `shelf_id` is absent from `synopses.json`, its synopsis is empty or
-   whitespace, or its non-null `actors` string contains a period (`.`) — the signal for abbreviated
-   Excel names such as `P. Richard`.
-3. For flagged movies with a valid `tmdb_id`, call
-   `GET /3/movie/{tmdb_id}?append_to_response=credits&language=el-GR` using `TMDB_API_KEY` loaded
-   from `.env`.
-4. Replace `actors` with the first four full names from `credits.cast` when available.
-5. When the existing synopsis is missing/empty, use the Greek `overview`. If it is empty, request
-   `language=en-US`, translate the English overview with
-   `GoogleTranslator(source="en", target="el")`, and sleep 0.5 s.
-6. Rewrite both files with UTF-8 and `json.dump(..., separators=(",", ":"))` (no indentation).
+2. Select movies whose `shelf_id` is missing from the synopsis map or maps to a blank value.
+3. For movies with a valid `tmdb_id`, fetch the English `overview` with
+   `GET /3/movie/{tmdb_id}?language=en-US`.
+4. Send the overview to the configured model using `AI_API_KEY`, `AI_BASE_URL` (optional, for local
+   or gateway routing), and `AI_MODEL`. The system prompt instructs the model to output only a
+   natural Greek translation.
+5. Store the translation in `synopses.json` and save progressively every 25 records, plus a final
+   save, using the same minified format.
 
-The script logs the number of flagged movies, each movie being patched together with its reasons, and
-a final count of actor and synopsis updates. Movies without a `tmdb_id` are skipped with a warning.
-Existing non-empty synopses are preserved when a movie is patched only for abbreviated actors.
+`AI_BASE_URL` makes the workflow provider-agnostic: it can target a cloud OpenAI-compatible gateway
+or a local interface. Missing API key, model, TMDB ID, or English overview is logged and skipped.
 
 ---
 
@@ -312,9 +323,11 @@ few interactions.
 * **Tag filters:** multi-select chips. Selecting several tags narrows results (AND semantics), which
   matches the physical meaning of a film having multiple attributes.
 * **Sorting:** title (A–Z), year (newest/oldest), shelf ID.
-* **Grid density:** a header button toggles `.small-grid` on `#moviesGrid`, switching from
-  `minmax(200px, 1fr)` to `minmax(130px, 1fr)` columns with proportionally smaller titles, metadata,
-  badges, and tags. `aria-pressed` reflects the active state.
+* **Grid density:** `#moviesGrid` starts with `.small-grid`; the header button toggles between small
+  (`minmax(130px, 1fr)`) and large (`minmax(200px, 1fr)`) layouts. `aria-pressed` and the accessible
+  label are synchronised with the active class on load and after each toggle.
+* **Modal metadata:** the shelf location is labelled "List No."; when `imdb_id` exists, a
+  "Προβολή στο IMDb" link opens `https://www.imdb.com/title/{imdb_id}/` in a new tab.
 * **Modal layout:** the poster is top-aligned in the flex row and never stretches; `.modal-details`
   scrolls independently at `max-height: 70vh` (55vh on mobile) so long synopses stay inside the modal.
 * **Card content:** poster, title (Greek title preferred with original fallback), year, director,
@@ -448,7 +461,7 @@ open a pre-filled issue instead of committing directly.
 | --- | --- | --- | --- |
 | Ingestion | **Python + `openpyxl` + `requests`** | `openpyxl` exposes cell fills and hyperlinks; Python is ideal for a one-off data pipeline. | Node.js + `exceljs`; manual CSV export loses colours. |
 | Metadata | **TMDB API** | Good coverage, localised Greek titles/synopses, full cast credits, reliable poster CDN, generous free tier. | OMDb (weaker images), IMDb scraping (fragile, ToS issues). |
-| Translation | **`deep-translator` (`GoogleTranslator`)** | Free fallback when TMDB has no Greek overview; runs only during the Phase 1 migration. | Manual translation; English-only synopsis; paid translation APIs. |
+| Translation | **OpenAI-compatible AI endpoint (BYOK)** | `AI_API_KEY` / `AI_BASE_URL` / `AI_MODEL` support cloud models, gateways, or local interfaces; used only for missing synopses. | `deep-translator` / Google Translate; manual translation; English-only synopsis. |
 | Database | **Two flat minified JSON files (`movies_lite.json` + `synopses.json`) committed to the repo** | Smaller initial payload because synopses are deferred, still readable and diffable, no DB hosting. | Single `movies.json` (large initial download), SQLite/WASM (overkill), Firebase/Supabase (backend dependency). |
 | Frontend | **Vanilla HTML/CSS/JS** | Tiny dataset and simple interactions; no build step; fast first load; easy to audit. | React/Vue (unnecessary weight), Astro (build step). |
 | Hosting | **GitHub Pages** | Free, HTTPS, same origin as the repository and API workflow, zero config for static files. | Netlify/Cloudflare Pages (extra account), S3 (cost/config). |
@@ -468,7 +481,8 @@ Films/
 │   └── TODO.md                  # phased implementation checklist
 ├── scripts/
 │   ├── excel_to_tmdb.py         # Phase 1 full migration script
-│   └── patch_existing_json.py   # targeted incremental patcher
+│   ├── patch_credits.py         # actor/director credit repair
+│   └── patch_synopses_ai.py     # BYOK AI synopsis translation
 ├── src/
 │   ├── css/                     # frontend styles
 │   └── js/                      # frontend logic
@@ -490,13 +504,15 @@ Films/
 * Python virtual environment: `.films/` at the repository root, gitignored.
   * Activate: `.films\Scripts\activate`
 * Phase 1 dependencies in [`requirements.txt`](../requirements.txt): `openpyxl`, `requests`,
-  `python-dotenv`, `deep-translator`.
+  `python-dotenv`, `openai`.
 * Install with `.films\Scripts\pip.exe install -r requirements.txt` (see
   [`commands.md`](commands.md)).
-* Run incremental repairs with `.films\Scripts\python.exe scripts\patch_existing_json.py`.
-* Environment variables: `TMDB_API_KEY` for Phase 1. The browser app never needs the TMDB key for
-  Phase 2; Phase 3 calls TMDB from the browser, which requires a client-visible key — document the
-  acceptable use and consider restricting the key.
+* Run targeted repairs with `.films\Scripts\python.exe scripts\patch_credits.py` and
+  `.films\Scripts\python.exe scripts\patch_synopses_ai.py`.
+* Environment variables: `TMDB_API_KEY` for TMDB, plus `AI_API_KEY`, `AI_BASE_URL`, and `AI_MODEL`
+  for the BYOK translation client. The browser app never needs the TMDB key for Phase 2; Phase 3
+  calls TMDB from the browser, which requires a client-visible key — document the acceptable use and
+  consider restricting the key.
 
 ---
 
@@ -505,8 +521,8 @@ Films/
 * Private Excel workbooks stay out of version control; ensure `.gitignore` covers the exact source
   filename (`data/all_movies.xlsx` is the current input to the migration script).
 * The TMDB API key must not be committed; use `.env` (also gitignored).
-* The translation fallback sends English synopsis text to Google Translate through `deep-translator`;
-  it runs only during the Phase 1 export and only when TMDB lacks a Greek overview.
+* `patch_synopses_ai.py` sends English synopsis text to the AI endpoint configured by `AI_BASE_URL`.
+  Use a trusted provider or local interface, and keep `AI_API_KEY` out of version control.
 * The GitHub PAT is user-supplied at runtime, held only in `sessionStorage`, scoped to one repo, and
   never stored in the repository or sent to third parties.
 * The app loads no third-party scripts, reducing XSS surface.
@@ -520,7 +536,7 @@ Films/
 
 | Phase | Deliverable | Definition of done |
 | --- | --- | --- |
-| **1** | Migration tool + `data/movies_lite.json` + `data/synopses.json` | Running the script on the real workbook produces valid, deduplicated, minified catalogue and synopsis files; unmatched films are reported. |
+| **1** | Migration tool + `data/movies_lite.json` + `data/synopses.json` | Running the script on the real workbook produces valid, deduplicated, minified catalogue and synopsis files; unmatched films are reported, and the credit/AI patch scripts repair legacy names and missing synopses. |
 | **2** | Static library on GitHub Pages | The grid loads, search and tag filters update instantly, synopses lazy-load on first modal open, and the site works on mobile. |
 | **3** | Hidden `/add/` page | A new film can be searched on TMDB and committed to both JSON files from the browser without a backend. |
 

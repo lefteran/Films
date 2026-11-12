@@ -161,7 +161,8 @@ function openModal(movie) {
             <p><strong>Σκηνοθεσία:</strong> ${movie.director || '-'}</p>
             <p><strong>Ηθοποιοί:</strong> ${movie.actors || '-'}</p>
             <p><strong>Έτος:</strong> ${movie.year || '-'} • <strong>Διάρκεια:</strong> ${duration}</p>
-            <p><strong>Τοποθεσία:</strong> Ράφι ${movie.shelf_id}</p>
+            <p><strong>Τοποθεσία:</strong> List No. ${movie.shelf_id}</p>
+            ${movie.imdb_id ? `<a href="https://www.imdb.com/title/${movie.imdb_id}/" target="_blank" rel="noopener noreferrer" class="imdb-link">Προβολή στο IMDb</a>` : ''}
             <div class="modal-synopsis">Φόρτωση σύνοψης...</div>
         </div>
     `;
@@ -226,10 +227,17 @@ searchInput.addEventListener('input', () => {
     searchTimeout = setTimeout(applyFilters, 300); // 300ms καθυστέρηση
 });
 
-gridSizeToggle.addEventListener('click', () => {
-    const isSmall = moviesGrid.classList.toggle('small-grid');
+function syncGridToggleState() {
+    const isSmall = moviesGrid.classList.contains('small-grid');
     gridSizeToggle.setAttribute('aria-pressed', String(isSmall));
     gridSizeToggle.setAttribute('aria-label', isSmall ? 'Εμφάνιση μεγάλων αφισών' : 'Εμφάνιση μικρών αφισών');
+}
+
+syncGridToggleState();
+
+gridSizeToggle.addEventListener('click', () => {
+    moviesGrid.classList.toggle('small-grid');
+    syncGridToggleState();
 });
 
 // Ξεκινάμε!

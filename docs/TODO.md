@@ -14,8 +14,8 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [x] Add `.gitignore` for `.films/`, `__pycache__/`, and private Excel workbooks (`data/*.xlsx`)
 - [x] Confirm `.gitignore` covers the current migration input (`data/all_movies.xlsx`)
 - [ ] Create/verify the `.films/` virtual environment
-- [x] Add [`requirements.txt`](../requirements.txt) (`openpyxl`, `requests`, `python-dotenv`, `deep-translator`)
-- [ ] Add `.env.example` with `TMDB_API_KEY=`
+- [x] Add [`requirements.txt`](../requirements.txt) (`openpyxl`, `requests`, `python-dotenv`, `openai`)
+- [ ] Add `.env.example` with `TMDB_API_KEY=`, `AI_API_KEY=`, `AI_BASE_URL=`, and `AI_MODEL=`
 - [ ] Add a root `README.md` (project summary, setup, run commands)
 - [ ] Initialize the Git repository (`git init`) and confirm the remote/default branch (`main`)
 - [ ] Decide and add a license
@@ -39,6 +39,8 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Extract hyperlink and parse IMDb ID with `tt\d{7,8}`
 - [ ] Read cell fill colour robustly (ARGB normalisation; handle theme/indexed and `FFFFFFFF`/`00000000`)
 - [ ] Finalise the colour → tag mapping and update the table in [`architecture.md`](architecture.md)
+- [x] Remove the `VHS Rip` tag mapping from `COLOR_TO_TAGS`
+- [x] Remove the 11 existing `VHS Rip` tags from `data/movies_lite.json`
 - [ ] Support multiple tags per colour if the workbook requires it
 
 ### TMDB enrichment
@@ -51,7 +53,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [x] Respect TMDB rate limits (keep the inter-request delay)
 - [ ] Cache TMDB responses locally during development to avoid re-fetching
 - [x] Fetch `append_to_response=credits` and use the first 4 TMDB cast full names, falling back to Excel only when cast is empty
-- [x] Translate missing Greek overviews from `en-US` with `GoogleTranslator` and sleep 0.5 s after each attempt
+- [x] Leave missing Greek overviews empty in the exporter for the BYOK AI synopsis patcher
 
 ### Output quality
 - [ ] Define and validate the JSON schema from [`architecture.md`](architecture.md) §3.6
@@ -74,14 +76,18 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [x] Document the split data model and lazy-loading strategy in [`architecture.md`](architecture.md)
 
 ### Incremental patching
-- [x] Create [`scripts/patch_existing_json.py`](../scripts/patch_existing_json.py) for targeted updates without a full re-export
-- [x] Flag only movies with a missing/empty synopsis or an `actors` value containing a period
-- [x] Load `TMDB_API_KEY` from `.env` and fetch `credits` for flagged movies
-- [x] Translate missing Greek overviews with `GoogleTranslator` and sleep 0.5 s
-- [x] Preserve missing-synopsis and abbreviated-actor fixes while keeping non-empty synopses intact
-- [x] Rewrite both JSON files in minified UTF-8 format
-- [x] Document the patch workflow in [`architecture.md`](architecture.md) §3.8
-- [ ] Run the patcher against the real data and spot-check updated records
+- [x] Remove the obsolete `scripts/patch_existing_json.py`
+- [x] Create [`scripts/patch_credits.py`](../scripts/patch_credits.py) for actor/director credit repair
+- [x] Flag movies with periods, commas, or Greek characters in `actors`/`director`
+- [x] Request credits with `language=en-US` so cast and crew names stay in Latin characters
+- [x] Update actors from the first 4 TMDB cast names and director from the first `Director` crew member
+- [x] Progressively save `movies_lite.json` every 25 flagged records
+- [x] Create [`scripts/patch_synopses_ai.py`](../scripts/patch_synopses_ai.py) for missing synopses
+- [x] Configure the BYOK client with `AI_API_KEY`, `AI_BASE_URL`, and `AI_MODEL`
+- [x] Translate English TMDB overviews with the required Greek-translation system prompt
+- [x] Progressively save `synopses.json` every 25 records
+- [x] Document both workflows in [`architecture.md`](architecture.md) §3.8–3.9
+- [ ] Run the credit and AI synopsis patchers against the real data and spot-check updated records
 
 ---
 
@@ -114,7 +120,9 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 
 ### UI enhancements
 - [x] Align the modal poster to the top and add an independently scrolling details/synopsis area (70vh desktop, 55vh mobile)
-- [x] Add the header “Μικρές / Μεγάλες Αφίσες” toggle, `.small-grid` styles, and `aria-pressed` state
+- [x] Enable `.small-grid` by default and synchronise the toggle’s `aria-pressed` state on load
+- [x] Change the modal shelf label to “List No.” and add an IMDb link when `imdb_id` exists
+- [x] Add the header “Μικρές / Μεγάλες Αφίσες” toggle and `.small-grid` styles
 
 ### Hosting and verification
 - [ ] Configure GitHub Pages to serve from `main` / root

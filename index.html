@@ -18,7 +18,7 @@
             <div class="search-container">
                 <input type="text" id="searchInput" placeholder="Αναζήτηση με τίτλο, σκηνοθέτη, ηθοποιό ή έτος..." autocomplete="off">
             </div>
-            <button type="button" id="gridSizeToggle" class="grid-size-toggle" aria-pressed="false" aria-label="Εμφάνιση μικρών αφισών" title="Εναλλαγή μεγέθους αφισών">
+            <button type="button" id="gridSizeToggle" class="grid-size-toggle" aria-pressed="true" aria-label="Εμφάνιση μεγάλων αφισών" title="Εναλλαγή μεγέθους αφισών">
                 <span class="grid-size-icon" aria-hidden="true">▦</span>
                 <span>Μικρές / Μεγάλες Αφίσες</span>
             </button>
@@ -33,7 +33,7 @@
 
     <!-- Κυρίως Περιεχόμενο: Το Grid με τις ταινίες -->
     <main class="main-content">
-        <div id="moviesGrid" class="movies-grid">
+        <div id="moviesGrid" class="movies-grid small-grid">
             <!-- Οι κάρτες των ταινιών θα εμφανιστούν εδώ -->
         </div>
         <div id="emptyState" class="empty-state hidden">
