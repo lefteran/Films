@@ -1,4 +1,4 @@
-# Films — TODO
+# Film-O-List — TODO
 
 Actionable checklist for the three-phase build. Items are ordered so that each phase unblocks the
 next. Update this file as work lands; see [`architecture.md`](architecture.md) for design details.
@@ -108,8 +108,9 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Responsive movie grid (auto-fill cards)
 - [ ] Movie cards: poster, title, year, director, tags, shelf ID
 - [ ] Poster placeholder for missing/failed images
-- [ ] Instant search with 150 ms debounce across title/director/actors
-- [ ] Accent-insensitive, multi-token AND search
+- [ ] Instant search with 300 ms debounce across title/director/actors
+- [x] Accent-insensitive search normalization (NFD accent stripping + lowercase)
+- [x] Fisher-Yates randomized default order when the search query is empty
 - [ ] Tag filter chips with multi-select AND semantics
 - [ ] Sort controls: title, year (newest/oldest), shelf
 - [ ] Live result count (“X of Y films”)
@@ -119,6 +120,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Lazy-load posters (`loading="lazy"`, `decoding="async"`)
 
 ### UI enhancements
+- [x] Rename the application to Film-O-List in the page title and header
 - [x] Align the modal poster to the top and add an independently scrolling details/synopsis area (70vh desktop, 55vh mobile)
 - [x] Enable `.small-grid` by default and synchronise the toggle’s `aria-pressed` state on load
 - [x] Change the modal shelf label to “List No.” and add an IMDb link when `imdb_id` exists

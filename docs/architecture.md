@@ -1,6 +1,6 @@
-# Films — Architecture
+# Film-O-List — Architecture
 
-**Films** is a serverless, static personal movie library. It turns a private, color-coded Excel
+**Film-O-List** is a serverless, static personal movie library. It turns a private, color-coded Excel
 workbook into a public, version-controlled JSON catalogue, serves that catalogue as a fast
 client-side web application on GitHub Pages, and allows new films to be added directly from the
 browser through the GitHub API — with no backend server, database, or hosting cost.
@@ -318,8 +318,13 @@ few interactions.
 ### 4.5 Behaviour specification
 
 * **Search:** case-insensitive, accent-insensitive substring matching across `original_title`,
-  `greek_title`, `director`, and `actors`. Multiple whitespace-separated tokens must all match
-  (AND semantics).
+  `greek_title`, `director`, `actors`, and year. Both the query and searchable fields pass through
+  `normalizeText()`, which uses
+  `.normalize("NFD").replace(/[\u0300-\u036f]/g, "")` and lowercasing, so "Francois" matches
+  "François" and unaccented Greek matches accented Greek.
+* **Default order:** when the search query is empty (including whitespace-only input), the filtered
+  result set is copied and shuffled with a Fisher-Yates shuffle before rendering. This randomizes
+  both the initial view and every cleared search while preserving active tag filters.
 * **Tag filters:** multi-select chips. Selecting several tags narrows results (AND semantics), which
   matches the physical meaning of a film having multiple attributes.
 * **Sorting:** title (A–Z), year (newest/oldest), shelf ID.

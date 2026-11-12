@@ -18,6 +18,23 @@ const modalBody = document.getElementById('modalBody');
 const closeModalBtn = document.getElementById('closeModal');
 const gridSizeToggle = document.getElementById('gridSizeToggle');
 
+// Search / ordering helpers
+function normalizeText(text) {
+    if (typeof text !== 'string') return '';
+    return text
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
 // 1. Φόρτωση των δεδομένων
 async function fetchMovies() {
     try {
@@ -33,7 +50,7 @@ async function fetchMovies() {
         });
         
         renderTags();
-        renderGrid(filteredMovies);
+        applyFilters();
     } catch (error) {
         console.error("Σφάλμα κατά τη φόρτωση του JSON:", error);
         moviesGrid.innerHTML = `<p style="color:red;">Αποτυχία φόρτωσης δεδομένων.</p>`;
@@ -112,17 +129,18 @@ function renderTags() {
 
 // 4. Η Μηχανή Αναζήτησης και Φιλτραρίσματος (Αστραπιαία)
 function applyFilters() {
-    const searchTerm = searchInput.value.toLowerCase().trim();
+    const rawSearch = searchInput.value.trim();
+    const searchTerm = normalizeText(rawSearch);
     
     filteredMovies = moviesData.filter(movie => {
         // Έλεγχος Αναζήτησης (Τίτλος, Σκηνοθέτης, Ηθοποιοί, Έτος)
-        const searchableText = `
-            ${movie.original_title || ''} 
-            ${movie.greek_title || ''} 
-            ${movie.director || ''} 
-            ${movie.actors || ''} 
+        const searchableText = normalizeText(`
+            ${movie.original_title || ''}
+            ${movie.greek_title || ''}
+            ${movie.director || ''}
+            ${movie.actors || ''}
             ${movie.year || ''}
-        `.toLowerCase();
+        `);
         
         const matchesSearch = searchTerm === '' || searchableText.includes(searchTerm);
         
@@ -143,6 +161,10 @@ function applyFilters() {
         
         return matchesSearch && matchesTags;
     });
+
+    if (rawSearch === '') {
+        filteredMovies = shuffleArray([...filteredMovies]);
+    }
 
     renderGrid(filteredMovies);
 }
