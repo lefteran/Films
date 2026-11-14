@@ -44,8 +44,22 @@ body {
     gap: 2rem;
 }
 
-.logo { font-size: 1.8rem; font-weight: 700; letter-spacing: -1px; }
-.logo span { color: var(--accent); }
+.logo-link {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+.logo-link:hover { opacity: 0.85; }
+.logo-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 6px; }
+.logo-image {
+    display: block;
+    height: 72px;
+    width: auto;
+    max-width: 220px;
+    object-fit: contain;
+}
 
 .search-container { flex: 1; max-width: 600px; }
 #searchInput {
@@ -246,6 +260,7 @@ body {
 @media (max-width: 768px) {
     .header-content { flex-direction: column; align-items: flex-start; gap: 1rem; }
     .search-container { max-width: 100%; }
+    .logo-image { height: 60px; }
     .modal-body { flex-direction: column; padding: 1.5rem; }
     .modal-poster { width: 100%; max-width: 250px; margin: 0 auto; }
     .modal-details { max-height: 55vh; padding-right: 8px; }

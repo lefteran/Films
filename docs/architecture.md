@@ -342,6 +342,8 @@ few interactions.
 * **Result count:** live count, e.g. “123 of 480 films”.
 * **URL state:** search text is mirrored to `?search=`, restored on load, and removed when the input
   is cleared. Tag-filter URL persistence remains planned for `?tags=`.
+* **Branding:** the header uses `logo.png` and links it to `./`, so clicking the logo performs a full
+  navigation that drops the query string and clears the search.
 * **Accessibility:** keyboard-operable filters, visible focus rings, `alt` text, `aria-pressed` on
   toggles, sufficient contrast.
 * **Performance:** `loading="lazy"` and `decoding="async"` on posters; one initial JSON request (the
