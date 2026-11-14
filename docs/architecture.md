@@ -323,6 +323,9 @@ few interactions.
 * **Default order:** when the search query is empty (including whitespace-only input), the filtered
   result set is copied and shuffled with a Fisher-Yates shuffle before rendering. This randomizes
   both the initial view and every cleared search while preserving active tag filters.
+* **URL search persistence:** on load, a `?search=` parameter populates the input and is applied once
+  the catalogue is fetched. Typing updates the parameter with `history.replaceState`; clearing the
+  input removes it. Unrelated query parameters are preserved.
 * **Tag filters:** multi-select chips. Selecting several tags narrows results (AND semantics), which
   matches the physical meaning of a film having multiple attributes.
 * **Sorting:** title (A–Z), year (newest/oldest), shelf ID.
@@ -337,8 +340,8 @@ few interactions.
   tags, shelf ID.
 * **Empty state:** explicit message plus a “clear filters” action.
 * **Result count:** live count, e.g. “123 of 480 films”.
-* **URL state (planned):** query and tags mirrored to `?q=&tags=` so filtered views are linkable;
-  read on load and updated with `history.replaceState`.
+* **URL state:** search text is mirrored to `?search=`, restored on load, and removed when the input
+  is cleared. Tag-filter URL persistence remains planned for `?tags=`.
 * **Accessibility:** keyboard-operable filters, visible focus rings, `alt` text, `aria-pressed` on
   toggles, sufficient contrast.
 * **Performance:** `loading="lazy"` and `decoding="async"` on posters; one initial JSON request (the
@@ -467,8 +470,9 @@ management path with no browser credential exposure.
 
 Workflow inputs:
 - `action` — required choice: `add`, `modify`, or `delete`.
-- `imdb_id` — required IMDb identifier such as `tt0111161`.
-- `list_no` — shelf ID; required for `add`/`modify`, optional for `delete`.
+- `imdb_id` — required; one or more comma-separated IMDb IDs such as `tt0111161,tt0068646`.
+- `list_no` — one or more comma-separated shelf IDs; the count must match `imdb_id` for
+  `add`/`modify`, and the value is optional/ignored for `delete`.
 
 Flow:
 1. `workflow_dispatch` starts on `ubuntu-latest` with `permissions: contents: write`.
@@ -478,17 +482,27 @@ Flow:
 4. The script loads `TMDB_API_KEY`, `AI_API_KEY`, `AI_BASE_URL`, and `AI_MODEL` from repository
    secrets mapped into the step environment.
 
+Batch processing:
+- The script splits both inputs on commas and validates that `add`/`modify` receive one `list_no` per
+  `imdb_id`.
+- The catalogue and synopsis files are loaded **once at the start** and saved **once at the end**,
+  even when several movies are processed. This avoids repeated writes and reduces Git push conflicts
+  in a single Actions run.
+- Items are processed sequentially in the supplied order.
+
 Action behavior:
-- **add:** resolve `tmdb_id`; fetch Greek details and `en-US` credits; translate a missing Greek
-  overview through the BYOK client; build the object with `date_added` and `tags: []`; insert it at
-  index 0; write its synopsis under `list_no`.
+- **add:** resolve `tmdb_id`; fetch Greek (`el-GR`) and English (`en-US`) details plus `en-US`
+  credits; translate a missing Greek overview through the BYOK client; build the object with
+  `date_added` and `tags: []`; insert it at index 0; write its synopsis under `list_no`.
+  `greek_title` comes from the Greek response, while `original_title` always comes from the English
+  response, ensuring Latin titles such as "Mimino" instead of Cyrillic/native-script values.
 - **modify:** find the movie by `imdb_id`, replace its `shelf_id` with `list_no`, and move the
   synopsis value from the old key to the new key (no-op when the keys match).
 - **delete:** find the movie by `imdb_id`, remove it from the catalogue, and remove the synopsis entry
   for its `shelf_id`.
 
-All actions rewrite both JSON files minified. Duplicate `imdb_id`/`tmdb_id` records block `add`
-before writing. The workflow commit message is
+All actions rewrite both JSON files minified once at the end. Duplicate `imdb_id`/`tmdb_id` records
+block `add` before writing. The workflow commit message is
 `<action> movie via UI: <imdb_id>`.
 
 ---

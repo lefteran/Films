@@ -116,10 +116,12 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Live result count (“X of Y films”)
 - [ ] Empty state with “clear filters”
 - [ ] Keyboard accessibility, visible focus, `aria-pressed` toggles, `alt` text
-- [ ] Mirror query/tags to URL (`?q=`, `?tags=`) with `history.replaceState`
+- [ ] Mirror tag filters to URL (`?tags=`) with `history.replaceState`
 - [ ] Lazy-load posters (`loading="lazy"`, `decoding="async"`)
 
 ### UI enhancements
+- [x] Persist the search query as `?search=` and restore it on page load
+- [x] Remove `?search=` when the search input is cleared while preserving other parameters
 - [x] Rename the application to Film-O-List in the page title and header
 - [x] Align the modal poster to the top and add an independently scrolling details/synopsis area (70vh desktop, 55vh mobile)
 - [x] Enable `.small-grid` by default and synchronise the toggle’s `aria-pressed` state on load
@@ -141,13 +143,17 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 ### GitHub Actions movie management
 - [x] Rename `scripts/add_movie.py` to [`scripts/manage_movie.py`](../scripts/manage_movie.py)
 - [x] Add required `--action` choice (`add`, `modify`, `delete`) and make `--list_no` optional
+- [x] Accept comma-separated `--imdb_id`/`--list_no` values and process them sequentially
+- [x] Load both JSON files once at batch start and save once at the end
 - [x] Preserve the full TMDB/AI add flow with insertion at index 0 and `date_added`
+- [x] Always fetch `en-US` details and use the English `title` for `original_title`
+- [x] Keep `greek_title` sourced from the `el-GR` details response
 - [x] Implement `modify` to update `shelf_id` and move the synopsis key
 - [x] Implement `delete` to remove the movie and its synopsis entry
 - [x] Rename the workflow to [`.github/workflows/manage_movie.yml`](../.github/workflows/manage_movie.yml)
 - [x] Add the required `action` dispatch input and optional `list_no`
 - [x] Update the commit message to `<action> movie via UI: <imdb_id>`
-- [x] Document all three actions in [`architecture.md`](architecture.md) §5.10
+- [x] Document all three actions and batch behavior in [`architecture.md`](architecture.md) §5.10
 - [ ] Configure repository secrets `TMDB_API_KEY`, `AI_API_KEY`, `AI_BASE_URL`, and `AI_MODEL`
 - [ ] Test add, modify, and delete through the workflow and verify each commit
 

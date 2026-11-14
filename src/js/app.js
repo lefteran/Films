@@ -35,6 +35,23 @@ function shuffleArray(array) {
     return array;
 }
 
+function initializeSearchFromURL() {
+    const search = new URLSearchParams(window.location.search).get('search');
+    if (search !== null) {
+        searchInput.value = search;
+    }
+}
+
+function updateSearchQueryParam(value) {
+    const url = new URL(window.location.href);
+    if (value.trim()) {
+        url.searchParams.set('search', value);
+    } else {
+        url.searchParams.delete('search');
+    }
+    window.history.replaceState({}, '', url.toString());
+}
+
 // 1. Φόρτωση των δεδομένων
 async function fetchMovies() {
     try {
@@ -245,6 +262,7 @@ movieModal.addEventListener('click', (e) => {
 // 6. Listeners
 let searchTimeout;
 searchInput.addEventListener('input', () => {
+    updateSearchQueryParam(searchInput.value);
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(applyFilters, 300); // 300ms καθυστέρηση
 });
@@ -263,4 +281,5 @@ gridSizeToggle.addEventListener('click', () => {
 });
 
 // Ξεκινάμε!
+initializeSearchFromURL();
 fetchMovies();

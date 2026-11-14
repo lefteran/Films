@@ -1,13 +1,12 @@
 """Manage movies in the catalogue: add, modify, or delete.
 
 Examples:
-    python scripts/manage_movie.py --action add --imdb_id tt0111161 --list_no A123
-    python scripts/manage_movie.py --action modify --imdb_id tt0111161 --list_no B456
-    python scripts/manage_movie.py --action delete --imdb_id tt0111161
+    python scripts/manage_movie.py --action add --imdb_id tt0111161,tt0068646 --list_no A123,B456
+    python scripts/manage_movie.py --action modify --imdb_id tt0111161,tt0068646 --list_no C123,D456
+    python scripts/manage_movie.py --action delete --imdb_id tt0111161,tt0068646
 
-The `add` action resolves TMDB metadata, optionally translates a missing Greek
-overview, and inserts the movie at index 0. `modify` changes the shelf_id and
-moves the synopsis key. `delete` removes both the movie and its synopsis entry.
+The batch loads both JSON files once, processes every comma-separated entry
+sequentially, and writes the files once at the end.
 """
 
 import argparse
@@ -84,6 +83,12 @@ def load_catalog():
         sys.exit(f"{SYNOPSES_FILE} must contain a JSON object.")
 
     return movies, synopses
+
+
+def split_csv(value):
+    if not value:
+        return []
+    return [part.strip() for part in value.split(",") if part.strip()]
 
 
 def find_movie_index(movies, imdb_id):
@@ -185,49 +190,55 @@ def translate_overview(english_overview):
         sys.exit(f"AI translation failed: {exc}")
 
 
-def add_movie(imdb_id, list_no):
-    load_env_file()
-    tmdb_api_key = os.getenv("TMDB_API_KEY")
-    if not tmdb_api_key:
-        sys.exit("TMDB_API_KEY is missing. Add it to .env or the environment.")
+def add_movie(session, tmdb_api_key, movies, synopses, imdb_id, list_no):
+    for existing in movies:
+        if existing.get("imdb_id") == imdb_id:
+            sys.exit(
+                f"Movie already exists: {existing.get('greek_title') or existing.get('original_title')} "
+                f"(shelf_id={existing.get('shelf_id')})."
+            )
 
-    with requests.Session() as session:
-        session.headers.update({"accept": "application/json"})
+    try:
+        tmdb_id = find_tmdb_id(session, tmdb_api_key, imdb_id)
+    except (requests.RequestException, ValueError) as exc:
+        sys.exit(f"TMDB IMDb lookup failed for {imdb_id}: {exc}")
 
-        try:
-            tmdb_id = find_tmdb_id(session, tmdb_api_key, imdb_id)
-        except (requests.RequestException, ValueError) as exc:
-            sys.exit(f"TMDB IMDb lookup failed: {exc}")
+    if not tmdb_id:
+        sys.exit(f"No TMDB movie found for IMDb ID {imdb_id}.")
 
-        if not tmdb_id:
-            sys.exit(f"No TMDB movie found for IMDb ID {imdb_id}.")
+    for existing in movies:
+        if existing.get("tmdb_id") == tmdb_id:
+            sys.exit(
+                f"Movie already exists: {existing.get('greek_title') or existing.get('original_title')} "
+                f"(shelf_id={existing.get('shelf_id')})."
+            )
 
-        try:
-            details = fetch_movie_details(session, tmdb_api_key, tmdb_id, "el-GR")
-            credits = fetch_credits(session, tmdb_api_key, tmdb_id)
-        except (requests.RequestException, ValueError) as exc:
-            sys.exit(f"TMDB details/credits request failed: {exc}")
+    try:
+        details = fetch_movie_details(session, tmdb_api_key, tmdb_id, "el-GR")
+        english_details = fetch_movie_details(session, tmdb_api_key, tmdb_id, "en-US")
+        credits = fetch_credits(session, tmdb_api_key, tmdb_id)
+    except (requests.RequestException, ValueError) as exc:
+        sys.exit(f"TMDB details/credits request failed for {imdb_id}: {exc}")
 
-        greek_overview = (details.get("overview") or "").strip()
-        synopsis = greek_overview
-        synopsis_source = "TMDB el-GR"
+    greek_overview = (details.get("overview") or "").strip()
+    synopsis = greek_overview
+    synopsis_source = "TMDB el-GR"
 
-        if not synopsis:
-            try:
-                english_details = fetch_movie_details(session, tmdb_api_key, tmdb_id, "en-US")
-            except (requests.RequestException, ValueError) as exc:
-                sys.exit(f"TMDB English overview request failed: {exc}")
-
-            english_overview = (english_details.get("overview") or "").strip()
-            if english_overview:
-                synopsis = translate_overview(english_overview)
-                synopsis_source = "AI translation"
-            else:
-                synopsis_source = "unavailable"
+    if not synopsis:
+        english_overview = (english_details.get("overview") or "").strip()
+        if english_overview:
+            synopsis = translate_overview(english_overview)
+            synopsis_source = "AI translation"
+        else:
+            synopsis_source = "unavailable"
 
     actors = get_top_actors(credits)
     director = get_director(credits)
-    original_title = details.get("original_title") or details.get("title")
+    original_title = (
+        english_details.get("title")
+        or english_details.get("original_title")
+        or details.get("original_title")
+    )
     greek_title = details.get("title") or original_title
     poster_path = details.get("poster_path")
 
@@ -246,31 +257,17 @@ def add_movie(imdb_id, list_no):
         "date_added": datetime.now().strftime("%Y-%m-%d"),
     }
 
-    movies, synopses = load_catalog()
-
-    for existing in movies:
-        if existing.get("imdb_id") == imdb_id or existing.get("tmdb_id") == tmdb_id:
-            sys.exit(
-                f"Movie already exists: {existing.get('greek_title') or existing.get('original_title')} "
-                f"(shelf_id={existing.get('shelf_id')})."
-            )
-
     movies.insert(0, movie)
     if synopsis:
         synopses[list_no] = synopsis
-
-    write_json(MOVIES_FILE, movies)
-    write_json(SYNOPSES_FILE, synopses)
 
     print(f"Added movie: {greek_title} ({original_title})")
     print(f"TMDB ID: {tmdb_id}; List No.: {list_no}")
     print(f"Actors: {actors or '-'}; Director: {director or '-'}")
     print(f"Synopsis source: {synopsis_source}")
-    print(f"Saved {MOVIES_FILE.name} and {SYNOPSES_FILE.name} in minified format.")
 
 
-def modify_movie(imdb_id, list_no):
-    movies, synopses = load_catalog()
+def modify_movie(movies, synopses, imdb_id, list_no):
     index = find_movie_index(movies, imdb_id)
 
     if index is None:
@@ -291,16 +288,11 @@ def modify_movie(imdb_id, list_no):
         else:
             print(f"No synopsis found for old shelf ID {old_key}.")
 
-    write_json(MOVIES_FILE, movies)
-    write_json(SYNOPSES_FILE, synopses)
-
     print(f"Modified movie: {movie.get('greek_title') or movie.get('original_title')}")
     print(f"IMDb ID: {imdb_id}; List No.: {list_no}")
-    print(f"Saved {MOVIES_FILE.name} and {SYNOPSES_FILE.name} in minified format.")
 
 
-def delete_movie(imdb_id):
-    movies, synopses = load_catalog()
+def delete_movie(movies, synopses, imdb_id):
     index = find_movie_index(movies, imdb_id)
 
     if index is None:
@@ -311,12 +303,8 @@ def delete_movie(imdb_id):
     if shelf_id is not None:
         synopses.pop(str(shelf_id), None)
 
-    write_json(MOVIES_FILE, movies)
-    write_json(SYNOPSES_FILE, synopses)
-
     print(f"Deleted movie: {removed.get('greek_title') or removed.get('original_title')}")
     print(f"IMDb ID: {imdb_id}; removed synopsis key: {shelf_id}")
-    print(f"Saved {MOVIES_FILE.name} and {SYNOPSES_FILE.name} in minified format.")
 
 
 def main(argv=None):
@@ -327,29 +315,58 @@ def main(argv=None):
         choices=["add", "modify", "delete"],
         help="Action to perform: add, modify, or delete",
     )
-    parser.add_argument("--imdb_id", required=True, help="IMDb ID, e.g. tt0111161")
+    parser.add_argument(
+        "--imdb_id",
+        required=True,
+        help="One or more comma-separated IMDb IDs, e.g. tt0111161,tt0068646",
+    )
     parser.add_argument(
         "--list_no",
         required=False,
         default=None,
-        help="List number / shelf ID (required for add and modify)",
+        help="One or more comma-separated shelf IDs (required for add and modify)",
     )
     args = parser.parse_args(argv)
 
-    imdb_id = args.imdb_id.strip()
-    list_no = args.list_no.strip() if args.list_no else ""
+    imdb_ids = split_csv(args.imdb_id)
+    list_nos = split_csv(args.list_no)
 
-    if not imdb_id:
+    if not imdb_ids:
         sys.exit("--imdb_id cannot be empty.")
-    if args.action in ("add", "modify") and not list_no:
-        sys.exit(f"--list_no is required for the '{args.action}' action.")
+    if args.action in ("add", "modify") and len(list_nos) != len(imdb_ids):
+        sys.exit(
+            f"--list_no must contain {len(imdb_ids)} comma-separated value(s) "
+            f"for the '{args.action}' action."
+        )
+
+    movies, synopses = load_catalog()
+    print(f"Loaded {len(movies)} movies and {len(synopses)} synopses.")
+    print(f"Processing {len(imdb_ids)} item(s) for action '{args.action}'.")
 
     if args.action == "add":
-        add_movie(imdb_id, list_no)
+        load_env_file()
+        tmdb_api_key = os.getenv("TMDB_API_KEY")
+        if not tmdb_api_key:
+            sys.exit("TMDB_API_KEY is missing. Add it to .env or the environment.")
+
+        with requests.Session() as session:
+            session.headers.update({"accept": "application/json"})
+            for position, (imdb_id, list_no) in enumerate(zip(imdb_ids, list_nos), start=1):
+                print(f"\n[{position}/{len(imdb_ids)}] Add {imdb_id}")
+                add_movie(session, tmdb_api_key, movies, synopses, imdb_id, list_no)
     elif args.action == "modify":
-        modify_movie(imdb_id, list_no)
+        for position, (imdb_id, list_no) in enumerate(zip(imdb_ids, list_nos), start=1):
+            print(f"\n[{position}/{len(imdb_ids)}] Modify {imdb_id}")
+            modify_movie(movies, synopses, imdb_id, list_no)
     else:
-        delete_movie(imdb_id)
+        for position, imdb_id in enumerate(imdb_ids, start=1):
+            print(f"\n[{position}/{len(imdb_ids)}] Delete {imdb_id}")
+            delete_movie(movies, synopses, imdb_id)
+
+    write_json(MOVIES_FILE, movies)
+    write_json(SYNOPSES_FILE, synopses)
+
+    print(f"\nBatch complete. Saved {MOVIES_FILE.name} and {SYNOPSES_FILE.name} in minified format.")
 
 
 if __name__ == "__main__":

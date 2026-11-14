@@ -12,11 +12,11 @@ on:
           - modify
           - delete
       imdb_id:
-        description: "IMDb ID (e.g. tt0111161)"
+        description: "One or more comma-separated IMDb IDs (e.g. tt0111161,tt0068646)"
         required: true
         type: string
       list_no:
-        description: "List number / shelf ID (required for add/modify, optional for delete)"
+        description: "One or more comma-separated shelf IDs (required for add/modify, optional for delete)"
         required: false
         type: string
 
