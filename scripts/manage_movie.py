@@ -1,13 +1,13 @@
-"""Add a movie to the catalogue from an IMDb ID.
+"""Manage movies in the catalogue: add, modify, or delete.
 
-The script is designed for a GitHub Actions workflow_dispatch job, but can also
-be run locally:
+Examples:
+    python scripts/manage_movie.py --action add --imdb_id tt0111161 --list_no A123
+    python scripts/manage_movie.py --action modify --imdb_id tt0111161 --list_no B456
+    python scripts/manage_movie.py --action delete --imdb_id tt0111161
 
-    python scripts/add_movie.py --imdb_id tt0111161 --list_no A123
-
-It resolves the TMDB ID from IMDb, fetches Greek metadata, fetches Latin-language
-credits, optionally translates a missing Greek overview through the BYOK AI
-client, inserts the new movie at index 0, and rewrites both JSON files minified.
+The `add` action resolves TMDB metadata, optionally translates a missing Greek
+overview, and inserts the movie at index 0. `modify` changes the shelf_id and
+moves the synopsis key. `delete` removes both the movie and its synopsis entry.
 """
 
 import argparse
@@ -69,6 +69,28 @@ def read_json(path):
 def write_json(path, data):
     with path.open("w", encoding="utf-8") as handle:
         json.dump(data, handle, ensure_ascii=False, separators=(",", ":"))
+
+
+def load_catalog():
+    try:
+        movies = read_json(MOVIES_FILE)
+        synopses = read_json(SYNOPSES_FILE)
+    except (OSError, json.JSONDecodeError) as exc:
+        sys.exit(f"Failed to load JSON data: {exc}")
+
+    if not isinstance(movies, list):
+        sys.exit(f"{MOVIES_FILE} must contain a JSON array.")
+    if not isinstance(synopses, dict):
+        sys.exit(f"{SYNOPSES_FILE} must contain a JSON object.")
+
+    return movies, synopses
+
+
+def find_movie_index(movies, imdb_id):
+    for index, movie in enumerate(movies):
+        if movie.get("imdb_id") == imdb_id:
+            return index
+    return None
 
 
 def tmdb_get(session, api_key, path, **params):
@@ -163,17 +185,7 @@ def translate_overview(english_overview):
         sys.exit(f"AI translation failed: {exc}")
 
 
-def main(argv=None):
-    parser = argparse.ArgumentParser(description="Add a movie to the Film-O-List catalogue.")
-    parser.add_argument("--imdb_id", required=True, help="IMDb ID, e.g. tt0111161")
-    parser.add_argument("--list_no", required=True, help="List number / shelf ID")
-    args = parser.parse_args(argv)
-
-    imdb_id = args.imdb_id.strip()
-    list_no = args.list_no.strip()
-    if not imdb_id or not list_no:
-        sys.exit("--imdb_id and --list_no cannot be empty.")
-
+def add_movie(imdb_id, list_no):
     load_env_file()
     tmdb_api_key = os.getenv("TMDB_API_KEY")
     if not tmdb_api_key:
@@ -234,16 +246,7 @@ def main(argv=None):
         "date_added": datetime.now().strftime("%Y-%m-%d"),
     }
 
-    try:
-        movies = read_json(MOVIES_FILE)
-        synopses = read_json(SYNOPSES_FILE)
-    except (OSError, json.JSONDecodeError) as exc:
-        sys.exit(f"Failed to load JSON data: {exc}")
-
-    if not isinstance(movies, list):
-        sys.exit(f"{MOVIES_FILE} must contain a JSON array.")
-    if not isinstance(synopses, dict):
-        sys.exit(f"{SYNOPSES_FILE} must contain a JSON object.")
+    movies, synopses = load_catalog()
 
     for existing in movies:
         if existing.get("imdb_id") == imdb_id or existing.get("tmdb_id") == tmdb_id:
@@ -264,6 +267,89 @@ def main(argv=None):
     print(f"Actors: {actors or '-'}; Director: {director or '-'}")
     print(f"Synopsis source: {synopsis_source}")
     print(f"Saved {MOVIES_FILE.name} and {SYNOPSES_FILE.name} in minified format.")
+
+
+def modify_movie(imdb_id, list_no):
+    movies, synopses = load_catalog()
+    index = find_movie_index(movies, imdb_id)
+
+    if index is None:
+        sys.exit(f"Movie not found for IMDb ID {imdb_id}.")
+
+    movie = movies[index]
+    old_shelf_id = movie.get("shelf_id")
+    movie["shelf_id"] = list_no
+
+    if old_shelf_id is not None:
+        old_key = str(old_shelf_id)
+        new_key = str(list_no)
+        if old_key != new_key and old_key in synopses:
+            synopses[new_key] = synopses.pop(old_key)
+            print(f"Moved synopsis key: {old_key} -> {new_key}")
+        elif old_key == new_key:
+            print("Shelf ID unchanged; synopsis key left in place.")
+        else:
+            print(f"No synopsis found for old shelf ID {old_key}.")
+
+    write_json(MOVIES_FILE, movies)
+    write_json(SYNOPSES_FILE, synopses)
+
+    print(f"Modified movie: {movie.get('greek_title') or movie.get('original_title')}")
+    print(f"IMDb ID: {imdb_id}; List No.: {list_no}")
+    print(f"Saved {MOVIES_FILE.name} and {SYNOPSES_FILE.name} in minified format.")
+
+
+def delete_movie(imdb_id):
+    movies, synopses = load_catalog()
+    index = find_movie_index(movies, imdb_id)
+
+    if index is None:
+        sys.exit(f"Movie not found for IMDb ID {imdb_id}.")
+
+    removed = movies.pop(index)
+    shelf_id = removed.get("shelf_id")
+    if shelf_id is not None:
+        synopses.pop(str(shelf_id), None)
+
+    write_json(MOVIES_FILE, movies)
+    write_json(SYNOPSES_FILE, synopses)
+
+    print(f"Deleted movie: {removed.get('greek_title') or removed.get('original_title')}")
+    print(f"IMDb ID: {imdb_id}; removed synopsis key: {shelf_id}")
+    print(f"Saved {MOVIES_FILE.name} and {SYNOPSES_FILE.name} in minified format.")
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Manage the Film-O-List catalogue.")
+    parser.add_argument(
+        "--action",
+        required=True,
+        choices=["add", "modify", "delete"],
+        help="Action to perform: add, modify, or delete",
+    )
+    parser.add_argument("--imdb_id", required=True, help="IMDb ID, e.g. tt0111161")
+    parser.add_argument(
+        "--list_no",
+        required=False,
+        default=None,
+        help="List number / shelf ID (required for add and modify)",
+    )
+    args = parser.parse_args(argv)
+
+    imdb_id = args.imdb_id.strip()
+    list_no = args.list_no.strip() if args.list_no else ""
+
+    if not imdb_id:
+        sys.exit("--imdb_id cannot be empty.")
+    if args.action in ("add", "modify") and not list_no:
+        sys.exit(f"--list_no is required for the '{args.action}' action.")
+
+    if args.action == "add":
+        add_movie(imdb_id, list_no)
+    elif args.action == "modify":
+        modify_movie(imdb_id, list_no)
+    else:
+        delete_movie(imdb_id)
 
 
 if __name__ == "__main__":

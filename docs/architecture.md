@@ -55,7 +55,7 @@ browser through the GitHub API — with no backend server, database, or hosting 
              ▼
 ┌──────────────────────────────────────────────────────────────┐
 │ Hidden /add page → TMDB → GitHub Contents API (PAT)          │
-│ GitHub Actions → add_movie.py → TMDB/AI → commit data/*.json │
+│ GitHub Actions → manage_movie.py → TMDB/AI → commit JSON      │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -363,9 +363,10 @@ Allow adding a film without a traditional backend through two serverless paths:
 
 1. **Browser add page:** search TMDB, construct the entry, and commit through the GitHub Contents API
    with a Personal Access Token (PAT) (sections 5.2–5.8).
-2. **GitHub Actions ingestion:** trigger `add_movie.yml` with an IMDb ID and list number; the
-   workflow resolves TMDB metadata, translates a missing synopsis through the BYOK AI client, inserts
-   the movie at index 0, and commits both JSON files (section 5.10).
+2. **GitHub Actions management:** trigger `manage_movie.yml` with an action (`add`, `modify`, or
+   `delete`) plus an IMDb ID and, when needed, a list number. `add` performs the full TMDB/AI
+   ingestion; `modify` changes `shelf_id` and moves the synopsis key; `delete` removes both records
+   (section 5.10).
 
 ### 5.2 Hidden route
 
@@ -458,15 +459,16 @@ secrets and produces an auditable workflow run, at the cost of dispatch and runn
 write the same minified JSON files and preserve GitHub history; the Action is the recommended
 "backend" ingestion path when the user does not want to expose a PAT to the browser.
 
-### 5.10 GitHub Actions ingestion pipeline
+### 5.10 GitHub Actions movie management pipeline
 
-[`scripts/add_movie.py`](../scripts/add_movie.py) and
-[`.github/workflows/add_movie.yml`](../.github/workflows/add_movie.yml) provide a serverless ingestion
-path with no browser credential exposure.
+[`scripts/manage_movie.py`](../scripts/manage_movie.py) and
+[`.github/workflows/manage_movie.yml`](../.github/workflows/manage_movie.yml) provide a serverless
+management path with no browser credential exposure.
 
-Workflow inputs (both required strings):
-- `imdb_id` — IMDb identifier such as `tt0111161`.
-- `list_no` — maps to `shelf_id` in the catalogue.
+Workflow inputs:
+- `action` — required choice: `add`, `modify`, or `delete`.
+- `imdb_id` — required IMDb identifier such as `tt0111161`.
+- `list_no` — shelf ID; required for `add`/`modify`, optional for `delete`.
 
 Flow:
 1. `workflow_dispatch` starts on `ubuntu-latest` with `permissions: contents: write`.
@@ -475,19 +477,19 @@ Flow:
    `python-dotenv`, and `openai`).
 4. The script loads `TMDB_API_KEY`, `AI_API_KEY`, `AI_BASE_URL`, and `AI_MODEL` from repository
    secrets mapped into the step environment.
-5. TMDB `GET /3/find/{imdb_id}?external_source=imdb_id` resolves `tmdb_id`.
-6. TMDB `GET /3/movie/{tmdb_id}?language=el-GR` supplies the Greek title, original title, release
-   year, poster path, overview, and runtime.
-7. TMDB `GET /3/movie/{tmdb_id}/credits?language=en-US` supplies the top-4 actors and the first
-   `Director` crew member in Latin characters.
-8. If the Greek overview is empty, the English overview is fetched and translated with the same
-   OpenAI-compatible client and system prompt used by `patch_synopses_ai.py`.
-9. The movie object is inserted at index 0 with `date_added` (`YYYY-MM-DD`) and `tags: []`; the
-   synopsis is written under the `list_no` key.
-10. Both JSON files are rewritten minified and committed/pushed by the workflow.
 
-Duplicate `imdb_id`/`tmdb_id` records abort before any file write. The workflow commit message is
-`Add movie via UI: <imdb_id>`.
+Action behavior:
+- **add:** resolve `tmdb_id`; fetch Greek details and `en-US` credits; translate a missing Greek
+  overview through the BYOK client; build the object with `date_added` and `tags: []`; insert it at
+  index 0; write its synopsis under `list_no`.
+- **modify:** find the movie by `imdb_id`, replace its `shelf_id` with `list_no`, and move the
+  synopsis value from the old key to the new key (no-op when the keys match).
+- **delete:** find the movie by `imdb_id`, remove it from the catalogue, and remove the synopsis entry
+  for its `shelf_id`.
+
+All actions rewrite both JSON files minified. Duplicate `imdb_id`/`tmdb_id` records block `add`
+before writing. The workflow commit message is
+`<action> movie via UI: <imdb_id>`.
 
 ---
 
@@ -512,14 +514,14 @@ Duplicate `imdb_id`/`tmdb_id` records abort before any file write. The workflow 
 Film-O-List/
 ├── .github/
 │   └── workflows/
-│       └── add_movie.yml        # workflow_dispatch ingestion
+│       └── manage_movie.yml     # add/modify/delete workflow_dispatch
 ├── .gitignore
 ├── requirements.txt             # local dependencies
 ├── docs/
 │   ├── architecture.md          # this document
 │   └── TODO.md                  # phased implementation checklist
 ├── scripts/
-│   ├── add_movie.py             # IMDb → TMDB/AI → JSON ingestion
+│   ├── manage_movie.py          # add/modify/delete catalogue management
 │   ├── excel_to_tmdb.py         # Phase 1 full migration script
 │   ├── patch_credits.py         # actor/director credit repair
 │   ├── patch_synopses_ai.py     # BYOK AI synopsis translation
@@ -550,8 +552,9 @@ Film-O-List/
   [`commands.md`](commands.md)).
 * Run targeted repairs with `.films\Scripts\python.exe scripts\patch_credits.py` and
   `.films\Scripts\python.exe scripts\patch_synopses_ai.py`.
-* Add a movie locally with
-  `.films\Scripts\python.exe scripts\add_movie.py --imdb_id tt0111161 --list_no A123`.
+* Manage movies locally with
+  `.films\Scripts\python.exe scripts\manage_movie.py --action add --imdb_id tt0111161 --list_no A123`
+  (use `modify` or `delete` for the other actions).
 * Environment variables: `TMDB_API_KEY` for TMDB, plus `AI_API_KEY`, `AI_BASE_URL`, and `AI_MODEL`
   for the BYOK translation client. For GitHub Actions, store them as repository secrets;
   `AI_BASE_URL` is optional.
@@ -564,10 +567,10 @@ Film-O-List/
   filename (`data/all_movies.xlsx` is the current input to the migration script).
 * The TMDB API key must not be committed; use `.env` (also gitignored) locally and repository secrets
   in GitHub Actions.
-* `patch_synopses_ai.py` and `add_movie.py` send English synopsis text to the AI endpoint configured
-  by `AI_BASE_URL`. Use a trusted provider or local interface, and keep `AI_API_KEY` out of version
-  control.
-* The Add Movie workflow uses repository secrets and the built-in `GITHUB_TOKEN` with
+* `patch_synopses_ai.py` and the `add` action in `manage_movie.py` send English synopsis text to the
+  AI endpoint configured by `AI_BASE_URL`. Use a trusted provider or local interface, and keep
+  `AI_API_KEY` out of version control.
+* The Manage Movie workflow uses repository secrets and the built-in `GITHUB_TOKEN` with
   `contents: write`; no PAT is exposed to the browser for this path.
 * The browser PAT path remains user-supplied at runtime, held only in `sessionStorage`, scoped to one
   repo, and never stored in the repository or sent to third parties.
@@ -584,6 +587,6 @@ Film-O-List/
 | --- | --- | --- |
 | **1** | Migration tool + `data/movies_lite.json` + `data/synopses.json` | Running the script on the real workbook produces valid, deduplicated, minified catalogue and synopsis files; unmatched films are reported, and the credit/AI patch scripts repair legacy names and missing synopses. |
 | **2** | Static library on GitHub Pages | The grid loads, search and tag filters update instantly, synopses lazy-load on first modal open, and the site works on mobile. |
-| **3** | Hidden `/add/` page + Add Movie Action | A new film can be added from the browser or through the `add_movie` GitHub Action, committing both JSON files without a backend. |
+| **3** | Hidden `/add/` page + Manage Movie Action | A film can be added, modified, or deleted from the browser or through the `manage_movie` GitHub Action, committing both JSON files without a backend. |
 
 See [`TODO.md`](TODO.md) for the actionable checklist.

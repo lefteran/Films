@@ -1,22 +1,30 @@
-name: Add Movie
+name: Manage Movie
 
 on:
   workflow_dispatch:
     inputs:
+      action:
+        description: "Action type: add, modify, delete"
+        required: true
+        type: choice
+        options:
+          - add
+          - modify
+          - delete
       imdb_id:
         description: "IMDb ID (e.g. tt0111161)"
         required: true
         type: string
       list_no:
-        description: "List number / shelf ID"
-        required: true
+        description: "List number / shelf ID (required for add/modify, optional for delete)"
+        required: false
         type: string
 
 permissions:
   contents: write
 
 jobs:
-  add-movie:
+  manage-movie:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -30,18 +38,18 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
-      - name: Add movie
+      - name: Manage movie
         env:
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
           AI_BASE_URL: ${{ secrets.AI_BASE_URL }}
           AI_MODEL: ${{ secrets.AI_MODEL }}
-        run: python scripts/add_movie.py --imdb_id "${{ github.event.inputs.imdb_id }}" --list_no "${{ github.event.inputs.list_no }}"
+        run: python scripts/manage_movie.py --action "${{ github.event.inputs.action }}" --imdb_id "${{ github.event.inputs.imdb_id }}" --list_no "${{ github.event.inputs.list_no }}"
 
       - name: Commit and push
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add data/
-          git commit -m "Add movie via UI: ${{ github.event.inputs.imdb_id }}"
+          git commit -m "${{ github.event.inputs.action }} movie via UI: ${{ github.event.inputs.imdb_id }}"
           git push

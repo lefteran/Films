@@ -138,17 +138,18 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 
 ## Phase 3 — Serverless Movie Addition
 
-### GitHub Actions ingestion
-- [x] Create [`scripts/add_movie.py`](../scripts/add_movie.py) with `--imdb_id` and `--list_no` arguments
-- [x] Resolve `tmdb_id` from IMDb and fetch Greek metadata plus Latin `en-US` credits
-- [x] Insert the movie at index 0 with `date_added` and `tags: []`
-- [x] Add or translate the synopsis through the BYOK AI client when Greek overview is missing
-- [x] Rewrite both JSON files in minified UTF-8 format
-- [x] Create [`.github/workflows/add_movie.yml`](../.github/workflows/add_movie.yml) with required dispatch inputs, `contents: write`, dependency install, script run, and commit/push steps
-- [x] Add [`scripts/requirements.txt`](../scripts/requirements.txt) for the Action dependency install
-- [x] Document the Action ingestion pipeline in [`architecture.md`](architecture.md) §5.10
+### GitHub Actions movie management
+- [x] Rename `scripts/add_movie.py` to [`scripts/manage_movie.py`](../scripts/manage_movie.py)
+- [x] Add required `--action` choice (`add`, `modify`, `delete`) and make `--list_no` optional
+- [x] Preserve the full TMDB/AI add flow with insertion at index 0 and `date_added`
+- [x] Implement `modify` to update `shelf_id` and move the synopsis key
+- [x] Implement `delete` to remove the movie and its synopsis entry
+- [x] Rename the workflow to [`.github/workflows/manage_movie.yml`](../.github/workflows/manage_movie.yml)
+- [x] Add the required `action` dispatch input and optional `list_no`
+- [x] Update the commit message to `<action> movie via UI: <imdb_id>`
+- [x] Document all three actions in [`architecture.md`](architecture.md) §5.10
 - [ ] Configure repository secrets `TMDB_API_KEY`, `AI_API_KEY`, `AI_BASE_URL`, and `AI_MODEL`
-- [ ] Run the Add Movie workflow with a sample IMDb ID and verify the commit and deployed page
+- [ ] Test add, modify, and delete through the workflow and verify each commit
 
 ### Hidden add page
 - [ ] Create `add/index.html` (not linked from the public UI)
