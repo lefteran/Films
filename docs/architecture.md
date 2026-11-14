@@ -51,13 +51,11 @@ browser through the GitHub API — with no backend server, database, or hosting 
 │  fetch('data/movies_lite.json') → grid → search → filters    │
 │  openModal() → fetch('data/synopses.json') once              │
 └────────────┬─────────────────────────────────────────────────┘
-             │  PHASE 3 — browser runtime, authenticated writes
+             │  PHASE 3 — serverless write paths
              ▼
 ┌──────────────────────────────────────────────────────────────┐
-│ Hidden /add page                                             │
-│  TMDB search ──────────────► api.themoviedb.org              │
-│  read/modify/commit ───────► api.github.com Contents API      │
-│                              (fine-grained PAT, contents:write)│
+│ Hidden /add page → TMDB → GitHub Contents API (PAT)          │
+│ GitHub Actions → add_movie.py → TMDB/AI → commit data/*.json │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -361,12 +359,13 @@ few interactions.
 
 ### 5.1 Purpose
 
-Allow adding a film from the browser without any backend by:
+Allow adding a film without a traditional backend through two serverless paths:
 
-1. searching TMDB for the film;
-2. constructing a catalogue entry (without synopsis) and its synopsis text;
-3. reading `data/movies_lite.json` and `data/synopses.json` through the GitHub Contents API;
-4. appending both and committing the updated files with a Personal Access Token (PAT).
+1. **Browser add page:** search TMDB, construct the entry, and commit through the GitHub Contents API
+   with a Personal Access Token (PAT) (sections 5.2–5.8).
+2. **GitHub Actions ingestion:** trigger `add_movie.yml` with an IMDb ID and list number; the
+   workflow resolves TMDB metadata, translates a missing synopsis through the BYOK AI client, inserts
+   the movie at index 0, and commits both JSON files (section 5.10).
 
 ### 5.2 Hidden route
 
@@ -451,12 +450,44 @@ A commit does not update GitHub Pages instantly. After a successful PUT:
 | Duplicate film | Abort before writing and highlight the existing entry. |
 | Network failure | Keep user input; offer retry. |
 
-### 5.9 Trade-off: why not GitHub Actions / Issues?
+### 5.9 Browser vs GitHub Actions
 
-A GitHub Actions workflow triggered by an issue form would avoid holding a PAT in the browser and
-would provide an audit trail. It was rejected for v1 because it adds latency, repository-specific
-workflow maintenance, and a less fluid UX. The design keeps that option open: the add page can later
-open a pre-filled issue instead of committing directly.
+The browser Contents API path is optimized for interactive, single-user use; it requires a PAT in
+`sessionStorage` but avoids workflow latency. The GitHub Actions path moves credentials to repository
+secrets and produces an auditable workflow run, at the cost of dispatch and runner latency. Both paths
+write the same minified JSON files and preserve GitHub history; the Action is the recommended
+"backend" ingestion path when the user does not want to expose a PAT to the browser.
+
+### 5.10 GitHub Actions ingestion pipeline
+
+[`scripts/add_movie.py`](../scripts/add_movie.py) and
+[`.github/workflows/add_movie.yml`](../.github/workflows/add_movie.yml) provide a serverless ingestion
+path with no browser credential exposure.
+
+Workflow inputs (both required strings):
+- `imdb_id` — IMDb identifier such as `tt0111161`.
+- `list_no` — maps to `shelf_id` in the catalogue.
+
+Flow:
+1. `workflow_dispatch` starts on `ubuntu-latest` with `permissions: contents: write`.
+2. `actions/checkout@v4` and `actions/setup-python@v5` (Python 3.11) prepare the runner.
+3. `pip install -r scripts/requirements.txt` installs the shared dependencies (`openpyxl`, `requests`,
+   `python-dotenv`, and `openai`).
+4. The script loads `TMDB_API_KEY`, `AI_API_KEY`, `AI_BASE_URL`, and `AI_MODEL` from repository
+   secrets mapped into the step environment.
+5. TMDB `GET /3/find/{imdb_id}?external_source=imdb_id` resolves `tmdb_id`.
+6. TMDB `GET /3/movie/{tmdb_id}?language=el-GR` supplies the Greek title, original title, release
+   year, poster path, overview, and runtime.
+7. TMDB `GET /3/movie/{tmdb_id}/credits?language=en-US` supplies the top-4 actors and the first
+   `Director` crew member in Latin characters.
+8. If the Greek overview is empty, the English overview is fetched and translated with the same
+   OpenAI-compatible client and system prompt used by `patch_synopses_ai.py`.
+9. The movie object is inserted at index 0 with `date_added` (`YYYY-MM-DD`) and `tags: []`; the
+   synopsis is written under the `list_no` key.
+10. Both JSON files are rewritten minified and committed/pushed by the workflow.
+
+Duplicate `imdb_id`/`tmdb_id` records abort before any file write. The workflow commit message is
+`Add movie via UI: <imdb_id>`.
 
 ---
 
@@ -470,7 +501,7 @@ open a pre-filled issue instead of committing directly.
 | Database | **Two flat minified JSON files (`movies_lite.json` + `synopses.json`) committed to the repo** | Smaller initial payload because synopses are deferred, still readable and diffable, no DB hosting. | Single `movies.json` (large initial download), SQLite/WASM (overkill), Firebase/Supabase (backend dependency). |
 | Frontend | **Vanilla HTML/CSS/JS** | Tiny dataset and simple interactions; no build step; fast first load; easy to audit. | React/Vue (unnecessary weight), Astro (build step). |
 | Hosting | **GitHub Pages** | Free, HTTPS, same origin as the repository and API workflow, zero config for static files. | Netlify/Cloudflare Pages (extra account), S3 (cost/config). |
-| Writes | **GitHub Contents API + fine-grained PAT** | True serverless writes, versioned history, no secret on a server. | Serverless function with token (defeats “no backend”), GitHub Actions (see 5.9). |
+| Writes | **GitHub Contents API + fine-grained PAT; GitHub Actions `workflow_dispatch`** | Two serverless write paths: interactive browser commits and secret-backed Action ingestion, both with versioned history. | Serverless function with token (extra backend), manual local commits. |
 | Images | **TMDB image CDN (`image.tmdb.org`)** | No image hosting or storage cost; responsive sizes available. | Repo-stored images (repo bloat), third-party image host. |
 
 ---
@@ -478,16 +509,21 @@ open a pre-filled issue instead of committing directly.
 ## 7. Repository Structure
 
 ```text
-Films/
+Film-O-List/
+├── .github/
+│   └── workflows/
+│       └── add_movie.yml        # workflow_dispatch ingestion
 ├── .gitignore
-├── requirements.txt             # Python dependencies
+├── requirements.txt             # local dependencies
 ├── docs/
 │   ├── architecture.md          # this document
 │   └── TODO.md                  # phased implementation checklist
 ├── scripts/
+│   ├── add_movie.py             # IMDb → TMDB/AI → JSON ingestion
 │   ├── excel_to_tmdb.py         # Phase 1 full migration script
 │   ├── patch_credits.py         # actor/director credit repair
-│   └── patch_synopses_ai.py     # BYOK AI synopsis translation
+│   ├── patch_synopses_ai.py     # BYOK AI synopsis translation
+│   └── requirements.txt         # dependencies used by GitHub Actions
 ├── src/
 │   ├── css/                     # frontend styles
 │   └── js/                      # frontend logic
@@ -508,16 +544,17 @@ Films/
 * Windows 11, default shell `cmd.exe`.
 * Python virtual environment: `.films/` at the repository root, gitignored.
   * Activate: `.films\Scripts\activate`
-* Phase 1 dependencies in [`requirements.txt`](../requirements.txt): `openpyxl`, `requests`,
-  `python-dotenv`, `openai`.
-* Install with `.films\Scripts\pip.exe install -r requirements.txt` (see
+* Local dependencies are in [`requirements.txt`](../requirements.txt); the GitHub Action installs
+  [`scripts/requirements.txt`](../scripts/requirements.txt).
+* Install locally with `.films\Scripts\pip.exe install -r requirements.txt` (see
   [`commands.md`](commands.md)).
 * Run targeted repairs with `.films\Scripts\python.exe scripts\patch_credits.py` and
   `.films\Scripts\python.exe scripts\patch_synopses_ai.py`.
+* Add a movie locally with
+  `.films\Scripts\python.exe scripts\add_movie.py --imdb_id tt0111161 --list_no A123`.
 * Environment variables: `TMDB_API_KEY` for TMDB, plus `AI_API_KEY`, `AI_BASE_URL`, and `AI_MODEL`
-  for the BYOK translation client. The browser app never needs the TMDB key for Phase 2; Phase 3
-  calls TMDB from the browser, which requires a client-visible key — document the acceptable use and
-  consider restricting the key.
+  for the BYOK translation client. For GitHub Actions, store them as repository secrets;
+  `AI_BASE_URL` is optional.
 
 ---
 
@@ -525,11 +562,15 @@ Films/
 
 * Private Excel workbooks stay out of version control; ensure `.gitignore` covers the exact source
   filename (`data/all_movies.xlsx` is the current input to the migration script).
-* The TMDB API key must not be committed; use `.env` (also gitignored).
-* `patch_synopses_ai.py` sends English synopsis text to the AI endpoint configured by `AI_BASE_URL`.
-  Use a trusted provider or local interface, and keep `AI_API_KEY` out of version control.
-* The GitHub PAT is user-supplied at runtime, held only in `sessionStorage`, scoped to one repo, and
-  never stored in the repository or sent to third parties.
+* The TMDB API key must not be committed; use `.env` (also gitignored) locally and repository secrets
+  in GitHub Actions.
+* `patch_synopses_ai.py` and `add_movie.py` send English synopsis text to the AI endpoint configured
+  by `AI_BASE_URL`. Use a trusted provider or local interface, and keep `AI_API_KEY` out of version
+  control.
+* The Add Movie workflow uses repository secrets and the built-in `GITHUB_TOKEN` with
+  `contents: write`; no PAT is exposed to the browser for this path.
+* The browser PAT path remains user-supplied at runtime, held only in `sessionStorage`, scoped to one
+  repo, and never stored in the repository or sent to third parties.
 * The app loads no third-party scripts, reducing XSS surface.
 * All traffic uses HTTPS (GitHub Pages, TMDB, GitHub API).
 * The published catalogue is public by design; private fields such as shelf locations are included
@@ -543,6 +584,6 @@ Films/
 | --- | --- | --- |
 | **1** | Migration tool + `data/movies_lite.json` + `data/synopses.json` | Running the script on the real workbook produces valid, deduplicated, minified catalogue and synopsis files; unmatched films are reported, and the credit/AI patch scripts repair legacy names and missing synopses. |
 | **2** | Static library on GitHub Pages | The grid loads, search and tag filters update instantly, synopses lazy-load on first modal open, and the site works on mobile. |
-| **3** | Hidden `/add/` page | A new film can be searched on TMDB and committed to both JSON files from the browser without a backend. |
+| **3** | Hidden `/add/` page + Add Movie Action | A new film can be added from the browser or through the `add_movie` GitHub Action, committing both JSON files without a backend. |
 
 See [`TODO.md`](TODO.md) for the actionable checklist.

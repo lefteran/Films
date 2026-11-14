@@ -138,6 +138,18 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 
 ## Phase 3 — Serverless Movie Addition
 
+### GitHub Actions ingestion
+- [x] Create [`scripts/add_movie.py`](../scripts/add_movie.py) with `--imdb_id` and `--list_no` arguments
+- [x] Resolve `tmdb_id` from IMDb and fetch Greek metadata plus Latin `en-US` credits
+- [x] Insert the movie at index 0 with `date_added` and `tags: []`
+- [x] Add or translate the synopsis through the BYOK AI client when Greek overview is missing
+- [x] Rewrite both JSON files in minified UTF-8 format
+- [x] Create [`.github/workflows/add_movie.yml`](../.github/workflows/add_movie.yml) with required dispatch inputs, `contents: write`, dependency install, script run, and commit/push steps
+- [x] Add [`scripts/requirements.txt`](../scripts/requirements.txt) for the Action dependency install
+- [x] Document the Action ingestion pipeline in [`architecture.md`](architecture.md) §5.10
+- [ ] Configure repository secrets `TMDB_API_KEY`, `AI_API_KEY`, `AI_BASE_URL`, and `AI_MODEL`
+- [ ] Run the Add Movie workflow with a sample IMDb ID and verify the commit and deployed page
+
 ### Hidden add page
 - [ ] Create `add/index.html` (not linked from the public UI)
 - [ ] Reuse `src/` styles and modules where practical
@@ -177,7 +189,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Sanitise all user/TMDB text before inserting into the DOM (`textContent`, no `innerHTML`)
 - [ ] Add a confirmation step before committing
 - [ ] End-to-end test: add one film, verify the commit, verify it appears in the grid
-- [ ] Document the add flow and its limitations in [`architecture.md`](architecture.md)
+- [ ] Document the browser add flow and its limitations in [`architecture.md`](architecture.md)
 
 ---
 
