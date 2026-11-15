@@ -150,12 +150,14 @@ function applyFilters() {
     const searchTerm = normalizeText(rawSearch);
     
     filteredMovies = moviesData.filter(movie => {
-        // Έλεγχος Αναζήτησης (Τίτλος, Σκηνοθέτης, Ηθοποιοί, Έτος)
+        // Έλεγχος Αναζήτησης (Τίτλος, Σκηνοθέτης, Ηθοποιοί, List No., IMDb ID, Έτος)
         const searchableText = normalizeText(`
             ${movie.original_title || ''}
             ${movie.greek_title || ''}
             ${movie.director || ''}
             ${movie.actors || ''}
+            ${movie.shelf_id || ''}
+            ${movie.imdb_id || ''}
             ${movie.year || ''}
         `);
         

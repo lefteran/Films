@@ -316,8 +316,8 @@ few interactions.
 ### 4.5 Behaviour specification
 
 * **Search:** case-insensitive, accent-insensitive substring matching across `original_title`,
-  `greek_title`, `director`, `actors`, and year. Both the query and searchable fields pass through
-  `normalizeText()`, which uses
+  `greek_title`, `director`, `actors`, `shelf_id`, `imdb_id`, and year. Both the query and searchable
+  fields pass through `normalizeText()`, which uses
   `.normalize("NFD").replace(/[\u0300-\u036f]/g, "")` and lowercasing, so "Francois" matches
   "François" and unaccented Greek matches accented Greek.
 * **Default order:** when the search query is empty (including whitespace-only input), the filtered

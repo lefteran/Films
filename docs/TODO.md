@@ -120,6 +120,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Lazy-load posters (`loading="lazy"`, `decoding="async"`)
 
 ### UI enhancements
+- [x] Include List No. (`shelf_id`) and IMDb ID (`imdb_id`) in normalized search
 - [x] Replace the header text logo with `logo.png` and link it to a query-free page reload
 - [x] Persist the search query as `?search=` and restore it on page load
 - [x] Remove `?search=` when the search input is cleared while preserving other parameters
