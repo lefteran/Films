@@ -53,6 +53,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [x] Respect TMDB rate limits (keep the inter-request delay)
 - [ ] Cache TMDB responses locally during development to avoid re-fetching
 - [x] Fetch `append_to_response=credits` and use the first 4 TMDB cast full names, falling back to Excel only when cast is empty
+- [x] Extract `en-US` genres into the `tags` array for newly managed movies
 - [x] Leave missing Greek overviews empty in the exporter for the BYOK AI synopsis patcher
 
 ### Output quality
@@ -86,8 +87,9 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [x] Configure the BYOK client with `AI_API_KEY`, `AI_BASE_URL`, and `AI_MODEL`
 - [x] Translate English TMDB overviews with the required Greek-translation system prompt
 - [x] Progressively save `synopses.json` every 25 records
-- [x] Document both workflows in [`architecture.md`](architecture.md) §3.8–3.9
-- [ ] Run the credit and AI synopsis patchers against the real data and spot-check updated records
+- [x] Create [`scripts/patch_genres.py`](../scripts/patch_genres.py) to backfill empty `tags`
+- [x] Document both workflows in [`architecture.md`](architecture.md) §3.8–3.9 and genre backfill in §3.10
+- [ ] Run the credit, AI synopsis, and genre patchers against the real data and spot-check updated records
 
 ---
 
@@ -120,6 +122,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Lazy-load posters (`loading="lazy"`, `decoding="async"`)
 
 ### UI enhancements
+- [x] Render clickable tag badges and a genre dropdown; include tags in normalized search
 - [x] Include List No. (`shelf_id`) and IMDb ID (`imdb_id`) in normalized search
 - [x] Replace the header text logo with `logo.png` and link it to a query-free page reload
 - [x] Persist the search query as `?search=` and restore it on page load

@@ -126,6 +126,19 @@ body {
     border-color: var(--text-main);
 }
 
+.genre-select {
+    padding: 0.4rem 0.8rem;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    color: var(--text-main);
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+.genre-select:hover { border-color: var(--text-muted); }
+.genre-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
 /* --- GRID ΤΑΙΝΙΩΝ --- */
 .main-content { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
 
@@ -187,7 +200,12 @@ body {
     border-radius: 4px;
     background-color: #333;
     color: #ccc;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
+.card-tag:hover { background-color: var(--accent); color: #fff; }
+.card-tag:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* --- MODAL (POPUP) --- */
 .modal {

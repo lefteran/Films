@@ -242,13 +242,19 @@ def add_movie(session, tmdb_api_key, movies, synopses, imdb_id, list_no):
     greek_title = details.get("title") or original_title
     poster_path = details.get("poster_path")
 
+    genres = []
+    for genre in english_details.get("genres") or []:
+        name = (genre.get("name") or "").strip()
+        if name and name not in genres:
+            genres.append(name)
+
     movie = {
         "shelf_id": list_no,
         "original_title": original_title,
         "director": director,
         "actors": actors,
         "year": extract_year(details.get("release_date")),
-        "tags": [],
+        "tags": genres,
         "imdb_id": imdb_id,
         "tmdb_id": tmdb_id,
         "greek_title": greek_title,
@@ -264,6 +270,7 @@ def add_movie(session, tmdb_api_key, movies, synopses, imdb_id, list_no):
     print(f"Added movie: {greek_title} ({original_title})")
     print(f"TMDB ID: {tmdb_id}; List No.: {list_no}")
     print(f"Actors: {actors or '-'}; Director: {director or '-'}")
+    print(f"Genres: {', '.join(genres) or '-'}")
     print(f"Synopsis source: {synopsis_source}")
 
 

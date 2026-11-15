@@ -175,7 +175,7 @@ Each movie object contains everything needed to render the grid and the modal he
 | `director` | string \| null | Excel D | |
 | `actors` | string \| null | TMDB `credits.cast[:4]`, fallback Excel E | Full TMDB names joined with commas; Excel only when cast is empty. |
 | `year` | number \| null | Excel F | |
-| `tags` | string[] | Cell fill colour | Empty array when unmapped. |
+| `tags` | string[] | Cell fill colour (Excel) or TMDB `en-US` genres (managed/backfilled) | Empty array when no mapping/genres are available. |
 | `imdb_id` | string \| null | Hyperlink regex | Matches `tt` + 7–8 digits. |
 | `tmdb_id` | number \| null | TMDB | |
 | `greek_title` | string \| null | TMDB `title` | Greek localisation when available. |
@@ -252,6 +252,21 @@ Missing synopses are filled through a bring-your-own-key (BYOK) OpenAI-compatibl
 `AI_BASE_URL` makes the workflow provider-agnostic: it can target a cloud OpenAI-compatible gateway
 or a local interface. Missing API key, model, TMDB ID, or English overview is logged and skipped.
 
+### 3.10 Genre backfill (`scripts/patch_genres.py`)
+
+Existing catalogue entries may predate genre extraction. The backfill script:
+
+1. Loads `data/movies_lite.json` once.
+2. Selects every movie whose `tags` list is missing or empty.
+3. For movies with a valid `tmdb_id`, calls `GET /3/movie/{tmdb_id}?language=en-US` and extracts
+   `genres[].name`.
+4. Stores the unique genre names in `tags`, sleeps 0.25 s after each request, and skips movies
+   without a TMDB ID or failed requests.
+5. Rewrites the catalogue once with UTF-8 and `json.dump(..., separators=(",", ":"))`.
+
+The script is a one-off back-office operation; new movies receive genres directly through
+`manage_movie.py`.
+
 ---
 
 ## 4. Phase 2 — Frontend Application
@@ -316,13 +331,16 @@ few interactions.
 ### 4.5 Behaviour specification
 
 * **Search:** case-insensitive, accent-insensitive substring matching across `original_title`,
-  `greek_title`, `director`, `actors`, `shelf_id`, `imdb_id`, and year. Both the query and searchable
-  fields pass through `normalizeText()`, which uses
+  `greek_title`, `director`, `actors`, `tags`, `shelf_id`, `imdb_id`, and year. Both the query and
+  searchable fields pass through `normalizeText()`, which uses
   `.normalize("NFD").replace(/[\u0300-\u036f]/g, "")` and lowercasing, so "Francois" matches
   "François" and unaccented Greek matches accented Greek.
 * **Default order:** when the search query is empty (including whitespace-only input), the filtered
   result set is copied and shuffled with a Fisher-Yates shuffle before rendering. This randomizes
   both the initial view and every cleared search while preserving active tag filters.
+* **Genre interactions:** card tags render as clickable badges. Clicking a badge or choosing a genre
+  from the header `<select>` sets the search input, updates `?search=`, and applies filters
+  immediately. The dropdown is populated from all unique tags/genres in the loaded catalogue.
 * **URL search persistence:** on load, a `?search=` parameter populates the input and is applied once
   the catalogue is fetched. Typing updates the parameter with `history.replaceState`; clearing the
   input removes it. Unrelated query parameters are preserved.
@@ -495,9 +513,10 @@ Batch processing:
 Action behavior:
 - **add:** resolve `tmdb_id`; fetch Greek (`el-GR`) and English (`en-US`) details plus `en-US`
   credits; translate a missing Greek overview through the BYOK client; build the object with
-  `date_added` and `tags: []`; insert it at index 0; write its synopsis under `list_no`.
-  `greek_title` comes from the Greek response, while `original_title` always comes from the English
-  response, ensuring Latin titles such as "Mimino" instead of Cyrillic/native-script values.
+  `date_added` and `tags` from the English genre list; insert it at index 0; write its synopsis under
+  `list_no`. `greek_title` comes from the Greek response, while `original_title` always comes from
+  the English response, ensuring Latin titles such as "Mimino" instead of Cyrillic/native-script
+  values.
 - **modify:** find the movie by `imdb_id`, replace its `shelf_id` with `list_no`, and move the
   synopsis value from the old key to the new key (no-op when the keys match).
 - **delete:** find the movie by `imdb_id`, remove it from the catalogue, and remove the synopsis entry
@@ -540,6 +559,7 @@ Film-O-List/
 │   ├── manage_movie.py          # add/modify/delete catalogue management
 │   ├── excel_to_tmdb.py         # Phase 1 full migration script
 │   ├── patch_credits.py         # actor/director credit repair
+│   ├── patch_genres.py          # backfill TMDB genres into tags
 │   ├── patch_synopses_ai.py     # BYOK AI synopsis translation
 │   └── requirements.txt         # dependencies used by GitHub Actions
 ├── src/

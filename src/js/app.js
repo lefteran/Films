@@ -17,6 +17,7 @@ const movieModal = document.getElementById('movieModal');
 const modalBody = document.getElementById('modalBody');
 const closeModalBtn = document.getElementById('closeModal');
 const gridSizeToggle = document.getElementById('gridSizeToggle');
+const genreSelect = document.getElementById('genreSelect');
 
 // Search / ordering helpers
 function normalizeText(text) {
@@ -50,6 +51,21 @@ function updateSearchQueryParam(value) {
         url.searchParams.delete('search');
     }
     window.history.replaceState({}, '', url.toString());
+}
+
+function selectGenre(tag) {
+    const value = typeof tag === 'string' ? tag.trim() : '';
+    if (!value) return;
+
+    searchInput.value = value;
+    updateSearchQueryParam(value);
+
+    if (genreSelect) {
+        const hasOption = Array.from(genreSelect.options).some(option => option.value === value);
+        genreSelect.value = hasOption ? value : '';
+    }
+
+    applyFilters();
 }
 
 // 1. Φόρτωση των δεδομένων
@@ -96,9 +112,6 @@ function renderGrid(movies) {
         const title = movie.greek_title || movie.original_title;
         const posterSrc = movie.poster_url || 'https://via.placeholder.com/500x750/2a2a2a/ffffff?text=No+Poster';
         
-        // Δημιουργία των μικρών tags (αν υπάρχουν)
-        const tagsHtml = movie.tags ? movie.tags.map(tag => `<span class="card-tag">${tag}</span>`).join('') : '';
-
         card.innerHTML = `
             <div class="poster-container">
                 <img src="${posterSrc}" alt="${title}" class="movie-poster" loading="lazy" decoding="async">
@@ -107,9 +120,32 @@ function renderGrid(movies) {
             <div class="movie-info">
                 <h3 class="movie-title">${title}</h3>
                 <div class="movie-meta">${movie.year || '-'} • ${movie.director || '-'}</div>
-                <div class="card-tags">${tagsHtml}</div>
+                <div class="card-tags"></div>
             </div>
         `;
+
+        const cardTags = card.querySelector('.card-tags');
+        if (Array.isArray(movie.tags)) {
+            movie.tags.forEach(tag => {
+                const badge = document.createElement('span');
+                badge.className = 'card-tag';
+                badge.textContent = tag;
+                badge.setAttribute('role', 'button');
+                badge.setAttribute('tabindex', '0');
+                badge.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    selectGenre(tag);
+                });
+                badge.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        selectGenre(tag);
+                    }
+                });
+                cardTags.appendChild(badge);
+            });
+        }
 
         // Όταν κάνει κλικ, ανοίγει το Modal
         card.addEventListener('click', () => openModal(movie));
@@ -121,9 +157,22 @@ function renderGrid(movies) {
 
 // 3. Δημιουργία των κουμπιών (Φίλτρων) στην κορυφή
 function renderTags() {
-    tagsContainer.innerHTML = '';
     const sortedTags = Array.from(allTags).sort();
-    
+
+    if (genreSelect) {
+        Array.from(genreSelect.options).forEach(option => {
+            if (option.value !== '') option.remove();
+        });
+        sortedTags.forEach(tag => {
+            const option = document.createElement('option');
+            option.value = tag;
+            option.textContent = tag;
+            genreSelect.appendChild(option);
+        });
+    }
+
+    tagsContainer.querySelectorAll('.filter-tag').forEach(button => button.remove());
+
     sortedTags.forEach(tag => {
         const btn = document.createElement('button');
         btn.className = 'filter-tag';
@@ -156,6 +205,7 @@ function applyFilters() {
             ${movie.greek_title || ''}
             ${movie.director || ''}
             ${movie.actors || ''}
+            ${Array.isArray(movie.tags) ? movie.tags.join(' ') : ''}
             ${movie.shelf_id || ''}
             ${movie.imdb_id || ''}
             ${movie.year || ''}
@@ -268,6 +318,18 @@ searchInput.addEventListener('input', () => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(applyFilters, 300); // 300ms καθυστέρηση
 });
+
+if (genreSelect) {
+    genreSelect.addEventListener('change', () => {
+        if (genreSelect.value) {
+            selectGenre(genreSelect.value);
+        } else {
+            searchInput.value = '';
+            updateSearchQueryParam('');
+            applyFilters();
+        }
+    });
+}
 
 function syncGridToggleState() {
     const isSmall = moviesGrid.classList.contains('small-grid');

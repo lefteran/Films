@@ -12,6 +12,9 @@
 # Translate missing synopses with the BYOK AI client
 .films\Scripts\python.exe scripts\patch_synopses_ai.py
 
+# Backfill genres for movies with an empty tags list
+.films\Scripts\python.exe scripts\patch_genres.py
+
 # Add one movie locally (the same script used by the Manage Movie GitHub Action)
 .films\Scripts\python.exe scripts\manage_movie.py --action add --imdb_id tt0111161 --list_no A123
 
