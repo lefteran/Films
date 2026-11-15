@@ -28662,22 +28662,6 @@
         "poster_url": "https://image.tmdb.org/t/p/w500/qOwJDktKNt6SPZBbp3x42dgikvC.jpg"
     },
     {
-        "shelf_id": "P133",
-        "original_title": "The Scopone Game",
-        "director": "Luigi Comencini",
-        "actors": "Alberto Sordi, Silvana Mangano, Joseph Cotten, Bette Davis",
-        "year": 1972,
-        "tags":
-        [
-            "Custom GR Subs"
-        ],
-        "imdb_id": "tt0069235",
-        "tmdb_id": 56341,
-        "greek_title": "Χαρτοπαίκτης με Ταλέντο",
-        "duration_minutes": 113,
-        "poster_url": "https://image.tmdb.org/t/p/w500/jFDTspFzMculyLSRsrFtmQc8ovw.jpg"
-    },
-    {
         "shelf_id": "P134",
         "original_title": "Grumpy Old Men",
         "director": "Donald Petrie",
