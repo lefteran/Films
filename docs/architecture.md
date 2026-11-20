@@ -237,17 +237,13 @@ progressive save checkpoints. Movies without a `tmdb_id` or with missing credits
 
 ### 3.9 AI synopsis patching (`scripts/patch_synopses_ai.py`)
 
-Missing synopses are filled through a bring-your-own-key (BYOK) OpenAI-compatible client:
+Missing synopses are filled from TMDB first, with a BYOK OpenAI-compatible translation fallback:
 
 1. Load `data/movies_lite.json` and `data/synopses.json`.
-2. Select movies whose `shelf_id` is missing from the synopsis map or maps to a blank value.
-3. For movies with a valid `tmdb_id`, fetch the English `overview` with
-   `GET /3/movie/{tmdb_id}?language=en-US`.
-4. Send the overview to the configured model using `AI_API_KEY`, `AI_BASE_URL` (optional, for local
-   or gateway routing), and `AI_MODEL`. The system prompt instructs the model to output only a
-   natural Greek translation.
-5. Store the translation in `synopses.json` and save progressively every 25 records, plus a final
-   save, using the same minified format.
+2. Select movies whose `shelf_id` is missing from the synopsis map or maps to a `null`/blank value.
+3. For movies with an `imdb_id` (falling back to `tmdb_id`), query TMDB (`/3/find/{imdb_id}?external_source=imdb_id&language=el-GR` or `/3/movie/{tmdb_id}?language=el-GR`) for an existing Greek `overview`.
+4. If no Greek overview is available, fetch the English `overview` (`language=en-US`) and send it to the configured model using `AI_API_KEY`, `AI_BASE_URL` (optional, for local or gateway routing), and `AI_MODEL`. The system prompt instructs the model to output only a natural Greek translation.
+5. Store the Greek synopsis in `synopses.json` and save progressively every 25 records, plus a final save, using the same minified format.
 
 `AI_BASE_URL` makes the workflow provider-agnostic: it can target a cloud OpenAI-compatible gateway
 or a local interface. Missing API key, model, TMDB ID, or English overview is logged and skipped.

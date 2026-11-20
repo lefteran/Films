@@ -1,11 +1,14 @@
-"""Fill missing synopses with a BYOK OpenAI-compatible translation client.
+"""Fill missing synopses from TMDB (Greek first, then AI-translated English).
 
 For movies whose `shelf_id` is missing from data/synopses.json (or maps to a
-blank value), the script fetches the English TMDB overview and asks the
-configured AI model to translate it into Greek.
+null/blank value), the script checks TMDB using `imdb_id` (falling back to
+`tmdb_id`) for a Greek overview (`el-GR`). If unavailable, it fetches the
+English overview (`en-US`) and asks the configured AI model to translate it
+into Greek.
 
 Required environment variables:
 - TMDB_API_KEY
+Required for English-to-Greek AI fallback:
 - AI_API_KEY
 - AI_MODEL
 Optional:
@@ -15,6 +18,7 @@ Optional:
 import json
 import os
 import sys
+import time
 from pathlib import Path
 
 import requests
@@ -32,7 +36,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MOVIES_FILE = BASE_DIR / "data" / "movies_lite.json"
 SYNOPSES_FILE = BASE_DIR / "data" / "synopses.json"
 ENV_FILE = BASE_DIR / ".env"
+TMDB_FIND_URL = "https://api.themoviedb.org/3/find/{imdb_id}"
 TMDB_MOVIE_URL = "https://api.themoviedb.org/3/movie/{tmdb_id}"
+REQUEST_DELAY = 0.25
 SAVE_EVERY = 25
 
 SYSTEM_PROMPT = (
@@ -81,14 +87,38 @@ def has_synopsis(movie, synopses):
     return key is not None and bool(str(synopses.get(key) or "").strip())
 
 
-def fetch_english_overview(session, api_key, tmdb_id):
-    response = session.get(
-        TMDB_MOVIE_URL.format(tmdb_id=tmdb_id),
-        params={"api_key": api_key, "language": "en-US"},
-        timeout=20,
-    )
-    response.raise_for_status()
-    return (response.json().get("overview") or "").strip()
+def fetch_overview(session, api_key, movie, language):
+    """Fetch a movie overview from TMDB by imdb_id, falling back to tmdb_id."""
+    imdb_id = (movie.get("imdb_id") or "").strip()
+    if imdb_id:
+        response = session.get(
+            TMDB_FIND_URL.format(imdb_id=imdb_id),
+            params={
+                "api_key": api_key,
+                "external_source": "imdb_id",
+                "language": language,
+            },
+            timeout=20,
+        )
+        response.raise_for_status()
+        payload = response.json()
+        for bucket in ("movie_results", "tv_results"):
+            for item in payload.get(bucket) or []:
+                overview = (item.get("overview") or "").strip()
+                if overview:
+                    return overview
+
+    tmdb_id = movie.get("tmdb_id")
+    if tmdb_id:
+        response = session.get(
+            TMDB_MOVIE_URL.format(tmdb_id=tmdb_id),
+            params={"api_key": api_key, "language": language},
+            timeout=20,
+        )
+        response.raise_for_status()
+        return (response.json().get("overview") or "").strip()
+
+    return ""
 
 
 def translate_with_ai(client, model, text):
@@ -140,51 +170,85 @@ def main():
 
     if not tmdb_api_key:
         sys.exit("TMDB_API_KEY is missing. Add it to .env or the environment.")
-    if not ai_api_key:
-        sys.exit("AI_API_KEY is missing. Add it to .env or the environment.")
-    if not ai_model:
-        sys.exit("AI_MODEL is missing. Add it to .env or the environment.")
 
-    client_kwargs = {"api_key": ai_api_key}
-    if ai_base_url:
-        client_kwargs["base_url"] = ai_base_url
-    client = OpenAI(**client_kwargs)
+    client = None
+    if ai_api_key and ai_model:
+        client_kwargs = {"api_key": ai_api_key}
+        if ai_base_url:
+            client_kwargs["base_url"] = ai_base_url
+        client = OpenAI(**client_kwargs)
+    else:
+        print(
+            "Warning: AI_API_KEY or AI_MODEL is missing. "
+            "Only existing Greek TMDB synopses will be saved; English fallback translation will be skipped."
+        )
 
+    greek_tmdb_count = 0
     translated_count = 0
     processed = 0
+
+    def maybe_save():
+        if processed % SAVE_EVERY == 0:
+            write_json(SYNOPSES_FILE, synopses)
+            print(f"  [save] Progressive save after {processed} records.")
 
     with requests.Session() as session:
         session.headers.update({"accept": "application/json"})
 
         for position, (_, movie) in enumerate(missing, start=1):
             title = movie.get("greek_title") or movie.get("original_title") or "<unknown>"
-            print(f"[{position}/{len(missing)}] {title}")
-
+            imdb_id = (movie.get("imdb_id") or "").strip()
             tmdb_id = movie.get("tmdb_id")
-            if not tmdb_id:
-                print("  ! Skipped: no tmdb_id.")
+            print(f"[{position}/{len(missing)}] {title} ({imdb_id or tmdb_id or 'no id'})")
+
+            if not imdb_id and not tmdb_id:
+                print("  ! Skipped: no imdb_id or tmdb_id.")
                 processed += 1
-                if processed % SAVE_EVERY == 0:
-                    write_json(SYNOPSES_FILE, synopses)
-                    print(f"  [save] Progressive save after {processed} records.")
+                maybe_save()
                 continue
 
             try:
-                english_overview = fetch_english_overview(session, tmdb_api_key, tmdb_id)
+                greek_overview = fetch_overview(session, tmdb_api_key, movie, "el-GR")
             except (requests.RequestException, ValueError) as exc:
-                print(f"  ! TMDB request failed: {exc}")
+                print(f"  ! TMDB Greek request failed: {exc}")
                 processed += 1
-                if processed % SAVE_EVERY == 0:
-                    write_json(SYNOPSES_FILE, synopses)
-                    print(f"  [save] Progressive save after {processed} records.")
+                maybe_save()
+                time.sleep(REQUEST_DELAY)
+                continue
+
+            key = get_synopsis_key(movie)
+            if greek_overview and key is not None:
+                synopses[key] = greek_overview
+                greek_tmdb_count += 1
+                print(f"  + Greek synopsis found on TMDB ({len(greek_overview)} chars).")
+                processed += 1
+                maybe_save()
+                time.sleep(REQUEST_DELAY)
+                continue
+
+            time.sleep(REQUEST_DELAY)
+
+            try:
+                english_overview = fetch_overview(session, tmdb_api_key, movie, "en-US")
+            except (requests.RequestException, ValueError) as exc:
+                print(f"  ! TMDB English request failed: {exc}")
+                processed += 1
+                maybe_save()
+                time.sleep(REQUEST_DELAY)
                 continue
 
             if not english_overview:
-                print("  - No English overview available.")
+                print("  - No Greek or English overview available on TMDB.")
                 processed += 1
-                if processed % SAVE_EVERY == 0:
-                    write_json(SYNOPSES_FILE, synopses)
-                    print(f"  [save] Progressive save after {processed} records.")
+                maybe_save()
+                time.sleep(REQUEST_DELAY)
+                continue
+
+            if client is None:
+                print("  - English overview found, but AI translation is not configured.")
+                processed += 1
+                maybe_save()
+                time.sleep(REQUEST_DELAY)
                 continue
 
             try:
@@ -192,28 +256,27 @@ def main():
             except Exception as exc:
                 print(f"  ! AI translation failed: {exc}")
                 processed += 1
-                if processed % SAVE_EVERY == 0:
-                    write_json(SYNOPSES_FILE, synopses)
-                    print(f"  [save] Progressive save after {processed} records.")
+                maybe_save()
+                time.sleep(REQUEST_DELAY)
                 continue
 
-            key = get_synopsis_key(movie)
             if key is not None and translation:
                 synopses[key] = translation
                 translated_count += 1
-                print(f"  + Greek synopsis added ({len(translation)} chars).")
+                print(f"  + Greek synopsis translated via AI ({len(translation)} chars).")
             else:
                 print("  - AI returned an empty translation.")
 
             processed += 1
-            if processed % SAVE_EVERY == 0:
-                write_json(SYNOPSES_FILE, synopses)
-                print(f"  [save] Progressive save after {processed} records.")
+            maybe_save()
+            time.sleep(REQUEST_DELAY)
 
     write_json(SYNOPSES_FILE, synopses)
 
-    print("\nAI synopsis patch complete.")
-    print(f"Synopses added: {translated_count}")
+    print("\nSynopsis patch complete.")
+    print(f"Added from TMDB (Greek): {greek_tmdb_count}")
+    print(f"Added via AI translation: {translated_count}")
+    print(f"Total synopses added: {greek_tmdb_count + translated_count}")
     print(f"Saved {SYNOPSES_FILE.name} in minified format.")
 
 
