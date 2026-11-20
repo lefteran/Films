@@ -66,6 +66,8 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Run a full migration against the real workbook
 - [ ] Manually spot-check 10–20 entries (posters, titles, tags, shelf IDs)
 - [ ] Investigate duplicate `shelf_id` values in the workbook (24 collisions in the current export) so the synopsis map is lossless
+- [x] Create [`scripts/backfill_imdb_ids.py`](../scripts/backfill_imdb_ids.py) with TMDB title/year/director validation
+- [ ] Run the IMDb backfill for the 1,259 missing IDs and review [`imdb_backfill_report.md`](imdb_backfill_report.md) for unmatched titles
 - [ ] Commit the generated `data/movies_lite.json` and `data/synopses.json`
 
 ### Payload optimization
@@ -211,3 +213,23 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Review the repo for accidental secrets (TMDB key, PAT) before each push
 - [ ] Confirm `data/movies_lite.json` and `data/synopses.json` remain committed while private workbooks stay ignored
 - [ ] Occasional dependency update review for Phase 1
+
+---
+
+## Backlog & Feature Requests
+
+### Frontend UI & UX
+- [ ] Show detailed error messages in the error/dialogue box (instead of a generic failure message) to make debugging easier
+- [ ] Add a "Recently Added" button/view to display recently added movies sorted from newest to oldest (`date_added`)
+- [ ] Evaluate whether to keep `date_added` in a separate JSON file or continue storing it on entries in `data/movies_lite.json`
+- [ ] When a genre is selected from `#genreSelect`, show a removable chip/button next to it with the genre name and an `×` button to clear that genre filter
+- [ ] Add an "Export to Excel" (`.xlsx`) feature for the movie list
+
+### Data Cleanup & Enrichment Scripts
+- [ ] Audit all existing movies and generate a per-movie report of missing fields (`imdb_id`, `poster_url`, `synopsis`, genres, subgenres), then backfill missing posters and synopses (e.g., *Mission: Impossible*, *Gorillas in the Mist*)
+- [ ] Find and remove or merge duplicate entries in `data/movies_lite.json` (εύρεση διπλοεγγραφών)
+- [ ] Fetch/enrich movie subgenres (e.g., `dark comedy`) from TMDB keywords or community-given tags, and support subgenres for newly added movies
+- [ ] Write a script to clean up existing non-Latin titles and store three distinct title fields: TMDB original title (e.g., `Amici miei`, `Мимино`), international English title, and `greek_title`; apply the same convention for new additions
+
+### Infrastructure & Hosting
+- [ ] Evaluate hosting/storing the catalogue or exports on Google Drive instead of (or alongside) GitHub

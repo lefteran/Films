@@ -15,6 +15,12 @@
 # Backfill genres for movies with an empty tags list
 .films\Scripts\python.exe scripts\patch_genres.py
 
+# Preview IMDb matches without modifying the catalogue
+.films\Scripts\python.exe scripts\backfill_imdb_ids.py --dry-run --limit 10
+
+# Backfill all missing IMDb IDs
+.films\Scripts\python.exe scripts\backfill_imdb_ids.py
+
 # Add one movie locally (the same script used by the Manage Movie GitHub Action)
 .films\Scripts\python.exe scripts\manage_movie.py --action add --imdb_id tt0111161 --list_no A123
 

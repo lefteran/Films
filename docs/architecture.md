@@ -267,6 +267,22 @@ Existing catalogue entries may predate genre extraction. The backfill script:
 The script is a one-off back-office operation; new movies receive genres directly through
 `manage_movie.py`.
 
+### 3.11 IMDb ID backfill (`scripts/backfill_imdb_ids.py`)
+
+Movies imported before IMDb enrichment may have a null/empty `imdb_id`. The backfill script:
+
+1. Loads `data/movies_lite.json` and selects every movie with a missing IMDb ID.
+2. Builds title variants from `original_title`/`greek_title` and searches TMDB
+   `/3/search/movie` with and without the release year.
+3. Prefilters candidates by title similarity and year, then fetches
+   `movie/{tmdb_id}?append_to_response=external_ids,credits&language=en-US`.
+4. Accepts a match only when title/year evidence is strong and the TMDB director matches the stored
+   director; otherwise the movie remains unmatched.
+5. Writes the IMDb ID into the existing movie record, saves every 25 processed movies, and writes
+   [`imdb_backfill_report.md`](imdb_backfill_report.md) with matched and unmatched results.
+
+`--limit N` processes a subset and `--dry-run` previews matches without modifying the catalogue.
+
 ---
 
 ## 4. Phase 2 — Frontend Application
@@ -561,6 +577,7 @@ Film-O-List/
 │   ├── patch_credits.py         # actor/director credit repair
 │   ├── patch_genres.py          # backfill TMDB genres into tags
 │   ├── patch_synopses_ai.py     # BYOK AI synopsis translation
+│   ├── backfill_imdb_ids.py     # TMDB title/year/director IMDb backfill
 │   └── requirements.txt         # dependencies used by GitHub Actions
 ├── src/
 │   ├── css/                     # frontend styles
