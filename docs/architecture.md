@@ -283,6 +283,17 @@ Movies imported before IMDb enrichment may have a null/empty `imdb_id`. The back
 
 `--limit N` processes a subset and `--dry-run` previews matches without modifying the catalogue.
 
+### 3.12 Poster backfill (`scripts/patch_posters.py`)
+
+Movies that already have an `imdb_id` may still have `poster_url: null`. The poster backfill script:
+
+1. Loads `data/movies_lite.json` once and selects movies where `poster_url` is `null` and `imdb_id` is present.
+2. Calls `GET /3/find/{imdb_id}?external_source=imdb_id` using `TMDB_API_KEY` from `.env`/environment.
+3. Checks `movie_results` (and `tv_results` as a fallback) for a `poster_path`, building `https://image.tmdb.org/t/p/w500{poster_path}`.
+4. Updates `poster_url` in memory, saves progressively every 25 found posters and once at the end in minified UTF-8 (`ensure_ascii=False, separators=(",", ":")`), and prints a summary of how many posters were found.
+
+`--dry-run` queries TMDB and reports how many posters were found without modifying `data/movies_lite.json`.
+
 ---
 
 ## 4. Phase 2 — Frontend Application

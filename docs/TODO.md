@@ -90,7 +90,8 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [x] Translate English TMDB overviews with the required Greek-translation system prompt
 - [x] Progressively save `synopses.json` every 25 records
 - [x] Create [`scripts/patch_genres.py`](../scripts/patch_genres.py) to backfill empty `tags`
-- [x] Document both workflows in [`architecture.md`](architecture.md) §3.8–3.9 and genre backfill in §3.10
+- [x] Create [`scripts/patch_posters.py`](../scripts/patch_posters.py) to backfill missing `poster_url` values for movies with an `imdb_id`
+- [x] Document both workflows in [`architecture.md`](architecture.md) §3.8–3.9 and genre/poster backfills in §3.10–3.12
 - [ ] Run the credit, AI synopsis, and genre patchers against the real data and spot-check updated records
 
 ---
