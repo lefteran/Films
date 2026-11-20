@@ -253,6 +253,7 @@ function openModal(movie) {
             <p><strong>Ηθοποιοί:</strong> ${movie.actors || '-'}</p>
             <p><strong>Έτος:</strong> ${movie.year || '-'} • <strong>Διάρκεια:</strong> ${duration}</p>
             <p><strong>Θέση:</strong> List No. ${movie.shelf_id}</p>
+            <p><strong>IMDb ID:</strong> ${movie.imdb_id || '-'}</p>
             ${movie.imdb_id ? `<a href="https://www.imdb.com/title/${movie.imdb_id}/" target="_blank" rel="noopener noreferrer" class="imdb-link">Προβολή στο IMDb</a>` : ''}
             <div class="modal-synopsis">Φόρτωση σύνοψης...</div>
         </div>

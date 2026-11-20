@@ -136,6 +136,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [x] Align the modal poster to the top and add an independently scrolling details/synopsis area (70vh desktop, 55vh mobile)
 - [x] Enable `.small-grid` by default and synchronise the toggle’s `aria-pressed` state on load
 - [x] Change the modal shelf label to “List No.” and add an IMDb link when `imdb_id` exists
+- [x] Display `IMDb ID` (`movie.imdb_id || '-'`) in the movie details modal
 - [x] Add the header “Μικρές / Μεγάλες Αφίσες” toggle and `.small-grid` styles
 
 ### Hosting and verification
