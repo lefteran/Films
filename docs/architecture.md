@@ -290,6 +290,22 @@ Movies that already have an `imdb_id` may still have `poster_url: null`. The pos
 
 `--dry-run` queries TMDB and reports how many posters were found without modifying `data/movies_lite.json`.
 
+### 3.13 Duration backfill (`scripts/patch_durations.py`)
+
+Movies missing `duration_minutes` (`null`, empty, or `0`) that have an `imdb_id` are backfilled from TMDB:
+
+1. Loads `data/movies_lite.json` once and selects movies missing `duration_minutes` with a non-empty `imdb_id`.
+2. Resolves the TMDB movie ID via `GET /3/find/{imdb_id}?external_source=imdb_id` (with `tmdb_id` fallback) and fetches `GET /3/movie/{tmdb_id}?language=en-US` for `runtime`.
+3. Updates `duration_minutes` when a positive integer runtime is returned, saves progressively every 25 updates and once at the end in minified UTF-8, and supports `--dry-run`.
+
+### 3.14 Incomplete credits backfill (`scripts/patch_incomplete_credits.py`)
+
+Repairs abbreviated or comma-formatted actor/director credits listed in `temp/incomplete_credits.json`:
+
+1. Loads `temp/incomplete_credits.json` and matches each record in `data/movies_lite.json` by `(shelf_id, original_title)` (or `imdb_id`).
+2. Resolves the movie on TMDB via `imdb_id` (`/3/find/{imdb_id}`, falling back to `tmdb_id`) and fetches `GET /3/movie/{tmdb_id}?language=en-US&append_to_response=credits`.
+3. Updates `actors` (top 4 cast names) and `director` (first `Director` crew member), saves progressively every 25 changed movies and once at the end in minified UTF-8, and supports `--dry-run`.
+
 ---
 
 ## 4. Phase 2 — Frontend Application

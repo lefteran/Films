@@ -1,0 +1,2424 @@
+[
+  {
+    "shelf_id": "A002",
+    "original_title": "The black viper",
+    "imdb_id": null,
+    "director": "Boden, Richard",
+    "actors": "Rowan Atkinson"
+  },
+  {
+    "shelf_id": "A065",
+    "original_title": "There will be blood",
+    "imdb_id": "tt0469494",
+    "director": "Paul Thomas Anderson",
+    "actors": "Daniel Day-Lewis, Paul Dano, Kevin J. O'Connor, Ciarán Hinds"
+  },
+  {
+    "shelf_id": "A072",
+    "original_title": "Riverdance: The Ten Years",
+    "imdb_id": null,
+    "director": "McColgan, John",
+    "actors": "Jean Butler, Gabriel Byrne"
+  },
+  {
+    "shelf_id": "A103",
+    "original_title": "The Ipcress file",
+    "imdb_id": "tt0059319",
+    "director": "Sidney J. Furie",
+    "actors": "Michael Caine, Nigel Green, Guy Doleman, Sue Lloyd"
+  },
+  {
+    "shelf_id": "A104",
+    "original_title": "Runaway Train",
+    "imdb_id": "tt0089941",
+    "director": "Andrei Konchalovsky",
+    "actors": "Jon Voight, Eric Roberts, Rebecca De Mornay, Kyle T. Heffner"
+  },
+  {
+    "shelf_id": "A106",
+    "original_title": "Zabriskie point",
+    "imdb_id": "tt0066601",
+    "director": "Michelangelo Antonioni",
+    "actors": "Mark Frechette, Daria Halprin, Paul Fix, G.D. Spradlin"
+  },
+  {
+    "shelf_id": "A129",
+    "original_title": "The Italian Job",
+    "imdb_id": "tt0317740",
+    "director": "F. Gary Gray",
+    "actors": "Mark Wahlberg, Charlize Theron, Edward Norton, Seth Green"
+  },
+  {
+    "shelf_id": "A148",
+    "original_title": "Vivre sa vie",
+    "imdb_id": "tt0056663",
+    "director": "Jean-Luc Godard",
+    "actors": "Anna Karina, Sady Rebbot, André S. Labarthe, Guylaine Schlumberger"
+  },
+  {
+    "shelf_id": "A157",
+    "original_title": "Home alone III",
+    "imdb_id": "tt0119303",
+    "director": "Raja Gosnell",
+    "actors": "Alex D. Linz, Olek Krupa, Rya Kihlstedt, Lenny Von Dohlen"
+  },
+  {
+    "shelf_id": "A159",
+    "original_title": "Flying Deuces",
+    "imdb_id": "tt0031322",
+    "director": "A. Edward Sutherland",
+    "actors": "Stan Laurel, Oliver Hardy, Jean Parker, Reginald Gardiner"
+  },
+  {
+    "shelf_id": "A161",
+    "original_title": "Cops/The Electric house/The boat",
+    "imdb_id": null,
+    "director": "Keaton, Buster",
+    "actors": "Buster Keaton"
+  },
+  {
+    "shelf_id": "B018",
+    "original_title": "On the waterfront",
+    "imdb_id": "tt0047296",
+    "director": "Elia Kazan",
+    "actors": "Marlon Brando, Eva Marie Saint, Karl Malden, Lee J. Cobb"
+  },
+  {
+    "shelf_id": "B040",
+    "original_title": "Bonnie and Clyde",
+    "imdb_id": "tt0061418",
+    "director": "Arthur Penn",
+    "actors": "Warren Beatty, Faye Dunaway, Michael J. Pollard, Gene Hackman"
+  },
+  {
+    "shelf_id": "B049",
+    "original_title": "Dr. Strangelove",
+    "imdb_id": "tt0057012",
+    "director": "Stanley Kubrick",
+    "actors": "Peter Sellers, George C. Scott, Sterling Hayden, Keenan Wynn"
+  },
+  {
+    "shelf_id": "B059",
+    "original_title": "The Big Trees",
+    "imdb_id": "tt0044420",
+    "director": "Felix E. Feist",
+    "actors": "Kirk Douglas,Eve Miller"
+  },
+  {
+    "shelf_id": "C040a",
+    "original_title": "Sleuth",
+    "imdb_id": "tt0069281",
+    "director": "Joseph L. Mankiewicz",
+    "actors": "Laurence Olivier, Michael Caine"
+  },
+  {
+    "shelf_id": "C053a-60",
+    "original_title": "Jesus of Nazareth",
+    "imdb_id": "tt0075520",
+    "director": "Zeffirelli, Franco",
+    "actors": " Robert Powell, Olivia Hussey, Laurence Olivier"
+  },
+  {
+    "shelf_id": "C065a",
+    "original_title": "Napoleon (TV)",
+    "imdb_id": "tt0253839",
+    "director": "Simoneau,Yves",
+    "actors": "C Clavier,I Rossellini,G. Depardieu,J.Malkovich"
+  },
+  {
+    "shelf_id": "C070b",
+    "original_title": "Cellular",
+    "imdb_id": "tt0337921",
+    "director": "David R. Ellis",
+    "actors": "Kim Basinger, Chris Evans, Jason Statham, William H. Macy"
+  },
+  {
+    "shelf_id": "C079b",
+    "original_title": "Changing Lanes",
+    "imdb_id": "tt0264472",
+    "director": "Roger Michell",
+    "actors": "Ben Affleck, Samuel L. Jackson, Toni Collette, Sydney Pollack"
+  },
+  {
+    "shelf_id": "C106a",
+    "original_title": "Un condamné à mort s'est échappé",
+    "imdb_id": "tt0049902",
+    "director": "Bresson, Robert",
+    "actors": "Fr. Leterrier, Ch. Le Clainche, M. Beerblock"
+  },
+  {
+    "shelf_id": "C112b",
+    "original_title": "The outsiders",
+    "imdb_id": "tt0086066",
+    "director": "Francis Ford Coppola",
+    "actors": "C. Thomas Howell, Matt Dillon, Ralph Macchio, Patrick Swayze"
+  },
+  {
+    "shelf_id": "C113b",
+    "original_title": "Massacre in Rome",
+    "imdb_id": "tt0070592",
+    "director": "George P. Cosmatos",
+    "actors": "Richard Burton, Marcello Mastroianni, Peter Vaughan, Leo McKern"
+  },
+  {
+    "shelf_id": "C118B",
+    "original_title": "Rain man",
+    "imdb_id": "tt0095953",
+    "director": "Barry Levinson",
+    "actors": "Dustin Hoffman, Tom Cruise, Valeria Golino, Gerald R. Molen"
+  },
+  {
+    "shelf_id": "C121b",
+    "original_title": "Dances with wolves",
+    "imdb_id": "tt0099348",
+    "director": "Kevin Costner",
+    "actors": "Kevin Costner, Mary McDonnell, Graham Greene, Rodney A. Grant"
+  },
+  {
+    "shelf_id": "C145b",
+    "original_title": "Rocky",
+    "imdb_id": "tt0075148",
+    "director": "John G. Avildsen",
+    "actors": "Sylvester Stallone, Talia Shire, Burt Young, Carl Weathers"
+  },
+  {
+    "shelf_id": "C149b",
+    "original_title": "Rocky V",
+    "imdb_id": "tt0100507",
+    "director": "John G. Avildsen",
+    "actors": "Sylvester Stallone, Talia Shire, Burt Young, Richard Gant"
+  },
+  {
+    "shelf_id": "C156b",
+    "original_title": "The Name of the Rose",
+    "imdb_id": "tt0091605",
+    "director": "Jean-Jacques Annaud",
+    "actors": "Sean Connery, Christian Slater, F. Murray Abraham, Elya Baskin"
+  },
+  {
+    "shelf_id": "D032",
+    "original_title": "Les Misérables",
+    "imdb_id": "tt0230534",
+    "director": "Dayan, Josee",
+    "actors": "Ger.Depardieu,Chr.Clavier,J. Malkovich"
+  },
+  {
+    "shelf_id": "D040",
+    "original_title": "Texas Terror",
+    "imdb_id": "tt0027087",
+    "director": "Robert N. Bradbury",
+    "actors": "John Wayne, Lucile Browne, LeRoy Mason, Fern Emmett"
+  },
+  {
+    "shelf_id": "D041",
+    "original_title": "West of the Divide",
+    "imdb_id": "tt0025969",
+    "director": "Robert N. Bradbury",
+    "actors": "John Wayne, Virginia Brown Faire, George 'Gabby' Hayes, Lloyd Whitlock"
+  },
+  {
+    "shelf_id": "D045",
+    "original_title": "The Mexican",
+    "imdb_id": "tt0236493",
+    "director": "Gore Verbinski",
+    "actors": "Brad Pitt, Julia Roberts, James Gandolfini, J.K. Simmons"
+  },
+  {
+    "shelf_id": "D050",
+    "original_title": "Toy Story 1 GR",
+    "imdb_id": "tt0114709",
+    "director": "Lasseter J.et al",
+    "actors": "Tom Hanks,Tim Allen"
+  },
+  {
+    "shelf_id": "E037",
+    "original_title": "On Her Majesty's Secret Service",
+    "imdb_id": "tt0064757",
+    "director": "Peter R. Hunt",
+    "actors": "George Lazenby, Diana Rigg, Telly Savalas, Gabriele Ferzetti"
+  },
+  {
+    "shelf_id": "E038",
+    "original_title": "Good Morning, Vietnam",
+    "imdb_id": "tt0093105",
+    "director": "Barry Levinson",
+    "actors": "Robin Williams, Forest Whitaker, Tom T. Tran, Chintara Sukapatana"
+  },
+  {
+    "shelf_id": "E052",
+    "original_title": "The Chase",
+    "imdb_id": "tt0060232",
+    "director": "Arthur Penn",
+    "actors": "Marlon Brando, Jane Fonda, Robert Redford, E.G. Marshall"
+  },
+  {
+    "shelf_id": "E058",
+    "original_title": "Born on the Fourth of July",
+    "imdb_id": "tt0096969",
+    "director": "Oliver Stone",
+    "actors": "Tom Cruise, Raymond J. Barry, Caroline Kava, Kyra Sedgwick"
+  },
+  {
+    "shelf_id": "E062",
+    "original_title": "Mission: Impossible III",
+    "imdb_id": "tt0317919",
+    "director": "J.J. Abrams",
+    "actors": "Tom Cruise, Philip Seymour Hoffman, Ving Rhames, Billy Crudup"
+  },
+  {
+    "shelf_id": "E070",
+    "original_title": "Toy Story 2",
+    "imdb_id": "tt0120363",
+    "director": "Lasseter J.et al",
+    "actors": "Tom Hanks, Tim Allen"
+  },
+  {
+    "shelf_id": "E097",
+    "original_title": "Diamonds Are Forever",
+    "imdb_id": "tt0066995",
+    "director": "Guy Hamilton",
+    "actors": "Sean Connery, Jill St. John, Charles Gray, Lana Wood"
+  },
+  {
+    "shelf_id": "E100",
+    "original_title": "Papillon",
+    "imdb_id": "tt0070511",
+    "director": "Franklin J. Schaffner",
+    "actors": "Steve McQueen, Dustin Hoffman, Victor Jory, Don Gordon"
+  },
+  {
+    "shelf_id": "E101",
+    "original_title": "Sons of the Desert",
+    "imdb_id": "tt0024601",
+    "director": "William A. Seiter",
+    "actors": "Stan Laurel, Oliver Hardy, Mae Busch, Dorothy Christy"
+  },
+  {
+    "shelf_id": "E103",
+    "original_title": "The Bohemian Girl",
+    "imdb_id": "tt0027376",
+    "director": "James W. Horne",
+    "actors": "Stan Laurel, Oliver Hardy, Thelma Todd, Antonio Moreno"
+  },
+  {
+    "shelf_id": "E110,X147",
+    "original_title": "State of Siege",
+    "imdb_id": "tt0070959",
+    "director": "Costa-Gavras",
+    "actors": "Yves Montand, Renato Salvatori, O.E. Hasse, Jacques Weber"
+  },
+  {
+    "shelf_id": "E119",
+    "original_title": "All the president's men",
+    "imdb_id": "tt0074119",
+    "director": "Alan J. Pakula",
+    "actors": "Dustin Hoffman, Robert Redford, Jack Warden, Martin Balsam"
+  },
+  {
+    "shelf_id": "E137",
+    "original_title": "Straw Dogs",
+    "imdb_id": "tt0067800",
+    "director": "Sam Peckinpah",
+    "actors": "Dustin Hoffman, Susan George, Peter Vaughan, T. P. McKenna"
+  },
+  {
+    "shelf_id": "E145",
+    "original_title": "Who's Minding the Store?",
+    "imdb_id": "tt0057683",
+    "director": "Frank Tashlin",
+    "actors": "Jerry Lewis, Jill St. John, Ray Walston, John McGiver"
+  },
+  {
+    "shelf_id": "E158/E158a",
+    "original_title": "Klute",
+    "imdb_id": "tt0067309",
+    "director": "Alan J. Pakula",
+    "actors": "Jane Fonda, Donald Sutherland, Charles Cioffi, Roy Scheider"
+  },
+  {
+    "shelf_id": "F022",
+    "original_title": "The Killing Fields",
+    "imdb_id": "tt0087553",
+    "director": "Roland Joffé",
+    "actors": "Sam Waterston, Haing S. Ngor, John Malkovich, Julian Sands"
+  },
+  {
+    "shelf_id": "H003",
+    "original_title": "The Curious Case of Benjamin Button",
+    "imdb_id": "tt0421715",
+    "director": "David Fincher",
+    "actors": "Brad Pitt, Cate Blanchett, Taraji P. Henson, Julia Ormond"
+  },
+  {
+    "shelf_id": "H020",
+    "original_title": "As Good as It Gets",
+    "imdb_id": "tt0119822",
+    "director": "James L. Brooks",
+    "actors": "Jack Nicholson, Helen Hunt, Greg Kinnear, Cuba Gooding Jr."
+  },
+  {
+    "shelf_id": "H023",
+    "original_title": "Full Metal Jacket",
+    "imdb_id": "tt0093058",
+    "director": "Stanley Kubrick",
+    "actors": "Matthew Modine, Adam Baldwin, Vincent D'Onofrio, R. Lee Ermey"
+  },
+  {
+    "shelf_id": "H025",
+    "original_title": "Sophie's Choice ( I )",
+    "imdb_id": "tt0084707",
+    "director": "Alan J. Pakula",
+    "actors": "Meryl Streep, Kevin Kline, Peter MacNicol, Rita Karin"
+  },
+  {
+    "shelf_id": "H026",
+    "original_title": "Sophie's Choice ( IΙ )",
+    "imdb_id": "tt0084707",
+    "director": "Alan J. Pakula",
+    "actors": "Meryl Streep, Kevin Kline, Peter MacNicol, Rita Karin"
+  },
+  {
+    "shelf_id": "H040",
+    "original_title": "Patton",
+    "imdb_id": "tt0066206",
+    "director": "Franklin J. Schaffner",
+    "actors": "George C. Scott, Karl Malden, Stephen Young, Michael Strong"
+  },
+  {
+    "shelf_id": "H047",
+    "original_title": "Odysseia",
+    "imdb_id": "tt0118414",
+    "director": "Konchalovskiy, Andrey",
+    "actors": "Arm. Assante, Gr. Scacchi, Isab. Rossellini"
+  },
+  {
+    "shelf_id": "H048",
+    "original_title": "The Wild Geese",
+    "imdb_id": "tt0078492",
+    "director": "Andrew V. McLaglen",
+    "actors": "Richard Burton, Richard Harris, Roger Moore, Hardy Krüger"
+  },
+  {
+    "shelf_id": "H049",
+    "original_title": "Μπορντέλο",
+    "imdb_id": "tt0216589",
+    "director": "Koundouros, Nikos",
+    "actors": "Marina Vlady, Antig. Amanitou, Aris Retsos,"
+  },
+  {
+    "shelf_id": "H053",
+    "original_title": "Pulp Fiction",
+    "imdb_id": "tt0110912",
+    "director": "Quentin Tarantino",
+    "actors": "John Travolta, Samuel L. Jackson, Uma Thurman, Bruce Willis"
+  },
+  {
+    "shelf_id": "H056",
+    "original_title": "Scenes from a Marriage",
+    "imdb_id": "tt0070644",
+    "director": "Bergman, Ingmar",
+    "actors": "Liv Ullmann, Erland Josephson"
+  },
+  {
+    "shelf_id": "H067",
+    "original_title": "The Aviator",
+    "imdb_id": "tt0338751",
+    "director": "Martin Scorsese",
+    "actors": "Leonardo DiCaprio, Cate Blanchett, Kate Beckinsale, John C. Reilly"
+  },
+  {
+    "shelf_id": "H081",
+    "original_title": "Vanishing Point",
+    "imdb_id": "tt0067927",
+    "director": "Richard C. Sarafian",
+    "actors": "Barry Newman, Cleavon Little, Dean Jagger, Victoria Medlin"
+  },
+  {
+    "shelf_id": "K045",
+    "original_title": "The Proposal",
+    "imdb_id": "tt1041829",
+    "director": "Anne Fletcher",
+    "actors": "Sandra Bullock, Ryan Reynolds, Malin Akerman, Craig T. Nelson"
+  },
+  {
+    "shelf_id": "K069",
+    "original_title": "Night and the City",
+    "imdb_id": "tt0042788",
+    "director": "Jules Dassin",
+    "actors": "Richard Widmark, Francis L. Sullivan, Gene Tierney, Googie Withers"
+  },
+  {
+    "shelf_id": "K071",
+    "original_title": "Odd Man Out",
+    "imdb_id": "tt0039677",
+    "director": "Carol Reed",
+    "actors": "James Mason, Robert Newton, Cyril Cusack, F.J. McCormick"
+  },
+  {
+    "shelf_id": "K083",
+    "original_title": "The Grand Budapest Hotel",
+    "imdb_id": "tt2278388",
+    "director": "Wes Anderson",
+    "actors": "Ralph Fiennes, F. Murray Abraham, Tony Revolori, Adrien Brody"
+  },
+  {
+    "shelf_id": "K095",
+    "original_title": "The Stranger",
+    "imdb_id": "tt0038991",
+    "director": "Orson Welles",
+    "actors": "Edward G. Robinson, Loretta Young, Orson Welles, Philip Merivale"
+  },
+  {
+    "shelf_id": "K098",
+    "original_title": "Gambit",
+    "imdb_id": "tt0060445",
+    "director": "Ronald Neame",
+    "actors": "Shirley MacLaine, Michael Caine, Herbert Lom, Roger C. Carmel"
+  },
+  {
+    "shelf_id": "K102",
+    "original_title": "The general line (Old and new)",
+    "imdb_id": "tt0020451",
+    "director": "Sergei Eisenstein",
+    "actors": "Marfa Lapkina, M. Ivanin, Konstantin Vasilyev, Vasili Buzenkov"
+  },
+  {
+    "shelf_id": "K109",
+    "original_title": "The Pelican Brief",
+    "imdb_id": "tt0107798",
+    "director": "Alan J. Pakula",
+    "actors": "Julia Roberts, Denzel Washington, Sam Shepard, John Heard"
+  },
+  {
+    "shelf_id": "K152a",
+    "original_title": "Summer holidays",
+    "imdb_id": "tt0057541",
+    "director": "Yates, Peter",
+    "actors": "Cliff Richard, Lauri Peters"
+  },
+  {
+    "shelf_id": "K187",
+    "original_title": "Safety Last!",
+    "imdb_id": "tt0014429",
+    "director": "Fred C. Newmeyer",
+    "actors": "Harold Lloyd, Mildred Davis, Bill Strother, Noah Young"
+  },
+  {
+    "shelf_id": "K193",
+    "original_title": "Εξέγερση του '73",
+    "imdb_id": "tt12294634",
+    "director": "Zirinis, Kostas ",
+    "actors": null
+  },
+  {
+    "shelf_id": "L003b",
+    "original_title": "Auschwitz",
+    "imdb_id": "tt1058063",
+    "director": "N. Bykov et al.",
+    "actors": null
+  },
+  {
+    "shelf_id": "L003d",
+    "original_title": "Death Mills",
+    "imdb_id": "tt0259271",
+    "director": "Wilder, Billy",
+    "actors": null
+  },
+  {
+    "shelf_id": "L022",
+    "original_title": "My Best Friend's Wedding",
+    "imdb_id": "tt0119738",
+    "director": "P.J. Hogan",
+    "actors": "Julia Roberts, Dermot Mulroney, Cameron Diaz, Rupert Everett"
+  },
+  {
+    "shelf_id": "L029",
+    "original_title": "The headhunters",
+    "imdb_id": "tt1614989",
+    "director": "Morten Tyldum",
+    "actors": "Aksel Hennie, Synnøve Macody Lund, Nikolaj Coster-Waldau, Julie R. Ølgaard"
+  },
+  {
+    "shelf_id": "L072",
+    "original_title": "The Revenant",
+    "imdb_id": "tt1663202",
+    "director": "Alejandro G. Iñárritu",
+    "actors": "Leonardo DiCaprio, Tom Hardy, Domhnall Gleeson, Will Poulter"
+  },
+  {
+    "shelf_id": "L075",
+    "original_title": "Star Wars: Episode VII - The Force Awakens",
+    "imdb_id": "tt2488496",
+    "director": "J.J. Abrams",
+    "actors": "Daisy Ridley, John Boyega, Oscar Isaac, Adam Driver"
+  },
+  {
+    "shelf_id": "L076",
+    "original_title": "Songs from the Second Floor",
+    "imdb_id": "tt0120263",
+    "director": "Roy Andersson",
+    "actors": "Lars Nordh, Stefan Larsson, Bengt C.W. Carlsson, Torbjörn Fahlström"
+  },
+  {
+    "shelf_id": "L100",
+    "original_title": "Βιετ Κώστας - Υπηκοότης ακαθόριστος",
+    "imdb_id": "tt3838986",
+    "director": "Tritsibidas, Giannis",
+    "actors": "Kontogiannis Foivos, Nguen van Lap"
+  },
+  {
+    "shelf_id": "L148",
+    "original_title": "Double Indemnity",
+    "imdb_id": "tt0036775",
+    "director": "Billy Wilder",
+    "actors": "Fred MacMurray, Barbara Stanwyck, Edward G. Robinson, Porter Hall"
+  },
+  {
+    "shelf_id": "L163",
+    "original_title": "Hearts and Minds",
+    "imdb_id": "tt0071604",
+    "director": "Peter Davis",
+    "actors": "Clark Clifford, John Foster Dulles, Georges Bidault, Harry S. Truman"
+  },
+  {
+    "shelf_id": "M027",
+    "original_title": "Les Misérables",
+    "imdb_id": "tt1707386",
+    "director": "Hooper, Tom",
+    "actors": "Hugh Jackman, Russ. Crowe, An. Hathaway"
+  },
+  {
+    "shelf_id": "M041",
+    "original_title": "Silkwood",
+    "imdb_id": "tt0086312",
+    "director": "Mike Nichols",
+    "actors": "Meryl Streep, Kurt Russell, Cher, Craig T. Nelson"
+  },
+  {
+    "shelf_id": "M049",
+    "original_title": "Kingsman: The Secret Service",
+    "imdb_id": "tt2802144",
+    "director": "Matthew Vaughn",
+    "actors": "Taron Egerton, Colin Firth, Samuel L. Jackson, Mark Strong"
+  },
+  {
+    "shelf_id": "M051",
+    "original_title": "The Accountant",
+    "imdb_id": "tt2140479",
+    "director": "Gavin O'Connor",
+    "actors": "Ben Affleck, Anna Kendrick, J.K. Simmons, Jon Bernthal"
+  },
+  {
+    "shelf_id": "M052",
+    "original_title": "The Look of Silence",
+    "imdb_id": "tt3521134",
+    "director": "Joshua Oppenheimer",
+    "actors": "Adi Rukun, M.Y. Basrun, Amir Hasan, Inong"
+  },
+  {
+    "shelf_id": "M077",
+    "original_title": "Ironiya sudby, ili S legkim parom!",
+    "imdb_id": "tt0073179",
+    "director": "Ryazanov, Eldar",
+    "actors": "Andrey Myagkov, Barbara Brylska, Yuriy Yakovlev,"
+  },
+  {
+    "shelf_id": "M182",
+    "original_title": "The Enigma of Kaspar Hauser",
+    "imdb_id": "tt0071691",
+    "director": "Werner Herzog",
+    "actors": "Bruno S., Walter Ladengast, Brigitte Mira, Willy Semmelrogge"
+  },
+  {
+    "shelf_id": "M210",
+    "original_title": "Dersu Uzala",
+    "imdb_id": "tt0071411",
+    "director": "Akira Kurosawa",
+    "actors": "Yuriy Solomin, Maksim Munzuk, Mikhail Bychkov, B. Khorulev"
+  },
+  {
+    "shelf_id": "M232",
+    "original_title": "Trumbo",
+    "imdb_id": "tt3203606",
+    "director": "Jay Roach",
+    "actors": "Bryan Cranston, Adewale Akinnuoye-Agbaje, Louis C.K., David James Elliott"
+  },
+  {
+    "shelf_id": "M232a",
+    "original_title": "Trumbo",
+    "imdb_id": "tt3203606",
+    "director": "Jay Roach",
+    "actors": "Bryan Cranston, Adewale Akinnuoye-Agbaje, Louis C.K., David James Elliott"
+  },
+  {
+    "shelf_id": "M236",
+    "original_title": "Whiplash",
+    "imdb_id": "tt2582802",
+    "director": "Damien Chazelle",
+    "actors": "Miles Teller, J.K. Simmons, Paul Reiser, Melissa Benoist"
+  },
+  {
+    "shelf_id": "M257",
+    "original_title": "3 idiots",
+    "imdb_id": "tt1187043",
+    "director": "Rajkumar Hirani",
+    "actors": "Aamir Khan, R. Madhavan, Sharman Joshi, Kareena Kapoor Khan"
+  },
+  {
+    "shelf_id": "M269",
+    "original_title": "Suddenly, Last Summer",
+    "imdb_id": "tt0053318",
+    "director": "Joseph L. Mankiewicz",
+    "actors": "Elizabeth Taylor, Katharine Hepburn, Montgomery Clift, Albert Dekker"
+  },
+  {
+    "shelf_id": "M272",
+    "original_title": "The Bounty (1984)",
+    "imdb_id": "tt0086993",
+    "director": "Donaldson, Roger",
+    "actors": "Mel Gibson, Anthony Hopkins"
+  },
+  {
+    "shelf_id": "M280",
+    "original_title": "National Lampoon's Christmas Vacation",
+    "imdb_id": "tt0097958",
+    "director": "Jeremiah S. Chechik",
+    "actors": "Chevy Chase, Beverly D'Angelo, Juliette Lewis, Johnny Galecki"
+  },
+  {
+    "shelf_id": "M283",
+    "original_title": "The Naked Gun 2½: The Smell of Fear",
+    "imdb_id": "tt0102510",
+    "director": "David Zucker",
+    "actors": "Leslie Nielsen, Priscilla Presley, George Kennedy, O. J. Simpson"
+  },
+  {
+    "shelf_id": "N003",
+    "original_title": "Fargo",
+    "imdb_id": "tt0116282",
+    "director": "Joel Coen",
+    "actors": "Frances McDormand, William H. Macy, Steve Buscemi, Peter Stormare"
+  },
+  {
+    "shelf_id": "N038",
+    "original_title": "Sonata dlya Gitlera",
+    "imdb_id": "tt0175190",
+    "director": "Sokurov, Aleksandr",
+    "actors": "Adolf Hitler"
+  },
+  {
+    "shelf_id": "N045",
+    "original_title": "Fargo",
+    "imdb_id": "tt0116282",
+    "director": "Joel Coen",
+    "actors": "Frances McDormand, William H. Macy, Steve Buscemi, Peter Stormare"
+  },
+  {
+    "shelf_id": "N058",
+    "original_title": "Ημέρες Πολυτεχνείου",
+    "imdb_id": "tt4486130",
+    "director": "Papanagiotou, Dim.",
+    "actors": null
+  },
+  {
+    "shelf_id": "N060",
+    "original_title": "Η αληθινή 17 Νοέμβρη 1973",
+    "imdb_id": null,
+    "director": "Kouloglou, Stelios",
+    "actors": "Ρεπορτάζ χωρίς σύνορα"
+  },
+  {
+    "shelf_id": "N073",
+    "original_title": "Naked Gun 33 1/3: The Final Insult",
+    "imdb_id": "tt0110622",
+    "director": "Peter Segal",
+    "actors": "Leslie Nielsen, Priscilla Presley, George Kennedy, O. J. Simpson"
+  },
+  {
+    "shelf_id": "N094",
+    "original_title": "The Killing",
+    "imdb_id": "tt0049406",
+    "director": "Stanley Kubrick",
+    "actors": "Sterling Hayden, Coleen Gray, Vince Edwards, Jay C. Flippen"
+  },
+  {
+    "shelf_id": "N110",
+    "original_title": "12 Angry Men",
+    "imdb_id": "tt0050083",
+    "director": "Sidney Lumet",
+    "actors": "Martin Balsam, John Fiedler, Lee J. Cobb, E.G. Marshall"
+  },
+  {
+    "shelf_id": "N142",
+    "original_title": "Boogie Nights",
+    "imdb_id": "tt0118749",
+    "director": "Paul Thomas Anderson",
+    "actors": "Mark Wahlberg, Burt Reynolds, Julianne Moore, John C. Reilly"
+  },
+  {
+    "shelf_id": "N143",
+    "original_title": "Αρκεί να φαίνονται ωραία",
+    "imdb_id": null,
+    "director": "Maragos, Thodoros",
+    "actors": null
+  },
+  {
+    "shelf_id": "N160",
+    "original_title": "El botón de nácar",
+    "imdb_id": "tt4377864",
+    "director": "Patricio Guzmán",
+    "actors": "Patricio Guzmán, Martín G. Calderón, Gabriela Paterito, Gabriel Salazar"
+  },
+  {
+    "shelf_id": "N178",
+    "original_title": "Voskhozhdenie na Fudziyamu",
+    "imdb_id": "tt0175309",
+    "director": "Bolotbek Shamshiyev",
+    "actors": "Sabira Kumushaliyeva, Aiturgan Temirova, Gulsara Adzhibekova, L. Kadenova"
+  },
+  {
+    "shelf_id": "P028",
+    "original_title": "Nostalgia for the light",
+    "imdb_id": "tt4377864",
+    "director": "Patricio Guzmán",
+    "actors": "Patricio Guzmán, Martín G. Calderón, Gabriela Paterito, Gabriel Salazar"
+  },
+  {
+    "shelf_id": "P034",
+    "original_title": "Le chagrin et la pitié",
+    "imdb_id": "tt0066904",
+    "director": "Ophüls, Marcel ",
+    "actors": "Georges Bidault, Matthäus Bleibinger "
+  },
+  {
+    "shelf_id": "P049",
+    "original_title": "The Million Pound Note",
+    "imdb_id": "tt0046072",
+    "director": "Ronald Neame",
+    "actors": "Gregory Peck, Ronald Squire, Joyce Grenfell, A.E. Matthews"
+  },
+  {
+    "shelf_id": "P096",
+    "original_title": "Sterne",
+    "imdb_id": "tt0053306",
+    "director": "Konrad Wolf",
+    "actors": "Sasha Krusharska, Jürgen Frohriep, Erik S. Klein, Stefan Pejchev"
+  },
+  {
+    "shelf_id": "P110",
+    "original_title": "King Ralph",
+    "imdb_id": "tt0102216",
+    "director": "David S. Ward",
+    "actors": "John Goodman, Peter O'Toole, John Hurt, Camille Coduri"
+  },
+  {
+    "shelf_id": "P124",
+    "original_title": "The Cincinnati Kid",
+    "imdb_id": "tt0059037",
+    "director": "Norman Jewison",
+    "actors": "Steve McQueen, Edward G. Robinson, Ann-Margret, Karl Malden"
+  },
+  {
+    "shelf_id": "P136",
+    "original_title": "Tony Rome",
+    "imdb_id": "tt0062380",
+    "director": "Gordon Douglas",
+    "actors": "Frank Sinatra, Jill St. John, Richard Conte, Gena Rowlands"
+  },
+  {
+    "shelf_id": "P144",
+    "original_title": "Macbeth",
+    "imdb_id": "tt0079499",
+    "director": "Casson, Philip",
+    "actors": "Séverin-Mars, Georgette Leblanc, Pierre Alcover, Julien Duvivier"
+  },
+  {
+    "shelf_id": "P145",
+    "original_title": "King Lear",
+    "imdb_id": "tt0006895",
+    "director": "Ernest C. Warde",
+    "actors": "Frederick Warde, Lorraine Huling, Ernest C. Warde, Wayne Arey"
+  },
+  {
+    "shelf_id": "P147",
+    "original_title": "Jackie Brown",
+    "imdb_id": "tt0119396",
+    "director": "Quentin Tarantino",
+    "actors": "Pam Grier, Samuel L. Jackson, Robert De Niro, Bridget Fonda"
+  },
+  {
+    "shelf_id": "P181",
+    "original_title": "Trial on the Road",
+    "imdb_id": "tt0067625",
+    "director": "Алексей Герман ст.",
+    "actors": "Ролан Быков, Анатолий Солоницын, Владимир Заманский, Олег Борисов"
+  },
+  {
+    "shelf_id": "P194",
+    "original_title": "Shaft",
+    "imdb_id": "tt0162650",
+    "director": "John Singleton",
+    "actors": "Samuel L. Jackson, Vanessa Williams, Jeffrey Wright, Christian Bale"
+  },
+  {
+    "shelf_id": "P198",
+    "original_title": "1968",
+    "imdb_id": "tt5687378",
+    "director": "Aaron Rota",
+    "actors": "Warren Belle, Daniel Krantz, Richard D. Leko"
+  },
+  {
+    "shelf_id": "P201",
+    "original_title": "Et si on vivait tous ensemble?",
+    "imdb_id": "tt1674057",
+    "director": "Robelin, Stéphane",
+    "actors": "Guy Bedos, Daniel Brühl"
+  },
+  {
+    "shelf_id": "P230",
+    "original_title": "The Gentlemen",
+    "imdb_id": "tt8367814",
+    "director": "Ritchie, Guy",
+    "actors": "Matthew McConaughey, Charlie Hunnam"
+  },
+  {
+    "shelf_id": "P235",
+    "original_title": "Salmon fishing in the Yemen",
+    "imdb_id": "tt1441952",
+    "director": "Hallström, Lasse ",
+    "actors": "Ewan McGregor, Emily Blunt"
+  },
+  {
+    "shelf_id": "P247",
+    "original_title": "La fille au bracelet",
+    "imdb_id": "tt7766886",
+    "director": "Demoustier, Stéphane",
+    "actors": "Roschdy Zem, Chiara Mastroianni"
+  },
+  {
+    "shelf_id": "P275",
+    "original_title": "Nomadland",
+    "imdb_id": "tt9770150",
+    "director": "Zhao, Chloé",
+    "actors": "Frances McDormand, Gay DeForest"
+  },
+  {
+    "shelf_id": "P278",
+    "original_title": "Terms of Endearment",
+    "imdb_id": "tt0086425",
+    "director": "James L. Brooks",
+    "actors": "Shirley MacLaine, Debra Winger, Jack Nicholson, Danny DeVito"
+  },
+  {
+    "shelf_id": "P280",
+    "original_title": "There is a Girl in My Soup",
+    "imdb_id": "tt0066449",
+    "director": "Boulting, Roy",
+    "actors": "Peter Sellers, Goldie Hawn"
+  },
+  {
+    "shelf_id": "P290",
+    "original_title": "Le bleu du caftan  -   BLUE CAFTAN",
+    "imdb_id": "tt17679584",
+    "director": "Touzani, Maryam",
+    "actors": "Lubna Azabal, Saleh Bakri"
+  },
+  {
+    "shelf_id": "P297",
+    "original_title": "Brat 1 & Brat 2",
+    "imdb_id": "tt0118767",
+    "director": "Balabanov, Aleksey",
+    "actors": "Sergey Bodrov, Viktor Sukhorukov"
+  },
+  {
+    "shelf_id": "P299",
+    "original_title": "12 stulev",
+    "imdb_id": "tt0065670",
+    "director": "Gaidai, Leonid",
+    "actors": "Archil Gomiashvili, Sergey Filippov"
+  },
+  {
+    "shelf_id": "R003",
+    "original_title": "Faites sauter la banque",
+    "imdb_id": "tt0057051",
+    "director": "Vasselin, Pascal",
+    "actors": "Louis de Funes"
+  },
+  {
+    "shelf_id": "R007",
+    "original_title": "I fotografia.   -    La photo",
+    "imdb_id": "tt0093733",
+    "director": "Papatakis, Nikos",
+    "actors": "Hristos Tsagas, Aris Retsos"
+  },
+  {
+    "shelf_id": "R015",
+    "original_title": "I Am Not Your Negro",
+    "imdb_id": "tt5804038",
+    "director": "Peck, Raoul",
+    "actors": "Samuel L. Jackson, James Baldwin"
+  },
+  {
+    "shelf_id": "R021",
+    "original_title": "The Hustler",
+    "imdb_id": "tt0054997",
+    "director": "Robert Rossen",
+    "actors": "Paul Newman, Jackie Gleason, Piper Laurie, George C. Scott"
+  },
+  {
+    "shelf_id": "R030",
+    "original_title": "Babel",
+    "imdb_id": "tt0449467",
+    "director": "Alejandro G. Iñárritu",
+    "actors": "Brad Pitt, Rinko Kikuchi, Adriana Barraza, Cate Blanchett"
+  },
+  {
+    "shelf_id": "R040",
+    "original_title": "Die Rebellion",
+    "imdb_id": "tt0107929",
+    "director": "Haneke, Michael",
+    "actors": "Branko Samarovski, Judit Pogány"
+  },
+  {
+    "shelf_id": "R052",
+    "original_title": "Hoffa",
+    "imdb_id": "tt0104427",
+    "director": "Danny DeVito",
+    "actors": "Jack Nicholson, Danny DeVito, Armand Assante, J.T. Walsh"
+  },
+  {
+    "shelf_id": "R058",
+    "original_title": "Man of the West",
+    "imdb_id": "tt0051899",
+    "director": "Anthony Mann",
+    "actors": "Gary Cooper, Julie London, Lee J. Cobb, Arthur O'Connell"
+  },
+  {
+    "shelf_id": "R062",
+    "original_title": "Strangers on a Train",
+    "imdb_id": "tt0044079",
+    "director": "Alfred Hitchcock",
+    "actors": "Farley Granger, Ruth Roman, Robert Walker, Leo G. Carroll"
+  },
+  {
+    "shelf_id": "R068",
+    "original_title": "Ocean's Eleven (1960)",
+    "imdb_id": "tt0054135",
+    "director": "Milestone, Lewis",
+    "actors": "Frank Sinatra, Dean Martin"
+  },
+  {
+    "shelf_id": "R070",
+    "original_title": "Ken Loach",
+    "imdb_id": null,
+    "director": "Loach, Ken ",
+    "actors": "Cilian Murphy"
+  },
+  {
+    "shelf_id": "R071",
+    "original_title": "Petulia",
+    "imdb_id": "tt0063426",
+    "director": "Richard Lester",
+    "actors": "Julie Christie, George C. Scott, Richard Chamberlain, Arthur Hill"
+  },
+  {
+    "shelf_id": "R084",
+    "original_title": "Jusq' à la garde",
+    "imdb_id": "tt6002232",
+    "director": "Legrand, Xavier",
+    "actors": "Léa Drucker, Denis Ménochet"
+  },
+  {
+    "shelf_id": "R091",
+    "original_title": "To Have and Have Not",
+    "imdb_id": "tt0037382",
+    "director": "Hawks, Howard",
+    "actors": "Humphrey Bogart, Walter Brennan"
+  },
+  {
+    "shelf_id": "R112",
+    "original_title": "First Reformed",
+    "imdb_id": "tt6053438",
+    "director": "Schrader, Paul",
+    "actors": "Ethan Hawke, Amanda Seyfried"
+  },
+  {
+    "shelf_id": "R122",
+    "original_title": "La ragazza nella nebbia  -   The R[574]Cgirl in the fog",
+    "imdb_id": "tt6892400",
+    "director": "Carrisi, Donato",
+    "actors": "Toni Servillo, Alessio Boni"
+  },
+  {
+    "shelf_id": "R124",
+    "original_title": "The Ladykillers (2004)",
+    "imdb_id": "tt0335245",
+    "director": "Coen, Joel / Coen, Ethan",
+    "actors": "Tom Hanks, Irma P. Hall"
+  },
+  {
+    "shelf_id": "R144",
+    "original_title": "LBJ",
+    "imdb_id": "tt4778988",
+    "director": "Reiner, Rob",
+    "actors": "Woody Harrelson, Michael Stahl-David"
+  },
+  {
+    "shelf_id": "R158",
+    "original_title": "The romantic English woman",
+    "imdb_id": "tt0073634",
+    "director": "Losey, Joseph",
+    "actors": "Glenda Jackson, Michael Caine"
+  },
+  {
+    "shelf_id": "R161",
+    "original_title": "Πίσω από τις θημωνιές",
+    "imdb_id": "tt19631646",
+    "director": "Proedrou, Asimina",
+    "actors": "Stathis Stamoulakatos, Eleni Ouzounidou"
+  },
+  {
+    "shelf_id": "R162",
+    "original_title": "Το μόνον της ζωής του ταξίδιον",
+    "imdb_id": "tt0311539",
+    "director": "Papastathis, Lakis",
+    "actors": "Ilias Logothetis, Fragiski Moustaki"
+  },
+  {
+    "shelf_id": "R164",
+    "original_title": "What's Love Got to Do with It?",
+    "imdb_id": "tt13430858",
+    "director": "Kapur, Shekhar",
+    "actors": "Mim Shaikh, Iman Boujelouah"
+  },
+  {
+    "shelf_id": "R167",
+    "original_title": "Poetry",
+    "imdb_id": "tt1287878",
+    "director": "Chang-dong, Lee",
+    "actors": "Yun Jeong-hie, Lee Da-wit"
+  },
+  {
+    "shelf_id": "R186",
+    "original_title": "Έγκλημα στο Κολωνάκι",
+    "imdb_id": "tt0236184",
+    "director": "Aliferis, Jannis",
+    "actors": "Michalis Nikolinakos, Gely Mavropoulou"
+  },
+  {
+    "shelf_id": "R189",
+    "original_title": "Following",
+    "imdb_id": "tt0154506",
+    "director": "Nolan, Christopher",
+    "actors": "Jeremy Theobald, Alex Haw"
+  },
+  {
+    "shelf_id": "R190",
+    "original_title": "Καραβάν σεράι",
+    "imdb_id": "tt0255297",
+    "director": "Psarras, Tasos",
+    "actors": "Thymios Karakatsanis, Dimitra Hatoupi"
+  },
+  {
+    "shelf_id": "R191",
+    "original_title": "Έγκλημα στα παρασκήνια",
+    "imdb_id": "tt0025529",
+    "director": "Katsouridis, Dinos",
+    "actors": null
+  },
+  {
+    "shelf_id": "R193",
+    "original_title": "Ο Κλέαρχος, η Μαρίνα κι ο κοντός",
+    "imdb_id": "tt0135573",
+    "director": "Tsiforos, Nikos",
+    "actors": null
+  },
+  {
+    "shelf_id": "R194",
+    "original_title": "Οι Κυρίες Της Αυλής",
+    "imdb_id": "tt0145037",
+    "director": "Dimopoulos, Dinos",
+    "actors": null
+  },
+  {
+    "shelf_id": "R202",
+    "original_title": "Sound of Metal",
+    "imdb_id": "tt5363618",
+    "director": "Marder, Darius",
+    "actors": "Riz Ahmed, Olivia Cooke"
+  },
+  {
+    "shelf_id": "R215",
+    "original_title": "Η τραγωδία του Αιγαίου",
+    "imdb_id": "tt0283069",
+    "director": "Maros, Basil",
+    "actors": "Vassilis Zochos, Winston Churchill"
+  },
+  {
+    "shelf_id": "R220",
+    "original_title": "The Man Who Knew Infinity",
+    "imdb_id": "tt0787524",
+    "director": "Brown, Matt",
+    "actors": "Jeremy Irons, Dev Patel"
+  },
+  {
+    "shelf_id": "R222",
+    "original_title": "Eddie the Eagle",
+    "imdb_id": "tt1083452",
+    "director": "Fletcher, Dexter",
+    "actors": "Cam Clarke, Brittney Level"
+  },
+  {
+    "shelf_id": "R232",
+    "original_title": "Ο φάκελος Πολκ στον αέρα",
+    "imdb_id": "tt0258560",
+    "director": "Grigoratos, Dionysis",
+    "actors": "Agapi Manoura, Mihalis Kosmidis"
+  },
+  {
+    "shelf_id": "R234",
+    "original_title": "21 (Twenty one)",
+    "imdb_id": "tt0478087",
+    "director": "Luketic, Robert",
+    "actors": "Jim Sturgess, Kevin Spacey"
+  },
+  {
+    "shelf_id": "R235",
+    "original_title": "Κιέριον",
+    "imdb_id": "tt0063182",
+    "director": "Theos, Dimos",
+    "actors": "Anestis Vlahos, Kyriakos Katzourakis"
+  },
+  {
+    "shelf_id": "R239",
+    "original_title": "Το νησί των γενναίων",
+    "imdb_id": "tt0203742",
+    "director": "Dadiras, Dimis",
+    "actors": "Α. Αλεξανδράκης, Τζ. Καρέζη, Αρτ. Μάτσας"
+  },
+  {
+    "shelf_id": "R242",
+    "original_title": "Candelaria",
+    "imdb_id": "tt7264116",
+    "director": "Hendrix, Jhonny",
+    "actors": "Alden Knight, Verónica Lynn"
+  },
+  {
+    "shelf_id": "R250",
+    "original_title": "Finding Forrester",
+    "imdb_id": "tt0181536",
+    "director": "Gus Van Sant",
+    "actors": "Sean Connery, Rob Brown, F. Murray Abraham, Anna Paquin"
+  },
+  {
+    "shelf_id": "R255",
+    "original_title": "Panique",
+    "imdb_id": "tt0038824",
+    "director": "Duvivier, Julien",
+    "actors": "Viviane Romance, Michel Simon"
+  },
+  {
+    "shelf_id": "R262",
+    "original_title": "Girl with the dragon tattoo 2 (Svensk)",
+    "imdb_id": "tt1216487",
+    "director": "Alfredson, Daniel",
+    "actors": "Michael Nyqvist, Noomi Rapace"
+  },
+  {
+    "shelf_id": "R277",
+    "original_title": "Maclibel",
+    "imdb_id": "tt0458425",
+    "director": "Loach, Ken - Armstrong, Franny ",
+    "actors": "Helen Steel, Dave Morris"
+  },
+  {
+    "shelf_id": "R287",
+    "original_title": "Ολο Γελούσε",
+    "imdb_id": null,
+    "director": "Maragos, Thodoros ",
+    "actors": "Κώστας Τσάκωνας"
+  },
+  {
+    "shelf_id": "R288",
+    "original_title": "Οι κυνικοί ξανάρχονται",
+    "imdb_id": null,
+    "director": "Kalogeropoulos, Nikos",
+    "actors": null
+  },
+  {
+    "shelf_id": "R295",
+    "original_title": "All About Eve",
+    "imdb_id": "tt0042192",
+    "director": "Joseph L. Mankiewicz",
+    "actors": "Bette Davis, Anne Baxter, George Sanders, Celeste Holm"
+  },
+  {
+    "shelf_id": "S004",
+    "original_title": "Candelaria",
+    "imdb_id": "tt7264116",
+    "director": "Hendrix, Johny",
+    "actors": "Alden Knight, Verónica Lynn"
+  },
+  {
+    "shelf_id": "S007",
+    "original_title": "Finding Forrester",
+    "imdb_id": "tt0181536",
+    "director": "Gus Van Sant",
+    "actors": "Sean Connery, Rob Brown, F. Murray Abraham, Anna Paquin"
+  },
+  {
+    "shelf_id": "S015",
+    "original_title": "Camino a La Paz - The Road to La Paz",
+    "imdb_id": "tt3686990",
+    "director": "Varone, Francisco",
+    "actors": "Rodrigo de la Serna, Ernesto Suarez"
+  },
+  {
+    "shelf_id": "S017",
+    "original_title": "Ανοιχτή Επιστολή",
+    "imdb_id": "tt0151843",
+    "director": "Stamboulopoulos, Giorgos",
+    "actors": "Μ. Αρβανίτη, Ε. Theofilou, N. Naneris, St. Tornes"
+  },
+  {
+    "shelf_id": "S019",
+    "original_title": "Ένας ήρως με παντούφλες",
+    "imdb_id": "tt0129058",
+    "director": "Sakellarios, Alekos",
+    "actors": "Β.Λογοθετίδης , N.Τσαγανέα, Ί.Λιβυκού, Λ.Διανέλλος "
+  },
+  {
+    "shelf_id": "S020",
+    "original_title": "Παραγγελιά",
+    "imdb_id": "tt0081304",
+    "director": "Tasios, Pavlos",
+    "actors": "Αντ. Αντωνίου,Αντ. Καφετζόπουλος, Κατ. Γώγου"
+  },
+  {
+    "shelf_id": "S021",
+    "original_title": "Τζο ο τρομερός",
+    "imdb_id": "tt0126978",
+    "director": "Dimopoulos, Dinos",
+    "actors": "Ντ.Ηλιόπουλος, Μ.Παπαγεωργίου, Χ.Τσαγανέας"
+  },
+  {
+    "shelf_id": "S022",
+    "original_title": "Το αγοροκόριτσο",
+    "imdb_id": "tt0135754",
+    "director": "Dadiras, Dimis",
+    "actors": "Άννα Φόνσου, Αλ. Αλεξανδράκης, Γιάννης Γκιωνάκης"
+  },
+  {
+    "shelf_id": "S023",
+    "original_title": "Το κοροϊδάκι της δεσποινίδος",
+    "imdb_id": "tt0126986",
+    "director": "Dalianidis, Yannis",
+    "actors": "Τζ. Καρέζη, Ντ.Ηλιόπουλος, Δ.Παπαγιαννόπουλος"
+  },
+  {
+    "shelf_id": "S024",
+    "original_title": "Mauthausen, le camp de l' horreur",
+    "imdb_id": null,
+    "director": "Guilain Depardieu",
+    "actors": "Μιχ.Κομνηνός , Κ. Παυλάκη , Β.Λάγγος , Μ.Βακούσης"
+  },
+  {
+    "shelf_id": "S025",
+    "original_title": "Εκδρομή",
+    "imdb_id": "tt0144889",
+    "director": "Kanellopoulos, Takis",
+    "actors": "Λ. Παπαγιάννη, Αγγ. Αντωνόπουλος, Κ. Καραγιώργης"
+  },
+  {
+    "shelf_id": "S026",
+    "original_title": "ΟΙ ΦΩΤΟΓΡΑΦΟΙ",
+    "imdb_id": "tt0410452",
+    "director": "Koundouros, Nikos",
+    "actors": "Μ. Αρβανίτη, Ε. Theofilou, N. Naneris, St. Tornes"
+  },
+  {
+    "shelf_id": "S027",
+    "original_title": "Οι Προστάτες",
+    "imdb_id": "tt0267856",
+    "director": "Tasios, Pavlos",
+    "actors": "Μ. Κατράκης, Μαρ. Λαμπρινού, Ν. Τσακίρογλου"
+  },
+  {
+    "shelf_id": "S028",
+    "original_title": "Οι παράνομοι",
+    "imdb_id": "tt0288715",
+    "director": "Koundouros, Nikos",
+    "actors": "Τίτος Βανδής, Πέτρος Φυσσούν, Ανέστης Βλάχος"
+  },
+  {
+    "shelf_id": "S029",
+    "original_title": "Ληστεία στην Αθήνα",
+    "imdb_id": "tt0228524",
+    "director": "Serdaris, Vangelis",
+    "actors": "Αν. Βλάχος, Χ. Τσάγκας, Γ. Καλατζής, Δ. Σιτζάνη"
+  },
+  {
+    "shelf_id": "S030",
+    "original_title": "Θεόφιλος",
+    "imdb_id": "tt0124164",
+    "director": "Papastathis, Lakis",
+    "actors": "Δ.Καταλειφός,Σ.Φασουλής,Δ.Καμπερίδης,Υ.Μαλτέζου"
+  },
+  {
+    "shelf_id": "S031",
+    "original_title": "Γυναίκες δηλητήριο",
+    "imdb_id": "tt0225917",
+    "director": "Zervos, Nikos",
+    "actors": "Σ.Παπαδόπουλος,Η.Λογοθέτης,Κ.Ρηγόπουλος"
+  },
+  {
+    "shelf_id": "S032",
+    "original_title": "BYRON, ΜΠΑΛΑΝΤΑ ΓΙΑ ΕΝΑ ΔΑΙΜΟΝΑ",
+    "imdb_id": "tt0241230",
+    "director": "Koundouros, Nikos",
+    "actors": "Μάνος Βακούσης, Vera Sotnikova, Άκης Σακελλαρίου"
+  },
+  {
+    "shelf_id": "S036",
+    "original_title": "Close-up",
+    "imdb_id": "tt0099531",
+    "director": "Peter Horton",
+    "actors": "Craig T. Nelson, Morgan Weisser, Samantha Mathis, Blair Brown"
+  },
+  {
+    "shelf_id": "S041",
+    "original_title": "Their Finest",
+    "imdb_id": "tt1661275",
+    "director": "Scherfig, Lone",
+    "actors": "Sam Claflin, Gemma Arterton"
+  },
+  {
+    "shelf_id": "S043",
+    "original_title": "ΤΗΕ HOLIDAY",
+    "imdb_id": "tt0457939",
+    "director": "Meyers, Nancy",
+    "actors": "Cameron Diaz, Kate Winslet"
+  },
+  {
+    "shelf_id": "S060",
+    "original_title": "Sheytan Vojood Nadarad. (There is no evil)",
+    "imdb_id": "tt11697844",
+    "director": "Rasoulof, Mohammad",
+    "actors": "Baran Rasoulof, Mohammad Valizadegan"
+  },
+  {
+    "shelf_id": "S064",
+    "original_title": "Birdman or (The Unexpected Virtue of Ignorance)",
+    "imdb_id": "tt2562232",
+    "director": "Alejandro G. Iñárritu",
+    "actors": "Michael Keaton, Emma Stone, Zach Galifianakis, Edward Norton"
+  },
+  {
+    "shelf_id": "S068",
+    "original_title": "Οι Απάχηδες των Αθηνών",
+    "imdb_id": "tt0200437",
+    "director": "Paraskevas, Ilias",
+    "actors": "Άννα Καλουτά, Λάμπρος Κωνσταντάρας"
+  },
+  {
+    "shelf_id": "S081",
+    "original_title": "SALTBURN",
+    "imdb_id": "tt17351924",
+    "director": "Emerald Fennell",
+    "actors": "Barry Keoghan, Jacob Elordi, Rosamund Pike, Richard E. Grant"
+  },
+  {
+    "shelf_id": "S086",
+    "original_title": "Key Largo",
+    "imdb_id": "tt0040506",
+    "director": "John Huston",
+    "actors": "Humphrey Bogart, Edward G. Robinson, Lauren Bacall, Thomas Gomez"
+  },
+  {
+    "shelf_id": "S087",
+    "original_title": "Deep End",
+    "imdb_id": "tt0066122",
+    "director": "Skolimowski, Jerzy",
+    "actors": "Jane Asher, John Moulder-Brown"
+  },
+  {
+    "shelf_id": "S093",
+    "original_title": "Ο τσαλαπετεινός του Γουαϊόμιγκ",
+    "imdb_id": "tt0128307",
+    "director": "Indares, Dimitris",
+    "actors": "Alexandros Logothetis, Vicky Volioti"
+  },
+  {
+    "shelf_id": "S106",
+    "original_title": "Mighty Aphrodite",
+    "imdb_id": "tt0113819",
+    "director": "Woody Allen",
+    "actors": "Woody Allen, Mira Sorvino, Helena Bonham Carter, F. Murray Abraham"
+  },
+  {
+    "shelf_id": "S113",
+    "original_title": "BEST INTENTIONS   E1",
+    "imdb_id": "tt0104350",
+    "director": "August, Bille",
+    "actors": "Samuel Fröler, Pernilla August"
+  },
+  {
+    "shelf_id": "S120",
+    "original_title": "Mona Lisa Smile",
+    "imdb_id": "tt0304415",
+    "director": "Newell, Mike",
+    "actors": "Julia Roberts, Kirsten Dunst"
+  },
+  {
+    "shelf_id": "S129",
+    "original_title": "Terror in a Texas Town",
+    "imdb_id": "tt0052287",
+    "director": "Joseph H. Lewis",
+    "actors": "Sterling Hayden, Sebastian Cabot, Carol Kelly, Eugene Mazzola"
+  },
+  {
+    "shelf_id": "S131",
+    "original_title": "Wednesday, May 9th",
+    "imdb_id": "tt4944924",
+    "director": "Jalilvand, Vahid",
+    "actors": "Niki Karimi, Amir Aghaee"
+  },
+  {
+    "shelf_id": "S133",
+    "original_title": "Τα χρόνια της μεγάλης ζέστης",
+    "imdb_id": "tt0105513",
+    "director": "Liappa, Frieda",
+    "actors": "Ilektra Alexandropoulou, Periklis Moustakis"
+  },
+  {
+    "shelf_id": "S139",
+    "original_title": "Mission: Impossible Ι",
+    "imdb_id": "tt0117060",
+    "director": "De Palma, Brian",
+    "actors": "Tom Cruise, Jon Voight"
+  },
+  {
+    "shelf_id": "S150",
+    "original_title": "Ταξίδι στ' αστέρια",
+    "imdb_id": "tt14836894",
+    "director": "Dimas, Christos",
+    "actors": "Danis Katranidis, Argyris Pandazaras"
+  },
+  {
+    "shelf_id": "S158",
+    "original_title": "70 Binladens   -    70 Big Ones",
+    "imdb_id": "tt7972178",
+    "director": "Serra, Koldo",
+    "actors": "Emma Suárez, Nathalie Poza"
+  },
+  {
+    "shelf_id": "S162",
+    "original_title": "The Best of Enemies",
+    "imdb_id": "tt4807408",
+    "director": "Robin Bissell",
+    "actors": "Taraji P. Henson, Sam Rockwell, Babou Ceesay, Anne Heche"
+  },
+  {
+    "shelf_id": "S173",
+    "original_title": "Ouistreham (Between two worlds)",
+    "imdb_id": "tt10088984",
+    "director": "Carrère, Emmanuel",
+    "actors": "Juliette Binoche, Louise Pociecka"
+  },
+  {
+    "shelf_id": "S180",
+    "original_title": "L' Ecole Buissonnière",
+    "imdb_id": "tt6330246",
+    "director": "Vanier, Nicolas",
+    "actors": "François Cluzet, Jean Scandel"
+  },
+  {
+    "shelf_id": "S187",
+    "original_title": "Les invisibles",
+    "imdb_id": "tt8633950",
+    "director": "Petit, Louis-Julien",
+    "actors": "Patricia Mouchon, Khoukha Boukherbache"
+  },
+  {
+    "shelf_id": "S190",
+    "original_title": "Oldboy",
+    "imdb_id": "tt1321511",
+    "director": "Spike Lee",
+    "actors": "Josh Brolin, Elizabeth Olsen, Sharlto Copley, Samuel L. Jackson"
+  },
+  {
+    "shelf_id": "S196",
+    "original_title": "She's Funny That Way",
+    "imdb_id": "tt1767372",
+    "director": "Bogdanovich, Peter",
+    "actors": "Imogen Poots, Illeana Douglas"
+  },
+  {
+    "shelf_id": "S198",
+    "original_title": "The public",
+    "imdb_id": "tt3294746",
+    "director": "Estevez, Emilio",
+    "actors": "John Lydon, Jah Wobble, Keith Levene"
+  },
+  {
+    "shelf_id": "S202",
+    "original_title": "Λιούμπη Liubi",
+    "imdb_id": "tt1059808",
+    "director": "Yourgou, Laya",
+    "actors": "Alexis Georgoulis, Eugenia Kaplan"
+  },
+  {
+    "shelf_id": "S218",
+    "original_title": "The Duke",
+    "imdb_id": "tt12655222",
+    "director": "Michell, Roger",
+    "actors": "Jim Broadbent, Heather Craney"
+  },
+  {
+    "shelf_id": "S221",
+    "original_title": "Patients (Step by step)",
+    "imdb_id": "tt5598100",
+    "director": "Idir, Mehdi - Grand Corps Malade",
+    "actors": "Pablo Pauly, Soufiane Guerrab, Moussa Mansaly"
+  },
+  {
+    "shelf_id": "S226",
+    "original_title": "Σάντα Κλάου",
+    "imdb_id": "tt30743186",
+    "director": "Mathioudakis, Michalis",
+    "actors": "Kostas Berikopoulos, Thanasis Dovris"
+  },
+  {
+    "shelf_id": "S241",
+    "original_title": "L'exercice de l'État (The minister)",
+    "imdb_id": "tt1781843",
+    "director": "Schoeller, Pierre",
+    "actors": "Olivier Gourmet, Michel Blanc"
+  },
+  {
+    "shelf_id": "S242",
+    "original_title": "Pépé le Moko",
+    "imdb_id": "tt0029453",
+    "director": "Duvivier, Julien",
+    "actors": "Jean Gabin, Gabriel Gabrio"
+  },
+  {
+    "shelf_id": "S247",
+    "original_title": "Far from the Madding Crowd (2015)",
+    "imdb_id": "tt2935476",
+    "director": "Vinterberg, Thomas",
+    "actors": "Carey Mulligan, Matthias Schoenaerts"
+  },
+  {
+    "shelf_id": "S251",
+    "original_title": "Το πέταγμα του κύκνου - (The Flight of the Swan)",
+    "imdb_id": "tt1545489",
+    "director": "Tzimas, Nikos",
+    "actors": "James D&#x27;Arcy, Alicia Witt"
+  },
+  {
+    "shelf_id": "S254",
+    "original_title": "Il mio nome è Nessuno  My name is Nobody",
+    "imdb_id": "tt0070215",
+    "director": "Tonino Valerii",
+    "actors": "Terence Hill, Henry Fonda, Jean Martin, R.G. Armstrong"
+  },
+  {
+    "shelf_id": "S259",
+    "original_title": "ΟΙ ΝΕΟΙ ΘΕΛΟΥΝ ΝΑ ΖΗΣΟΥΝ",
+    "imdb_id": "tt0265395",
+    "director": "Tzimas, Nikos",
+    "actors": "Faidon Georgitsis, Alexandra Ladikou"
+  },
+  {
+    "shelf_id": "S260",
+    "original_title": "ΤΑ ΧΡΟΝΙΑ ΤΗΣ ΘΥΕΛΛΑΣ",
+    "imdb_id": "tt0255228",
+    "director": "Tzimas, Nikos",
+    "actors": "Mihalis Stamatakis, Katerina Koutrouvida"
+  },
+  {
+    "shelf_id": "S264",
+    "original_title": "Coogan's Bluff",
+    "imdb_id": "tt0062824",
+    "director": "Don Siegel",
+    "actors": "Clint Eastwood, Lee J. Cobb, Susan Clark, Tisha Sterling"
+  },
+  {
+    "shelf_id": "S271",
+    "original_title": "Miss Julie   -    Fröken Julie",
+    "imdb_id": "tt2667960",
+    "director": "Ullmann, Liv",
+    "actors": "Colin Farrell, Jessica Chastain"
+  },
+  {
+    "shelf_id": "S274",
+    "original_title": "Stan & Ollie",
+    "imdb_id": "tt3385524",
+    "director": "Jon S. Baird",
+    "actors": "Steve Coogan, John C. Reilly, Shirley Henderson, Nina Arianda"
+  },
+  {
+    "shelf_id": "S276",
+    "original_title": "The Current War",
+    "imdb_id": "tt2140507",
+    "director": "Gomez-Rejon, Alfonso",
+    "actors": "Benedict Cumberbatch, Oliver Powell"
+  },
+  {
+    "shelf_id": "S284",
+    "original_title": "Agur Etxebeste!   -   Bye bye Mr.Etxebeste",
+    "imdb_id": "tt9076378",
+    "director": "Altuna, Telmo Esnal, Asier",
+    "actors": "Elena Irureta, Ram—n Agirre"
+  },
+  {
+    "shelf_id": "S289",
+    "original_title": "Hachico: A Dog's Tale",
+    "imdb_id": "tt1028532",
+    "director": "Hallstršm, Lasse",
+    "actors": "Richard Gere, Joan Allen"
+  },
+  {
+    "shelf_id": "T004",
+    "original_title": "Words and Pictures",
+    "imdb_id": "tt2380331",
+    "director": "Schepisi, Fred",
+    "actors": "Clive Owen, Juliette Binoche"
+  },
+  {
+    "shelf_id": "T016",
+    "original_title": "The Bedford Incident",
+    "imdb_id": "tt0058962",
+    "director": "James B. Harris",
+    "actors": "Richard Widmark, Sidney Poitier, James MacArthur, Martin Balsam"
+  },
+  {
+    "shelf_id": "T028",
+    "original_title": "Λαϊκοί Βάρδοι - Πάνος Γεραμάνης",
+    "imdb_id": null,
+    "director": "Koutsandreas, Thanos",
+    "actors": "Ilektra Gennata, Ieroklis Michaelidis. Panos Geramanis"
+  },
+  {
+    "shelf_id": "T055",
+    "original_title": "Ocean's Eleven (1960)",
+    "imdb_id": "tt0054135",
+    "director": "Milestone, Lewis",
+    "actors": "Frank Sinatra, Dean Martin"
+  },
+  {
+    "shelf_id": "T069",
+    "original_title": "Amores perros",
+    "imdb_id": "tt0245712",
+    "director": "Alejandro G. Iñárritu",
+    "actors": "Emilio Echevarría, Gael García Bernal, Goya Toledo, Álvaro Guerrero"
+  },
+  {
+    "shelf_id": "T083",
+    "original_title": "La révolution française",
+    "imdb_id": "tt0098238",
+    "director": "Richard T. Heffron",
+    "actors": "Klaus Maria Brandauer, François Cluzet, Marie Bunel, Jane Seymour"
+  },
+  {
+    "shelf_id": "T087",
+    "original_title": "Qu'est-ce qu'on a tous fait au Bon Dieu?  (3)",
+    "imdb_id": "tt10405142",
+    "director": "Chauveron, Philippe de",
+    "actors": "Christian Clavier, Chantal Lauby"
+  },
+  {
+    "shelf_id": "T093",
+    "original_title": "21 Twenty one",
+    "imdb_id": "tt0478087",
+    "director": "Luketic, Robert",
+    "actors": "Jim Sturgess, Kevin Spacey"
+  },
+  {
+    "shelf_id": "T109",
+    "original_title": "Holmes University: The Master Blackmailer",
+    "imdb_id": "tt4726018",
+    "director": "Achord, Scott",
+    "actors": "Ben Lord, Chris Rodriguez"
+  },
+  {
+    "shelf_id": "T114",
+    "original_title": "CHOP SHOP",
+    "imdb_id": "tt0990404",
+    "director": "Bahrani, Ramin",
+    "actors": "Alejandro Polanco, Isamar Gonzales"
+  },
+  {
+    "shelf_id": "T120",
+    "original_title": "The Salt of the Earth 2014",
+    "imdb_id": "tt3674140",
+    "director": "Ribeiro Salgado, Wim Wenders, Juliano",
+    "actors": "Sebasti‹o Salgado, Wim Wenders"
+  },
+  {
+    "shelf_id": "T124",
+    "original_title": "Spellbound",
+    "imdb_id": "tt0038109",
+    "director": "Alfred Hitchcock",
+    "actors": "Ingrid Bergman, Gregory Peck, Michael Chekhov, Leo G. Carroll"
+  },
+  {
+    "shelf_id": "T129",
+    "original_title": "Days of Wine and Roses",
+    "imdb_id": "tt0055895",
+    "director": "Edwards, Blake",
+    "actors": "Jack Lemmon, Lee Remick"
+  },
+  {
+    "shelf_id": "T132",
+    "original_title": "También la lluvia   -   Even the Rain",
+    "imdb_id": "tt1422032",
+    "director": "Bolla’n, Ic’ar",
+    "actors": "Luis Tosar, Gael Garc’a Bernal"
+  },
+  {
+    "shelf_id": "T133",
+    "original_title": "All quiet on the Western front (2022)",
+    "imdb_id": "tt1016150",
+    "director": "Berger, Edward",
+    "actors": "Felix Kammerer, Albrecht Schuch"
+  },
+  {
+    "shelf_id": "T137",
+    "original_title": "Tickets",
+    "imdb_id": "tt0463963",
+    "director": "D. B. Sweeney",
+    "actors": "John C. McGinley, D. B. Sweeney, Moira Kelly, Ed Harris"
+  },
+  {
+    "shelf_id": "T138",
+    "original_title": "Gardens of stone",
+    "imdb_id": "tt0093073",
+    "director": "Francis Ford Coppola",
+    "actors": "James Caan, Anjelica Huston, James Earl Jones, D. B. Sweeney"
+  },
+  {
+    "shelf_id": "T139",
+    "original_title": "Stripes",
+    "imdb_id": "tt0083131",
+    "director": "Ivan Reitman",
+    "actors": "Bill Murray, Harold Ramis, Warren Oates, P. J. Soles"
+  },
+  {
+    "shelf_id": "T143",
+    "original_title": "VORTEX Το πρόσωπο της Μέδουσας",
+    "imdb_id": "tt0232480",
+    "director": "Koundouros, Nikos",
+    "actors": "Fanis Hinas, Philippo Vlachos"
+  },
+  {
+    "shelf_id": "T144",
+    "original_title": "Lacta,  Η γεύση της αγάπης",
+    "imdb_id": "tt8069260",
+    "director": "Polizos, Akis",
+    "actors": "Fanis Mouratidis, Dimitris Kitsos"
+  },
+  {
+    "shelf_id": "T149",
+    "original_title": "Sokolovo",
+    "imdb_id": "tt0176160",
+    "director": "Vávra, Otakar",
+    "actors": "Ladislav Chud’k, Vladimir Samoylov"
+  },
+  {
+    "shelf_id": "T152",
+    "original_title": "522. Un gato, un chino y mi padre",
+    "imdb_id": "tt8196026",
+    "director": "Paco R. Baños",
+    "actors": "Natalia de Molina, Alberto Jo Lee, Miguel Borges, Manolo Solo"
+  },
+  {
+    "shelf_id": "T157",
+    "original_title": "The Fast Lady",
+    "imdb_id": "tt0055977",
+    "director": "Annakin, Ken",
+    "actors": "James Robertson Justice, Leslie Phillips"
+  },
+  {
+    "shelf_id": "T162",
+    "original_title": "Spirit of Berlin July 1945",
+    "imdb_id": "tt5919954",
+    "director": "Mühlen, Konstantin von zur ",
+    "actors": null
+  },
+  {
+    "shelf_id": "T163",
+    "original_title": "The AristoCats",
+    "imdb_id": "tt0065421",
+    "director": "Reitherman, Wolfgang",
+    "actors": "Phil Harris, Eva Gabor"
+  },
+  {
+    "shelf_id": "T174",
+    "original_title": "The Devil's Own",
+    "imdb_id": "tt0118972",
+    "director": "Alan J. Pakula",
+    "actors": "Harrison Ford, Brad Pitt, Margaret Colin, Rubén Blades"
+  },
+  {
+    "shelf_id": "T185",
+    "original_title": "Yunost Petra",
+    "imdb_id": "tt0171932",
+    "director": "Gerasimov, Sergey",
+    "actors": "Dmitriy Zolotukhin, Tamara Makarova"
+  },
+  {
+    "shelf_id": "T197",
+    "original_title": "Miseria e nobiltà   -  Misery and nobility",
+    "imdb_id": "tt0047238",
+    "director": "Mattoli, Mario",
+    "actors": "Totò, Sophia Loren, Enzo Turco"
+  },
+  {
+    "shelf_id": "T202",
+    "original_title": "The Front Runner",
+    "imdb_id": "tt7074886",
+    "director": "Jason Reitman",
+    "actors": "Hugh Jackman, Vera Farmiga, J.K. Simmons, Mark O'Brien"
+  },
+  {
+    "shelf_id": "T205",
+    "original_title": "ΜΑΗΣ",
+    "imdb_id": "tt0263691",
+    "director": "Psarras, Tasos",
+    "actors": "Vasilis Gopis, Dimitris Vagias"
+  },
+  {
+    "shelf_id": "T208",
+    "original_title": "A ciascuno il suo     -       To Each His Own",
+    "imdb_id": "tt0061320",
+    "director": "Petri, Elio",
+    "actors": "Gian Maria Volonté, Irene Papas"
+  },
+  {
+    "shelf_id": "T219",
+    "original_title": "Τα χρόνια της μεγάλης ζέστης",
+    "imdb_id": "tt0105513",
+    "director": "Liappa, Frieda",
+    "actors": "Ilektra Alexandropoulou, Periklis Moustakis"
+  },
+  {
+    "shelf_id": "T226",
+    "original_title": "Force of Evil",
+    "imdb_id": "tt0040366",
+    "director": "Polonsky, Abraham",
+    "actors": "John Garfield, Beatrice Pearson"
+  },
+  {
+    "shelf_id": "T235",
+    "original_title": "Pelé: Birth of a Legend",
+    "imdb_id": "tt0995868",
+    "director": "Zimbalist, Michael & Jeff",
+    "actors": "Kevin de Paula, Leonardo Lima Carvalho"
+  },
+  {
+    "shelf_id": "T236",
+    "original_title": "No way οut",
+    "imdb_id": "tt0093640",
+    "director": "Mankiewicz, L. Joseph",
+    "actors": "Richard Widmark, Linda Darnell"
+  },
+  {
+    "shelf_id": "T248",
+    "original_title": "Il capotto",
+    "imdb_id": "tt0044474",
+    "director": "Lattuada, Alberto",
+    "actors": "Renato Rascel, Yvonne Sanson"
+  },
+  {
+    "shelf_id": "T249",
+    "original_title": "Im Feuer bestanden    Salvador Allende",
+    "imdb_id": "tt0295464",
+    "director": "Heynowski, Walt. - Scheumann, Ger.  ",
+    "actors": null
+  },
+  {
+    "shelf_id": "T253",
+    "original_title": "Pilots in pajamas",
+    "imdb_id": "tt0397817",
+    "director": "Heynowski, Walt. - Scheumann, Ger.  ",
+    "actors": null
+  },
+  {
+    "shelf_id": "T257",
+    "original_title": "Τοwn without pity",
+    "imdb_id": "tt0055539",
+    "director": "Reinhardt, Gottfried",
+    "actors": "Kirk Douglas, E.G. Marshall"
+  },
+  {
+    "shelf_id": "T258",
+    "original_title": "Μαριονέτα",
+    "imdb_id": "tt1357169",
+    "director": "Nikolakakis, Minos",
+    "actors": "Μανώλης Μαυροματάκης"
+  },
+  {
+    "shelf_id": "T259",
+    "original_title": "Ο φοιτητής",
+    "imdb_id": "tt15857494",
+    "director": "Kalamakis, Vassilis",
+    "actors": "Γιώργος Πυρπασόπουλος, Γιώργος Μακρής"
+  },
+  {
+    "shelf_id": "T279",
+    "original_title": "La nuit de Saint Germain des Prés",
+    "imdb_id": "tt0074985",
+    "director": "Swaim, Bob",
+    "actors": "Michel Galabru, Mort Shuman"
+  },
+  {
+    "shelf_id": "T281",
+    "original_title": "Great Expectations 1946",
+    "imdb_id": "tt0038574",
+    "director": "Lean, David",
+    "actors": "John Mills, Valerie Hobson"
+  },
+  {
+    "shelf_id": "T284",
+    "original_title": "Jeanne Dielman, 23, quai du commerce, 1080 Bruxelles",
+    "imdb_id": "tt0073198",
+    "director": "Akerman, Chantal",
+    "actors": "Delphine Seyrig, Jan Decorte"
+  },
+  {
+    "shelf_id": "T285",
+    "original_title": "Metropolis Β [1984 Giorgio Moroder]",
+    "imdb_id": "tt35142220",
+    "director": "Lang, Fritz",
+    "actors": "Brigitte Helm, Alfred Abel"
+  },
+  {
+    "shelf_id": "T286",
+    "original_title": "Metropolis C Colorized & Remastered 4K",
+    "imdb_id": "tt0017136",
+    "director": "Lang, Fritz",
+    "actors": "Brigitte Helm, Alfred Abel"
+  },
+  {
+    "shelf_id": "T305",
+    "original_title": "141 Minutes from the Unfinished Sentence",
+    "imdb_id": "tt0071081",
+    "director": "Fábri, Zoltán",
+    "actors": "András Bálint, Mari Csomós"
+  },
+  {
+    "shelf_id": "T306",
+    "original_title": "Έτερος εγώ",
+    "imdb_id": "tt5221894",
+    "director": "Tsafoulias, Sotiris",
+    "actors": "Pygmalion Dadakaridis, Dimitris Katalifos"
+  },
+  {
+    "shelf_id": "T307",
+    "original_title": "ANNA KARENINA",
+    "imdb_id": "tt16462490",
+    "director": "Shakhnazarov, Karen",
+    "actors": "Anna Laudere, Edvin Revazov, Aleix Martínez, Emilie Mazon"
+  },
+  {
+    "shelf_id": "T312",
+    "original_title": "Tiger Bay",
+    "imdb_id": "tt0053361",
+    "director": "J. Lee Thompson",
+    "actors": "John Mills, Horst Buchholz, Hayley Mills, Yvonne Mitchell"
+  },
+  {
+    "shelf_id": "T315",
+    "original_title": "The Young Ones",
+    "imdb_id": "tt0055626",
+    "director": "Sidney J. Furie",
+    "actors": "Cliff Richard, Robert Morley, Carole Gray, Jet Harris"
+  },
+  {
+    "shelf_id": "T317",
+    "original_title": "Father and Soldier -  TIRAILLEURS",
+    "imdb_id": "tt14860210",
+    "director": "Vadepied, Mathieu",
+    "actors": "Omar Sy, Alassane Diong"
+  },
+  {
+    "shelf_id": "T319",
+    "original_title": "Persona non grata",
+    "imdb_id": "tt11361714",
+    "director": "Jespersen, Lisa",
+    "actors": "Gary Holt, Steve \"Zetro\" Souza, Lee Altus, Jack Gibson"
+  },
+  {
+    "shelf_id": "T322",
+    "original_title": "Let There Be Light",
+    "imdb_id": "tt5804314",
+    "director": "Huston, John",
+    "actors": "Walter Huston, Benjamin Simon"
+  },
+  {
+    "shelf_id": "T324",
+    "original_title": "All That Jazz",
+    "imdb_id": "tt0078754",
+    "director": "Fosse, Bob",
+    "actors": "Roy Scheider, Jessica Lange"
+  },
+  {
+    "shelf_id": "T327",
+    "original_title": "The Yellow Rolls-Royce",
+    "imdb_id": "tt0059927",
+    "director": "Anthony Asquith",
+    "actors": "Ingrid Bergman, Rex Harrison, Alain Delon, George C. Scott"
+  },
+  {
+    "shelf_id": "T330",
+    "original_title": "Triple Cross",
+    "imdb_id": "tt0061647",
+    "director": "Young, Terence",
+    "actors": "Christopher Plummer, Romy Schneider"
+  },
+  {
+    "shelf_id": "T339",
+    "original_title": "The Big Boss      -     Fists of fury",
+    "imdb_id": "tt0067824",
+    "director": "Lo, Wei",
+    "actors": "Bruce Lee, Maria Yi"
+  },
+  {
+    "shelf_id": "T342",
+    "original_title": "The American Dream",
+    "imdb_id": "tt1779492",
+    "director": "Harold Uhl",
+    "actors": "Jess Harnell, D. C. Douglas"
+  },
+  {
+    "shelf_id": "T345",
+    "original_title": "Bird",
+    "imdb_id": "tt0094747",
+    "director": "Clint Eastwood",
+    "actors": "Forest Whitaker, Diane Venora, Michael Zelniker, Samuel E. Wright"
+  },
+  {
+    "shelf_id": "T347",
+    "original_title": "Knife in the Water",
+    "imdb_id": "tt0056291",
+    "director": "Polanski, Roman",
+    "actors": "Leon Niemczyk, Jolanta Umecka"
+  },
+  {
+    "shelf_id": "T348",
+    "original_title": "Love in the Time of Cholera",
+    "imdb_id": "tt0484740",
+    "director": "Newell, Mike",
+    "actors": "Javier Bardem, Giovanna Mezzogiorno"
+  },
+  {
+    "shelf_id": "T350",
+    "original_title": "Quisling: The Final Days",
+    "imdb_id": "tt14638208",
+    "director": "Erik Poppe",
+    "actors": "Gard B. Eidsvold, Anders Danielsen Lie, Lisa Carlehed, Lisa Loven Kongsli"
+  },
+  {
+    "shelf_id": "T359",
+    "original_title": "City of Life and Death",
+    "imdb_id": "tt1124052",
+    "director": "Lu, Chuan",
+    "actors": "Ye Liu, Wei Fan"
+  },
+  {
+    "shelf_id": "T365",
+    "original_title": "The Shadow Riders",
+    "imdb_id": "tt0084666",
+    "director": "Andrew V. McLaglen",
+    "actors": "Tom Selleck, Sam Elliott, Ben Johnson, Geoffrey Lewis"
+  },
+  {
+    "shelf_id": "T366",
+    "original_title": "Wolfgang A. Mozart",
+    "imdb_id": "tt0184030",
+    "director": "Herz, Juraj",
+    "actors": "Alexander Lutz, Barbara Wussow"
+  },
+  {
+    "shelf_id": "T367",
+    "original_title": "The Sterile Cuckoo",
+    "imdb_id": "tt0065037",
+    "director": "Pakula, J. Alan",
+    "actors": "Liza Minnelli, Wendell Burton"
+  },
+  {
+    "shelf_id": "T368",
+    "original_title": "The Last Castle",
+    "imdb_id": "tt0272020",
+    "director": "Lurie, Rod",
+    "actors": "Robert Redford, James Gandolfini"
+  },
+  {
+    "shelf_id": "U001",
+    "original_title": "Mr. Saturday Night",
+    "imdb_id": "tt5470146",
+    "director": "Crystal, Billy",
+    "actors": "Billy Crystal, David Paymer"
+  },
+  {
+    "shelf_id": "U006",
+    "original_title": "Glory",
+    "imdb_id": "tt29492831",
+    "director": "Zwick, Edward",
+    "actors": "Paul Gascoigne"
+  },
+  {
+    "shelf_id": "U007",
+    "original_title": "Mafia         Il giorno della civetta",
+    "imdb_id": "tt0063010",
+    "director": "Damiano Damiani",
+    "actors": "Franco Nero, Claudia Cardinale, Lee J. Cobb, Tano Cimarosa"
+  },
+  {
+    "shelf_id": "U008",
+    "original_title": "The Incident",
+    "imdb_id": "tt11695850",
+    "director": "Peerce, Larry",
+    "actors": "Douglas M. Haggett"
+  },
+  {
+    "shelf_id": "U011",
+    "original_title": "Ο μεγαλοκαρχαρίας      -   (Κατά λάθος διάσημος)",
+    "imdb_id": "tt0135542",
+    "director": "Fylaktos, Filippos",
+    "actors": "Smaroula Giouli, Mimis Fotopoulos"
+  },
+  {
+    "shelf_id": "U013",
+    "original_title": "Sürü       -     The herd",
+    "imdb_id": "tt0078355",
+    "director": "Ökten, Zeki",
+    "actors": "Tarõk Akan, Melike Demirag"
+  },
+  {
+    "shelf_id": "U022",
+    "original_title": "La tête contre  les murs - The keepers",
+    "imdb_id": "tt0052328",
+    "director": "Franju, Georges",
+    "actors": "Pierre Brasseur, Paul Meurisse"
+  },
+  {
+    "shelf_id": "U025",
+    "original_title": "Τα δάκρυα του βουνού",
+    "imdb_id": "tt8495520",
+    "director": "Charalampopoulos, Stelios",
+    "actors": "Nikos Georgopoulos, Loukia Katopodi"
+  },
+  {
+    "shelf_id": "U030",
+    "original_title": "The Boxer",
+    "imdb_id": "tt0118760",
+    "director": "Sheridan, Jim",
+    "actors": "Daniel Day-Lewis, Emily Watson"
+  },
+  {
+    "shelf_id": "U032",
+    "original_title": "The Kingdom of Diamonds - Heerak Rajar Deshe",
+    "imdb_id": "tt0080856",
+    "director": "Ray, Satyajit",
+    "actors": "Tapan Chatterjee, Rabi Ghosh"
+  },
+  {
+    "shelf_id": "U037",
+    "original_title": "The Story of Adele H    -  L'histoire d'Adèle H.",
+    "imdb_id": "tt0073114",
+    "director": "Truffaut, François",
+    "actors": "Isabelle Adjani, Bruce Robinson"
+  },
+  {
+    "shelf_id": "U039",
+    "original_title": "Palm Springs",
+    "imdb_id": "tt9484998",
+    "director": "Barbakow, Max",
+    "actors": "Andy Samberg, Cristin Milioti"
+  },
+  {
+    "shelf_id": "U043",
+    "original_title": "Wit",
+    "imdb_id": "tt0243664",
+    "director": "Mike Nichols",
+    "actors": "Emma Thompson, Audra McDonald, Jonathan M. Woodward, Christopher Lloyd"
+  },
+  {
+    "shelf_id": "U044",
+    "original_title": "Οι Κυνικοί ξανάρχονται",
+    "imdb_id": null,
+    "director": "Kalogeropoulos, Nikos",
+    "actors": "Nikos  Kalogeropoulos"
+  },
+  {
+    "shelf_id": "U047",
+    "original_title": "3ΩΔΙΑ Κύκνειον Χάσμα (ΤΡΙΩΔΙΑ)",
+    "imdb_id": null,
+    "director": "Kalogeropoulos, Nikos",
+    "actors": "Nikos  Kalogeropoulos"
+  },
+  {
+    "shelf_id": "U049",
+    "original_title": "Animal Farm",
+    "imdb_id": "tt0047834",
+    "director": "Batchelor, Joy",
+    "actors": "Gordon Heath, Maurice Denham"
+  },
+  {
+    "shelf_id": "U050",
+    "original_title": "Circuito chiuso",
+    "imdb_id": "tt0077337",
+    "director": "Montaldo, Giuliano",
+    "actors": "Giovanni Di Benedetto, Umberto Gradi"
+  },
+  {
+    "shelf_id": "U052",
+    "original_title": "Cronaca familiare",
+    "imdb_id": "tt0056966",
+    "director": "Zurlini, Valerio",
+    "actors": "Marcello Mastroianni, Jacques Perrin"
+  },
+  {
+    "shelf_id": "U054",
+    "original_title": "Insomnia 1997",
+    "imdb_id": "tt0119375",
+    "director": "Skjoldbjærg, Erik",
+    "actors": "Stellan Skarsgård, Sverre Anker Ousdal"
+  },
+  {
+    "shelf_id": "U056",
+    "original_title": "Withnail and I",
+    "imdb_id": "tt0094336",
+    "director": "Robinson, Bruce",
+    "actors": "Richard E. Grant, Paul McGann"
+  },
+  {
+    "shelf_id": "U062",
+    "original_title": "Shaft 2",
+    "imdb_id": "tt4463894",
+    "director": "Tim Story",
+    "actors": "Samuel L. Jackson, Jessie T. Usher, Regina Hall, Alexandra Shipp"
+  },
+  {
+    "shelf_id": "U065",
+    "original_title": "Ferris Bueller’s Day Off",
+    "imdb_id": "tt0091042",
+    "director": "Hughes, John",
+    "actors": "Matthew Broderick, Alan Ruck"
+  },
+  {
+    "shelf_id": "U075",
+    "original_title": "Death Becomes Her",
+    "imdb_id": "tt0104070",
+    "director": "Zemeckis, Robert",
+    "actors": "Meryl Streep, Bruce Willis"
+  },
+  {
+    "shelf_id": "U077",
+    "original_title": "The Big Blue      Le grand bleu",
+    "imdb_id": "tt0095250",
+    "director": "Besson, Luc",
+    "actors": "Jean-Marc Barr, Jean Reno"
+  },
+  {
+    "shelf_id": "U078",
+    "original_title": "Scent of a Woman",
+    "imdb_id": "tt0105323",
+    "director": "Brest, Martin",
+    "actors": "Al Pacino, Chris O&apos;Donnell"
+  },
+  {
+    "shelf_id": "U080",
+    "original_title": "The Best Years of Our Lives",
+    "imdb_id": "tt0036868",
+    "director": "Wyler, William",
+    "actors": "Myrna Loy, Dana Andrews"
+  },
+  {
+    "shelf_id": "X015",
+    "original_title": "The Body in the Library",
+    "imdb_id": "tt0088833",
+    "director": "Narizzano, Silvio",
+    "actors": null
+  },
+  {
+    "shelf_id": "X028,29",
+    "original_title": "David Copperfield",
+    "imdb_id": "tt0167872",
+    "director": "Curtis, Simon",
+    "actors": "D. Radcliff, I. Mc Kellen, M. Smith"
+  },
+  {
+    "shelf_id": "X030",
+    "original_title": "Beowulf & Grendel",
+    "imdb_id": "tt0402057",
+    "director": "Sturla Gunnarsson",
+    "actors": "Gerard Butler, Spencer Wilding, Stellan Skarsgård, Ingvar E. Sigurðsson"
+  },
+  {
+    "shelf_id": "X041,X042",
+    "original_title": "Fidel (A+B)",
+    "imdb_id": "tt0292508",
+    "director": "Bravo, Estela ",
+    "actors": null
+  },
+  {
+    "shelf_id": "X053",
+    "original_title": "Salt of the Earth",
+    "imdb_id": "tt0047443",
+    "director": "Herbert J. Biberman",
+    "actors": "Rosaura Revueltas, Juan Chacón, Will Geer, David Bauer"
+  },
+  {
+    "shelf_id": "X072",
+    "original_title": "Talk radio",
+    "imdb_id": "tt0096219",
+    "director": "Oliver Stone",
+    "actors": "Eric Bogosian, Ellen Greene, Leslie Hope, John C. McGinley"
+  },
+  {
+    "shelf_id": "X097",
+    "original_title": "Pleasantville",
+    "imdb_id": "tt0120789",
+    "director": "Gary Ross",
+    "actors": "Tobey Maguire, Reese Witherspoon, William H. Macy, Joan Allen"
+  },
+  {
+    "shelf_id": "X108",
+    "original_title": "The King of Clubs",
+    "imdb_id": "tt1183367",
+    "director": "Farquhar, Rob",
+    "actors": "Lynn Fero, Michael Flatley"
+  },
+  {
+    "shelf_id": "Z010",
+    "original_title": "Shaft",
+    "imdb_id": "tt0067741",
+    "director": "Gordon Parks",
+    "actors": "Richard Roundtree, Moses Gunn, Charles Cioffi, Christopher St. John"
+  },
+  {
+    "shelf_id": "Z032",
+    "original_title": "Nine days of one year",
+    "imdb_id": "tt0054803",
+    "director": "Ryazanov, Eldar",
+    "actors": "Innokentiy Smoktunovskiy, Oleg Efremov"
+  },
+  {
+    "shelf_id": "Z036",
+    "original_title": "Where Eagles Dare",
+    "imdb_id": "tt0065207",
+    "director": "Brian G. Hutton",
+    "actors": "Richard Burton, Clint Eastwood, Mary Ure, Patrick Wymark"
+  },
+  {
+    "shelf_id": "Z042",
+    "original_title": "Toy Story 1",
+    "imdb_id": "tt0114709",
+    "director": "Lasseter J.et al",
+    "actors": "Tom Hanks,Tim Allen"
+  }
+]

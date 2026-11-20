@@ -91,7 +91,9 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [x] Progressively save `synopses.json` every 25 records
 - [x] Create [`scripts/patch_genres.py`](../scripts/patch_genres.py) to backfill empty `tags`
 - [x] Create [`scripts/patch_posters.py`](../scripts/patch_posters.py) to backfill missing `poster_url` values for movies with an `imdb_id`
-- [x] Document both workflows in [`architecture.md`](architecture.md) §3.8–3.9 and genre/poster backfills in §3.10–3.12
+- [x] Create [`scripts/patch_durations.py`](../scripts/patch_durations.py) to backfill missing `duration_minutes` for movies with an `imdb_id`
+- [x] Create [`scripts/patch_incomplete_credits.py`](../scripts/patch_incomplete_credits.py) to fix incomplete actor/director credits listed in `temp/incomplete_credits.json`
+- [x] Document both workflows in [`architecture.md`](architecture.md) §3.8–3.9 and genre/poster/duration/credit backfills in §3.10–3.14
 - [ ] Run the credit, AI synopsis, and genre patchers against the real data and spot-check updated records
 
 ---
