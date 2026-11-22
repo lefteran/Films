@@ -226,7 +226,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 
 ### Frontend UI & UX
 - [ ] Show detailed error messages in the error/dialogue box (instead of a generic failure message) to make debugging easier
-- [ ] Add a "Recently Added" button/view to display recently added movies sorted from newest to oldest (`date_added`)
+- [x] Add a "Recently Added" button/view to display recently added movies sorted from newest to oldest (`date_added`, with full `YYYY-MM-DDTHH:MM:SS` timestamp in `manage_movie.py`)
 - [ ] Evaluate whether to keep `date_added` in a separate JSON file or continue storing it on entries in `data/movies_lite.json`
 - [x] When a genre is selected from `#genreSelect`, show a removable chip/button next to it with the genre name and an `×` button to clear that genre filter
 - [ ] Add an "Export to Excel" (`.xlsx`) feature for the movie list

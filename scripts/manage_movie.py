@@ -260,7 +260,7 @@ def add_movie(session, tmdb_api_key, movies, synopses, imdb_id, list_no):
         "greek_title": greek_title,
         "duration_minutes": details.get("runtime"),
         "poster_url": f"{POSTER_BASE}{poster_path}" if poster_path else None,
-        "date_added": datetime.now().strftime("%Y-%m-%d"),
+        "date_added": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
     }
 
     movies.insert(0, movie)

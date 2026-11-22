@@ -3,6 +3,7 @@ let moviesData = [];
 let filteredMovies = [];
 let activeTags = new Set();
 let allGenres = new Set();
+let sortByRecent = false;
 let synopsesData = null;
 let synopsesPromise = null;
 
@@ -17,6 +18,7 @@ const movieModal = document.getElementById('movieModal');
 const modalBody = document.getElementById('modalBody');
 const closeModalBtn = document.getElementById('closeModal');
 const gridSizeToggle = document.getElementById('gridSizeToggle');
+const recentToggle = document.getElementById('recentToggle');
 const genreSelect = document.getElementById('genreSelect');
 
 // Search / ordering helpers
@@ -213,6 +215,10 @@ function applyFilters() {
     const searchTerm = normalizeText(rawSearch);
     
     filteredMovies = moviesData.filter(movie => {
+        if (sortByRecent && !movie.date_added) {
+            return false;
+        }
+
         // Έλεγχος Αναζήτησης (Τίτλος, Σκηνοθέτης, Ηθοποιοί, List No., IMDb ID, Έτος, Είδη/Υποείδη)
         const searchableText = normalizeText(`
             ${movie.original_title || ''}
@@ -252,7 +258,15 @@ function applyFilters() {
         return matchesSearch && matchesTags;
     });
 
-    if (rawSearch === '') {
+    if (sortByRecent) {
+        const indexMap = new Map(moviesData.map((movie, idx) => [movie, idx]));
+        filteredMovies = [...filteredMovies].sort((a, b) => {
+            const timeA = Date.parse(a.date_added || '') || 0;
+            const timeB = Date.parse(b.date_added || '') || 0;
+            if (timeB !== timeA) return timeB - timeA;
+            return (indexMap.get(a) ?? 0) - (indexMap.get(b) ?? 0);
+        });
+    } else if (rawSearch === '') {
         filteredMovies = shuffleArray([...filteredMovies]);
     }
 
@@ -406,6 +420,14 @@ gridSizeToggle.addEventListener('click', () => {
     moviesGrid.classList.toggle('small-grid');
     syncGridToggleState();
 });
+
+if (recentToggle) {
+    recentToggle.addEventListener('click', () => {
+        sortByRecent = !sortByRecent;
+        recentToggle.setAttribute('aria-pressed', String(sortByRecent));
+        applyFilters();
+    });
+}
 
 // Ξεκινάμε!
 initializeSearchFromURL();
