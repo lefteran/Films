@@ -2,7 +2,7 @@
 let moviesData = [];
 let filteredMovies = [];
 let activeTags = new Set();
-let allTags = new Set();
+let allGenres = new Set();
 let synopsesData = null;
 let synopsesPromise = null;
 
@@ -57,15 +57,41 @@ function selectGenre(tag) {
     const value = typeof tag === 'string' ? tag.trim() : '';
     if (!value) return;
 
-    searchInput.value = value;
-    updateSearchQueryParam(value);
-
+    activeTags.add(value);
     if (genreSelect) {
-        const hasOption = Array.from(genreSelect.options).some(option => option.value === value);
-        genreSelect.value = hasOption ? value : '';
+        genreSelect.value = '';
     }
-
+    renderActiveGenrePills();
     applyFilters();
+}
+
+function renderActiveGenrePills() {
+    if (!tagsContainer) return;
+    tagsContainer.querySelectorAll('.active-genre-pill').forEach(el => el.remove());
+
+    activeTags.forEach(tag => {
+        const pill = document.createElement('button');
+        pill.type = 'button';
+        pill.className = 'active-genre-pill';
+        pill.setAttribute('aria-label', `Αφαίρεση φίλτρου ${tag}`);
+
+        const label = document.createElement('span');
+        label.textContent = tag;
+        const removeIcon = document.createElement('span');
+        removeIcon.className = 'pill-remove';
+        removeIcon.setAttribute('aria-hidden', 'true');
+        removeIcon.textContent = '×';
+
+        pill.appendChild(label);
+        pill.appendChild(removeIcon);
+        pill.addEventListener('click', () => {
+            activeTags.delete(tag);
+            renderActiveGenrePills();
+            applyFilters();
+        });
+
+        tagsContainer.appendChild(pill);
+    });
 }
 
 // 1. Φόρτωση των δεδομένων
@@ -75,10 +101,13 @@ async function fetchMovies() {
         moviesData = await response.json();
         filteredMovies = [...moviesData];
         
-        // Εξαγωγή όλων των μοναδικών tags για να φτιάξουμε τα κουμπιά φίλτρων
+        // Εξαγωγή όλων των μοναδικών ειδών (genres) για το dropdown
         moviesData.forEach(movie => {
-            if (movie.tags && Array.isArray(movie.tags)) {
-                movie.tags.forEach(tag => allTags.add(tag));
+            if (Array.isArray(movie.genres)) {
+                movie.genres.forEach(genre => {
+                    const clean = typeof genre === 'string' ? genre.trim() : '';
+                    if (clean) allGenres.add(clean);
+                });
             }
         });
         
@@ -125,27 +154,28 @@ function renderGrid(movies) {
         `;
 
         const cardTags = card.querySelector('.card-tags');
-        if (Array.isArray(movie.tags)) {
-            movie.tags.forEach(tag => {
-                const badge = document.createElement('span');
-                badge.className = 'card-tag';
-                badge.textContent = tag;
-                badge.setAttribute('role', 'button');
-                badge.setAttribute('tabindex', '0');
-                badge.addEventListener('click', (event) => {
+        const cardLabels = Array.isArray(movie.genres) && movie.genres.length > 0
+            ? movie.genres
+            : (Array.isArray(movie.tags) ? movie.tags : []);
+        cardLabels.forEach(tag => {
+            const badge = document.createElement('span');
+            badge.className = 'card-tag';
+            badge.textContent = tag;
+            badge.setAttribute('role', 'button');
+            badge.setAttribute('tabindex', '0');
+            badge.addEventListener('click', (event) => {
+                event.stopPropagation();
+                selectGenre(tag);
+            });
+            badge.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
                     event.stopPropagation();
                     selectGenre(tag);
-                });
-                badge.addEventListener('keydown', (event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        selectGenre(tag);
-                    }
-                });
-                cardTags.appendChild(badge);
+                }
             });
-        }
+            cardTags.appendChild(badge);
+        });
 
         // Όταν κάνει κλικ, ανοίγει το Modal
         card.addEventListener('click', () => openModal(movie));
@@ -155,42 +185,26 @@ function renderGrid(movies) {
     moviesGrid.appendChild(fragment);
 }
 
-// 3. Δημιουργία των κουμπιών (Φίλτρων) στην κορυφή
+// 3. Γέμισμα του dropdown ειδών (χωρίς κουμπιά filter-tag)
 function renderTags() {
-    const sortedTags = Array.from(allTags).sort();
+    const sortedGenres = Array.from(allGenres).sort((a, b) => a.localeCompare(b));
 
     if (genreSelect) {
         Array.from(genreSelect.options).forEach(option => {
             if (option.value !== '') option.remove();
         });
-        sortedTags.forEach(tag => {
+        sortedGenres.forEach(genre => {
             const option = document.createElement('option');
-            option.value = tag;
-            option.textContent = tag;
+            option.value = genre;
+            option.textContent = genre;
             genreSelect.appendChild(option);
         });
     }
 
-    tagsContainer.querySelectorAll('.filter-tag').forEach(button => button.remove());
-
-    sortedTags.forEach(tag => {
-        const btn = document.createElement('button');
-        btn.className = 'filter-tag';
-        btn.textContent = tag;
-        
-        btn.addEventListener('click', () => {
-            if (activeTags.has(tag)) {
-                activeTags.delete(tag);
-                btn.classList.remove('active');
-            } else {
-                activeTags.add(tag);
-                btn.classList.add('active');
-            }
-            applyFilters();
-        });
-        
-        tagsContainer.appendChild(btn);
-    });
+    if (tagsContainer) {
+        tagsContainer.querySelectorAll('.filter-tag').forEach(button => button.remove());
+    }
+    renderActiveGenrePills();
 }
 
 // 4. Η Μηχανή Αναζήτησης και Φιλτραρίσματος (Αστραπιαία)
@@ -199,13 +213,15 @@ function applyFilters() {
     const searchTerm = normalizeText(rawSearch);
     
     filteredMovies = moviesData.filter(movie => {
-        // Έλεγχος Αναζήτησης (Τίτλος, Σκηνοθέτης, Ηθοποιοί, List No., IMDb ID, Έτος)
+        // Έλεγχος Αναζήτησης (Τίτλος, Σκηνοθέτης, Ηθοποιοί, List No., IMDb ID, Έτος, Είδη/Υποείδη)
         const searchableText = normalizeText(`
             ${movie.original_title || ''}
             ${movie.greek_title || ''}
             ${movie.director || ''}
             ${movie.actors || ''}
             ${Array.isArray(movie.tags) ? movie.tags.join(' ') : ''}
+            ${Array.isArray(movie.genres) ? movie.genres.join(' ') : ''}
+            ${Array.isArray(movie.subgenres) ? movie.subgenres.join(' ') : ''}
             ${movie.shelf_id || ''}
             ${movie.imdb_id || ''}
             ${movie.year || ''}
@@ -216,11 +232,16 @@ function applyFilters() {
         // Έλεγχος Tags (Πρέπει να περιέχει ΟΛΑ τα επιλεγμένα tags - AND logic)
         let matchesTags = true;
         if (activeTags.size > 0) {
-            if (!movie.tags) {
+            const movieLabels = new Set([
+                ...(Array.isArray(movie.tags) ? movie.tags : []),
+                ...(Array.isArray(movie.genres) ? movie.genres : []),
+                ...(Array.isArray(movie.subgenres) ? movie.subgenres : [])
+            ]);
+            if (movieLabels.size === 0) {
                 matchesTags = false;
             } else {
                 for (let tag of activeTags) {
-                    if (!movie.tags.includes(tag)) {
+                    if (!movieLabels.has(tag)) {
                         matchesTags = false;
                         break;
                     }
@@ -244,6 +265,11 @@ function openModal(movie) {
     const posterSrc = movie.poster_url || 'https://via.placeholder.com/500x750/2a2a2a/ffffff?text=No+Poster';
     const duration = movie.duration_minutes ? `${movie.duration_minutes} λεπτά` : 'Άγνωστη διάρκεια';
     
+    const genres = Array.isArray(movie.genres) && movie.genres.length > 0
+        ? movie.genres
+        : (Array.isArray(movie.tags) ? movie.tags : []);
+    const subgenres = Array.isArray(movie.subgenres) ? movie.subgenres : [];
+
     modalBody.innerHTML = `
         <img src="${posterSrc}" alt="${title}" class="modal-poster">
         <div class="modal-details">
@@ -254,10 +280,46 @@ function openModal(movie) {
             <p><strong>Έτος:</strong> ${movie.year || '-'} • <strong>Διάρκεια:</strong> ${duration}</p>
             <p><strong>Θέση:</strong> List No. ${movie.shelf_id}</p>
             <p><strong>IMDb ID:</strong> ${movie.imdb_id || '-'}</p>
+            ${genres.length > 0 || subgenres.length > 0 ? '<div class="modal-taxonomy"></div>' : ''}
             ${movie.imdb_id ? `<a href="https://www.imdb.com/title/${movie.imdb_id}/" target="_blank" rel="noopener noreferrer" class="imdb-link">Προβολή στο IMDb</a>` : ''}
             <div class="modal-synopsis">Φόρτωση σύνοψης...</div>
         </div>
     `;
+
+    const taxonomyEl = modalBody.querySelector('.modal-taxonomy');
+    if (taxonomyEl) {
+        const appendBadgeGroup = (labelText, items, badgeClass) => {
+            if (items.length === 0) return;
+            const group = document.createElement('div');
+            group.className = 'modal-taxonomy-group';
+
+            const label = document.createElement('span');
+            label.className = 'modal-taxonomy-label';
+            label.textContent = labelText;
+            group.appendChild(label);
+
+            const list = document.createElement('div');
+            list.className = 'modal-badges';
+            items.forEach(item => {
+                const badge = document.createElement('button');
+                badge.type = 'button';
+                badge.className = `modal-badge ${badgeClass}`;
+                badge.textContent = item;
+                badge.addEventListener('click', () => {
+                    movieModal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                    selectGenre(item);
+                });
+                list.appendChild(badge);
+            });
+            group.appendChild(list);
+            taxonomyEl.appendChild(group);
+        };
+
+        appendBadgeGroup('Είδη', genres, 'genre-badge');
+        appendBadgeGroup('Υποείδη', subgenres, 'subgenre-badge');
+    }
+
     movieModal.classList.remove('hidden');
     document.body.style.overflow = 'hidden'; // Κλειδώνει το σκρολάρισμα της σελίδας
 
@@ -325,8 +387,8 @@ if (genreSelect) {
         if (genreSelect.value) {
             selectGenre(genreSelect.value);
         } else {
-            searchInput.value = '';
-            updateSearchQueryParam('');
+            activeTags.clear();
+            renderActiveGenrePills();
             applyFilters();
         }
     });

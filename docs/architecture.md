@@ -306,6 +306,15 @@ Repairs abbreviated or comma-formatted actor/director credits listed in `temp/in
 2. Resolves the movie on TMDB via `imdb_id` (`/3/find/{imdb_id}`, falling back to `tmdb_id`) and fetches `GET /3/movie/{tmdb_id}?language=en-US&append_to_response=credits`.
 3. Updates `actors` (top 4 cast names) and `director` (first `Director` crew member), saves progressively every 25 changed movies and once at the end in minified UTF-8, and supports `--dry-run`.
 
+### 3.15 Genres & subgenres enrichment (`scripts/enrich_genres_subgenres.py`)
+
+Enriches `data/movies_lite.json` without modifying the source file:
+
+1. Uses `tmdb_id` directly when present, or resolves it via `GET /3/find/{imdb_id}?external_source=imdb_id`.
+2. Calls `GET /3/movie/{tmdb_id}?language=en-US&append_to_response=keywords` (with retry/backoff for `429`/`5xx` and graceful `404` handling).
+3. Extracts official `genres` and maps `keywords.keywords` against a curated `SUBGENRE_WHITELIST` into `subgenres`.
+4. Writes the full enriched array with 2-space indentation to `movies_enriched.json` (saving progressively every 50 movies), keeping `genres: []` and `subgenres: []` when a movie is not found.
+
 ---
 
 ## 4. Phase 2 — Frontend Application

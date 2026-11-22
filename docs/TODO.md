@@ -93,7 +93,8 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [x] Create [`scripts/patch_posters.py`](../scripts/patch_posters.py) to backfill missing `poster_url` values for movies with an `imdb_id`
 - [x] Create [`scripts/patch_durations.py`](../scripts/patch_durations.py) to backfill missing `duration_minutes` for movies with an `imdb_id`
 - [x] Create [`scripts/patch_incomplete_credits.py`](../scripts/patch_incomplete_credits.py) to fix incomplete actor/director credits listed in `temp/incomplete_credits.json`
-- [x] Document both workflows in [`architecture.md`](architecture.md) §3.8–3.9 and genre/poster/duration/credit backfills in §3.10–3.14
+- [x] Create [`scripts/enrich_genres_subgenres.py`](../scripts/enrich_genres_subgenres.py) to enrich movies with official TMDB `genres` and curated `subgenres` into `movies_enriched.json`
+- [x] Document both workflows in [`architecture.md`](architecture.md) §3.8–3.9 and genre/poster/duration/credit backfills in §3.10–3.15
 - [ ] Run the credit, AI synopsis, and genre patchers against the real data and spot-check updated records
 
 ---
@@ -137,6 +138,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [x] Enable `.small-grid` by default and synchronise the toggle’s `aria-pressed` state on load
 - [x] Change the modal shelf label to “List No.” and add an IMDb link when `imdb_id` exists
 - [x] Display `IMDb ID` (`movie.imdb_id || '-'`) in the movie details modal
+- [x] Display clickable `genres` and `subgenres` pill badges in the movie details modal and include them in search/filtering
 - [x] Add the header “Μικρές / Μεγάλες Αφίσες” toggle and `.small-grid` styles
 
 ### Hosting and verification
@@ -226,7 +228,7 @@ next. Update this file as work lands; see [`architecture.md`](architecture.md) f
 - [ ] Show detailed error messages in the error/dialogue box (instead of a generic failure message) to make debugging easier
 - [ ] Add a "Recently Added" button/view to display recently added movies sorted from newest to oldest (`date_added`)
 - [ ] Evaluate whether to keep `date_added` in a separate JSON file or continue storing it on entries in `data/movies_lite.json`
-- [ ] When a genre is selected from `#genreSelect`, show a removable chip/button next to it with the genre name and an `×` button to clear that genre filter
+- [x] When a genre is selected from `#genreSelect`, show a removable chip/button next to it with the genre name and an `×` button to clear that genre filter
 - [ ] Add an "Export to Excel" (`.xlsx`) feature for the movie list
 
 ### Data Cleanup & Enrichment Scripts
